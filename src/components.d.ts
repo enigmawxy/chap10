@@ -8,7 +8,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    ElButton: typeof import('element-plus/es')['ElButton']
-    ElIcon: typeof import('element-plus/es')['ElIcon']
+    AnimationEdge: typeof import('./components/AnimationEdge.vue')['default']
+    Icon: typeof import('./components/Icon.vue')['default']
+    ProcessNode: typeof import('./components/ProcessNode.vue')['default']
   }
 }
