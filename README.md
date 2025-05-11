@@ -1,172 +1,246 @@
-## Tailwind CSS 速成教程（v3.x）
+# Element Plus 极简教程（Vue3 版）
 
-### 一、Tailwind CSS 核心特点
+> 适用对象：已掌握 Vue3 基础的大学生 | [官方文档](https://element-plus.org/zh-CN/)
 
-- 实用优先：通过组合原子类快速构建界面
-- 响应式设计：内置移动优先的响应式断点系统
-- 暗黑模式：原生支持暗黑主题切换
-- 高度可定制：轻松修改默认配置
-- 状态变体：支持 hover/focus/active 等交互状态
+## 🌟 核心特点
 
-### 二、核心概念速记
+- **组件丰富**：60+ 企业级组件
+- **组合式API**：完美支持 Vue3 新特性
+- **主题定制**：Sass 变量轻松修改样式
+- **交互规范**：符合企业级产品设计标准
+- **TypeScript**：提供完整类型定义
 
-实用类命名规则：
+## 🚀 快速使用
 
-属性缩写-值（数值通常为4的倍数）
+```vue
+<template>
+  <!-- 按钮组件 -->
+  <el-button type="danger" @click="showMessage">
+    <el-icon><Warning /></el-icon>
+    危险操作
+  </el-button>
+</template>
 
-示例：mt-4 → margin-top: 1rem(16px)
+<script setup>
+import { ElButton, ElMessage } from 'element-plus'
+import { Warning } from '@element-plus/icons-vue'
 
-响应式设计：
-
-```html
-<div class="text-sm md:text-base lg:text-lg">
-  响应式文字
-</div>
+const showMessage = () => {
+  ElMessage.error('危险操作警告！')
+}
+</script>
 ```
 
-暗黑模式：
+## 📦 核心组件速览
 
-```html
-<div class="bg-white dark:bg-gray-800">
-  自动切换背景色
-</div>
+### 1. 表单系统（Form）
+
+```vue
+<el-form :model="formData" :rules="rules" label-width="80px">
+  <el-form-item label="用户名" prop="username">
+    <el-input v-model="formData.username" clearable />
+  </el-form-item>
+  
+  <el-form-item label="性别" prop="gender">
+    <el-radio-group v-model="formData.gender">
+      <el-radio label="male">男</el-radio>
+      <el-radio label="female">女</el-radio>
+    </el-radio-group>
+  </el-form-item>
+  
+  <el-button type="primary" @click="submitForm">提交</el-button>
+</el-form>
+
+<script setup>
+const formData = reactive({
+  username: '',
+  gender: ''
+})
+
+const rules = {
+  username: [
+    { required: true, message: '必填项', trigger: 'blur' },
+    { min: 3, max: 12, message: '长度3-12字符' }
+  ]
+}
+
+const submitForm = () => {
+  // 表单验证逻辑
+}
+</script>
 ```
 
-状态变体：
+### 2. 数据表格（Table）
 
-```html
-<button class="bg-blue-500 hover:bg-blue-700 focus:ring-2">
-  交互按钮
-</button>
+```vue
+<el-table :data="tableData" stripe style="width: 100%">
+  <el-table-column prop="date" label="日期" width="180" sortable />
+  <el-table-column prop="name" label="姓名">
+    <template #default="{ row }">
+      <el-tag>{{ row.name }}</el-tag>
+    </template>
+  </el-table-column>
+  <el-table-column label="操作">
+    <template #default="scope">
+      <el-button size="small" @click="handleEdit(scope.$index)">编辑</el-button>
+    </template>
+  </el-table-column>
+</el-table>
+
+<script setup>
+const tableData = ref([
+  { date: '2023-01-01', name: '张三' },
+  { date: '2023-01-02', name: '李四' }
+])
+
+const handleEdit = (index) => {
+  console.log('编辑行:', index)
+}
+</script>
 ```
 
-### 三、常用工具类速查
+### 3.反馈组件
 
-布局：
+```vue
+<!-- 对话框 -->
+<el-dialog v-model="dialogVisible" title="提示" width="30%">
+  <span>确认删除？</span>
+  <template #footer>
+    <el-button @click="dialogVisible = false">取消</el-button>
+    <el-button type="primary" @click="confirmDelete">确认</el-button>
+  </template>
+</el-dialog>
 
-```html
-flex / grid / block / inline-block
-justify-center / items-center
-gap-4 / space-x-4
+<!-- 通知消息 -->
+<el-button @click="showNotify">显示通知</el-button>
+
+<script setup>
+const dialogVisible = ref(false)
+
+// 消息提示
+const showNotify = () => {
+  ElNotification({
+    title: '新消息',
+    message: '您有3条未读通知',
+    type: 'info'
+  })
+}
+</script>
 ```
 
-间距：
+## 🛠️ 实用案例库
 
-```html
-p-4 / px-4 / py-4
+### 案例1：用户管理面板
 
-m-auto / mt-8
+```vue
+<template>
+  <div class="dashboard">
+    <!-- 搜索栏 -->
+    <el-input 
+      v-model="searchKey" 
+      placeholder="搜索用户" 
+      style="width: 300px"
+      clearable
+    >
+      <template #prefix>
+        <el-icon><Search /></el-icon>
+      </template>
+    </el-input>
 
-w-full / w-1/2 / max-w-2xl
+    <!-- 数据表格 -->
+    <el-table :data="filteredUsers">
+      <!-- 列配置 -->
+    </el-table>
+
+    <!-- 分页 -->
+    <el-pagination
+      v-model:current-page="currentPage"
+      :page-size="pageSize"
+      layout="total, prev, pager, next"
+      :total="totalUsers"
+    />
+  </div>
+</template>
 ```
 
-颜色：
+### 案例2：图片上传组件
 
-```html
-bg-red-500 / bg-opacity-50
+```vue
+<template>
+  <el-upload
+    action="https://your-upload-api.com"
+    list-type="picture-card"
+    :on-preview="handlePreview"
+    :before-upload="beforeUpload"
+  >
+    <el-icon><Plus /></el-icon>
+  </el-upload>
+</template>
 
-text-white / text-gray-700
-
-border-2 border-blue-400
+<script setup>
+const beforeUpload = (file) => {
+  const isJPG = file.type === 'image/jpeg'
+  if (!isJPG) {
+    ElMessage.error('仅支持 JPG 格式！')
+    return false
+  }
+  return true
+}
+</script>
 ```
 
-字体：
+## 🔧 进阶技巧
 
-```html
-text-xl / text-2xl
-
-font-bold / font-medium
-
-uppercase / italic
-```
-
-特效：
-
-```html
-rounded-lg / shadow-xl
-
-transition duration-300
-
-transform rotate-45
-```
-
-### 四、自定义配置
-
-修改 tailwind.config.js：
+### 1. 全局配置
 
 ```javascript
-module.exports = {
-  content: ["./src/**/*.{html,js}"],
-  theme: {
-    extend: {
-      colors: {
-        primary: '#3b82f6',
-      },
-      screens: {
-        '3xl': '1600px',
-      }
-    },
-  },
-  plugins: [],
-}
+// main.js
+import ElementPlus from 'element-plus'
+
+app.use(ElementPlus, {
+  // 全局尺寸（small/default/large）
+  size: 'default',
+  // 国际化
+  locale: zhCn,
+  // 弹窗初始 z-index
+  zIndex: 2000  
+})
 ```
 
-### 五、实战示例
+### 2. 主题定制
 
-导航栏组件：
-
-```html
-<nav class="bg-white shadow-lg">
-  <div class="max-w-6xl mx-auto px-4">
-    <div class="flex justify-between items-center h-16">
-      <div class="flex space-x-8">
-        <a href="#" class="text-gray-700 hover:text-blue-500">首页</a>
-        <a href="#" class="text-gray-700 hover:text-blue-500">产品</a>
-      </div>
-      <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-        登录
-      </button>
-    </div>
-  </div>
-</nav>
+```scss
+// styles/element.scss
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'primary': (
+      'base': #1890ff,
+    ),
+  ),
+  $button-padding-horizontal: 32px
+);
 ```
 
-卡片组件：
+// 在 main.js 导入
 
-```html
-<div class="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-  <img class="w-full h-48 object-cover" src="image.jpg">
-  <div class="px-6 py-4">
-    <h3 class="text-xl font-bold mb-2">卡片标题</h3>
-    <p class="text-gray-600 text-base">
-      这是一个使用 Tailwind 构建的卡片组件示例...
-    </p>
-  </div>
-</div>
+```js
+import './styles/element.scss'
 ```
 
-### 六、推荐资源
+## 📚 学习资源
 
-官方文档：`https://www.tailwindcss.cn`
+- 官方组件文档
 
-官方插件：@tailwindcss/forms, @tailwindcss/typography
+Element Plus Icons
 
-可视化工具：Tailwind Play (官方在线编辑器)
+- Vue3 官方文档
 
-图标库：Heroicons (官方图标集)
+Element Plus 示例项目
 
-UI 库：Headless UI (官方无样式组件库)
+## 💡 学习建议
 
-## 总结
-
-Tailwind 的核心在于通过组合实用类快速构建界面，建议：
-
-多使用官方文档搜索功能
-
-优先使用默认设计系统
-
-逐步扩展自定义配置
-
-结合开发者工具实时调试
-
-掌握常用类组合模式（卡片、按钮、表单等）
+- 组件优先：从最常用的 10 个组件开始（Button, Form, Table, Dialog 等）
+- 文档检索：遇到问题首先查阅对应组件的 API 文档
+- 样式覆盖：优先使用组件提供的 props 修改样式，其次用 CSS 覆盖
+- 组合使用：学习组件之间的配合使用（如表单+对话框+消息提示）
+- 项目驱动：通过实际小项目（如后台管理系统）巩固知识
