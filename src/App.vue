@@ -1,39 +1,55 @@
 <template>
-  <nav class="bg-white shadow-lg">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="flex justify-between items-center h-16">
-        <div class="flex space-x-8">
-          <a href="#" class="text-gray-700 hover:text-blue-500">首页</a>
-          <a href="#" class="text-gray-700 hover:text-blue-500">产品</a>
-        </div>
-        <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-          登录
-        </button>
-      </div>
-    </div>
-  </nav>
-  <div class="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-    <img class="w-full h-48 object-cover" src="./images/image.jpg">
-    <div class="px-6 py-4">
-      <h3 class="text-xl font-bold mb-2">卡片标题</h3>
-      <p class="text-gray-600 text-base">
-        这是一个使用 Tailwind 构建的卡片组件示例...
-      </p>
+  <div class="app-container">
+    <Header />
+    <div class="main-container">
+      <Sidebar :tabList="tabList" :current="currentTab" @update:currentTab="currentTab = $event" />
+      <MainView :currentTab="currentTab" :tabMap="tabMap" />
     </div>
   </div>
-  <div>
-    <h1 class="text-3xl font-bold underline">
-      Hello world!
-    </h1>
-    <!-- Element Plus 组件示例 -->
-    <el-button type="primary">按钮</el-button>
-    <el-icon>
-      <Search />
-    </el-icon>
-  </div>
-
 </template>
 
 <script setup>
-// 无需手动导入组件和图标，已通过自动导入配置
+import { ref } from 'vue'
+import Header from '@/components/HeaderView.vue'
+import Sidebar from '@/components/Sidebar.vue'
+import MainView from '@/components/MainView.vue'
+
+// 导入你的案例组件
+import QuickStart from '@/views/QuickStart.vue'
+import FormSample from '@/views/FormSample.vue'
+import DataTable from '@/views/DataTable.vue'
+import FeedSample from '@/views/FeedSample.vue'
+import UserPanel from '@/views/UserPanel.vue'
+import PicUpload from '@/views/PicUpload.vue'
+const tabList = [
+  { name: 'QuickStart', label: '快速使用' },
+  { name: 'FormSample', label: '表单系统' },
+  { name: 'DataTable', label: '表格系统' },
+  { name: 'FeedSample', label: '消息系统' },
+  { name: 'UserPanel', label: '用户系统' },
+  { name: 'PicUpload', label: '图片上传' },
+]
+
+const tabMap = {
+  QuickStart,
+  FormSample,
+  DataTable,
+  FeedSample,
+  UserPanel,
+  PicUpload,
+}
+
+const currentTab = ref(tabList[0].name)
 </script>
+
+<style scoped>
+.app-container {
+  min-height: 100vh;
+}
+
+.main-container {
+  display: flex;
+  min-height: calc(100vh - 30px);
+  margin-top: 30px;
+}
+</style>
