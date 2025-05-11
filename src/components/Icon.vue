@@ -30,4 +30,12 @@ defineProps({
     <path d="M7,7 L12,2 L17,7" stroke="currentColor" stroke-width="2" fill="none" />
     <path d="M7,17 L12,22 L17,17" stroke="currentColor" stroke-width="2" fill="none" />
   </svg>
+
+  <svg v-else-if="name === 'chevron-left'" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor" />
+  </svg>
+
+  <svg v-else-if="name === 'chevron-right'" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="currentColor" />
+  </svg>
 </template>

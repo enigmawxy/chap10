@@ -5,30 +5,26 @@ import { Background } from '@vue-flow/background'
 import Icon from '@/components/Icon.vue'
 import ProcessNode from '@/components/ProcessNode.vue'
 import AnimationEdge from '@/components/AnimationEdge.vue'
+import SideBar from '@/components/SideBar.vue'
 
 import { initialEdges, initialNodes } from '@/utils/initial-elements.js'
 import { useRunProcess } from '@/utils/useRunProcess'
 import { useLayout } from '@/utils/useLayout'
+import useDragAndDrop from '@/utils/useDnD'
 
 const nodes = ref(initialNodes)
-
 const edges = ref(initialEdges)
-
 const cancelOnError = ref(true)
 
 const { graph, layout } = useLayout()
-
 const { run, stop, reset, isRunning } = useRunProcess({ graph, cancelOnError })
-
 const { fitView } = useVueFlow()
+const { onDragOver, onDrop, onDragLeave, isDragOver } = useDragAndDrop()
 
 async function layoutGraph(direction) {
   await stop()
-
   reset(nodes.value)
-
   nodes.value = layout(nodes.value, edges.value, direction)
-
   nextTick(() => {
     fitView()
   })
@@ -36,12 +32,15 @@ async function layoutGraph(direction) {
 </script>
 
 <template>
-  <div class="layout-flow">
+  <div class="layout-flow" @drop="onDrop">
+    <SideBar />
     <VueFlow
       v-model:nodes="nodes"
       v-model:edges="edges"
       :default-edge-options="{ type: 'animation', animated: true }"
       @nodes-initialized="layoutGraph('LR')"
+      @dragover="onDragOver" 
+      @dragleave="onDragLeave"
     >
       <template #node-process="props">
         <ProcessNode :data="props.data" :source-position="props.sourcePosition" :target-position="props.targetPosition" />
@@ -97,6 +96,7 @@ async function layoutGraph(direction) {
   background-color: #1a192b;
   height: 100%;
   width: 100%;
+  position: relative;
 }
 
 .process-panel,

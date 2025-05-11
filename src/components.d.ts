@@ -11,5 +11,6 @@ declare module 'vue' {
     AnimationEdge: typeof import('./components/AnimationEdge.vue')['default']
     Icon: typeof import('./components/Icon.vue')['default']
     ProcessNode: typeof import('./components/ProcessNode.vue')['default']
+    SideBar: typeof import('./components/SideBar.vue')['default']
   }
 }
