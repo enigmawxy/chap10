@@ -173,6 +173,25 @@ const baseNodes = [
   justify-content: flex-start;
 }
 
+.kg-node-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 56px;
+  margin: 0 10px 10px 10px;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.kg-node:hover {
+  background-color: #acdbf1;
+}
+
+.kg-node:hover  {
+  border-style: dashed;
+}
+
 .kg-node {
   width: 56px;
   height: 56px;
@@ -184,7 +203,7 @@ const baseNodes = [
   justify-content: center;
   margin: 0 8px 4px 8px;
   cursor: move;
-  transition: box-shadow 0.2s, border 0.2s;
+  transition: all 0.2s ease;
   position: relative;
   flex-direction: row;
 }
@@ -223,13 +242,5 @@ const baseNodes = [
   gap: 0 0;
   padding: 12px 8px 8px 8px;
   justify-content: flex-start;
-}
-
-.kg-node-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 56px;
-  margin: 0 10px 10px 10px;
 }
 </style>
