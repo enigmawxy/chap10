@@ -1,13 +1,71 @@
+<template>
+  <div class="layout-flow" @drop="onDrop">
+    <SideBar />
+    <VueFlow
+      v-model:nodes="nodes"
+      v-model:edges="edges"
+      :default-edge-options="{ type: 'animation', animated: true }"
+      @nodes-initialized="layoutGraph('LR')"
+      @dragover="onDragOver"
+      @dragleave="onDragLeave"
+    >
+      <template #node-process="props">
+        <ProcessNode :data="props.data" :source-position="props.sourcePosition" :target-position="props.targetPosition" />
+      </template>
+
+      <template #edge-animation="edgeProps">
+        <AnimationEdge
+          :id="edgeProps.id"
+          :source="edgeProps.source"
+          :target="edgeProps.target"
+          :source-x="edgeProps.sourceX"
+          :source-y="edgeProps.sourceY"
+          :targetX="edgeProps.targetX"
+          :targetY="edgeProps.targetY"
+          :source-position="edgeProps.sourcePosition"
+          :target-position="edgeProps.targetPosition"
+          :data="edgeProps.data"
+        />
+      </template>
+
+      <Background />
+
+      <Panel class="process-panel" position="top-right">
+        <div class="layout-panel">
+          <button v-if="isRunning" class="stop-btn" title="停止" @click="stop">
+            <Icon name="stop" />
+            <span class="spinner" />
+          </button>
+          <button v-else title="开始" @click="run(nodes)">
+            <Icon name="play" />
+          </button>
+
+          <button title="设为水平布局" @click="layoutGraph('LR')">
+            <Icon name="horizontal" />
+          </button>
+
+          <button title="设为垂直布局" @click="layoutGraph('TB')">
+            <Icon name="vertical" />
+          </button>
+        </div>
+
+        <div class="checkbox-panel">
+          <label>取消错误</label>
+          <input v-model="cancelOnError" type="checkbox" />
+        </div>
+      </Panel>
+    </VueFlow>
+  </div>
+</template>
+
 <script setup>
-import { nextTick, ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import Icon from '@/components/Icon.vue'
 import ProcessNode from '@/components/ProcessNode.vue'
 import AnimationEdge from '@/components/AnimationEdge.vue'
 import SideBar from '@/components/SideBar.vue'
-import Header from '@/components/Header.vue'
-
 import { initialEdges, initialNodes } from '@/utils/initial-elements.js'
 import { useRunProcess } from '@/utils/useRunProcess'
 import { useLayout } from '@/utils/useLayout'
@@ -32,12 +90,7 @@ async function layoutGraph(direction) {
 }
 </script>
 
-<template>
-  <Header />
-  <router-view />
-</template>
-
-<!-- <style>
+<style scoped>
 .layout-flow {
   background-color: #1a192b;
   height: 100%;
@@ -124,4 +177,4 @@ async function layoutGraph(direction) {
     transform: rotate(360deg);
   }
 }
-</style> -->
+</style> 

@@ -1,4 +1,5 @@
 import { h } from 'vue'
+import BuildKg from '@/views/BuildKg.vue'
 
 const routes = [
   {
@@ -9,7 +10,7 @@ const routes = [
   {
     path: '/graph',
     name: 'Graph',
-    component: { render: () => h('div', '图谱构建') }
+    component: BuildKg
   },
   {
     path: '/network',
