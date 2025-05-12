@@ -32,15 +32,13 @@ export default function useDragAndDrop() {
     document.body.style.userSelect = dragging ? 'none' : ''
   })
 
-  function onDragStart(event, type) {
+  function onDragStart(event, node) {
     if (event.dataTransfer) {
-      event.dataTransfer.setData('application/vueflow', type)
+      event.dataTransfer.setData('application/vueflow', JSON.stringify(node))
       event.dataTransfer.effectAllowed = 'move'
     }
-
-    draggedType.value = type
+    draggedType.value = node.type
     isDragging.value = true
-
     document.addEventListener('drop', onDragEnd)
   }
 
@@ -78,33 +76,29 @@ export default function useDragAndDrop() {
    * @param {DragEvent} event
    */
   function onDrop(event) {
+    let nodeData = { type: draggedType.value }
+    try {
+      const raw = event.dataTransfer.getData('application/vueflow')
+      if (raw) nodeData = JSON.parse(raw)
+    } catch {}
     const position = screenToFlowCoordinate({
-      x: event.clientX,
+      x: event.clientX - 280,
       y: event.clientY,
     })
-
+    console.log(position)
     const nodeId = getId()
-
     const newNode = {
       id: nodeId,
-      type: draggedType.value,
+      type: nodeData.type,
       position,
-      data: { label: nodeId },
+      data: { ...nodeData, label: nodeData.label || nodeId },
     }
-
-    /**
-     * Align node position after drop, so it's centered to the mouse
-     *
-     * We can hook into events even in a callback, and we can remove the event listener after it's been called.
-     */
     const { off } = onNodesInitialized(() => {
       updateNode(nodeId, (node) => ({
         position: { x: node.position.x - node.dimensions.width / 2, y: node.position.y - node.dimensions.height / 2 },
       }))
-
       off()
     })
-
     addNodes(newNode)
   }
 

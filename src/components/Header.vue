@@ -2,7 +2,7 @@
   <header class="header-bar">
     <div class="header-left">
       <img src="@/assets/vue.svg" class="logo" alt="logo" />
-      <span class="title">GraphVis开发演示</span>
+      <span class="title">图形可视化工具</span>
     </div>
     <nav class="header-menu">
       <router-link v-for="item in menus" :key="item.path" :to="item.path" class="menu-item" active-class="active">

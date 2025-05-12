@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AnimationEdge: typeof import('./components/AnimationEdge.vue')['default']
+    DropEffect: typeof import('./components/DropEffect.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
     Icon: typeof import('./components/Icon.vue')['default']
     ProcessNode: typeof import('./components/ProcessNode.vue')['default']

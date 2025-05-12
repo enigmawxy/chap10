@@ -1,31 +1,46 @@
 <template>
   <div class="layout-flow" @drop="onDrop">
     <SideBar />
-    <VueFlow
-      v-model:nodes="nodes"
-      v-model:edges="edges"
-      :default-edge-options="{ type: 'animation', animated: true }"
-      @nodes-initialized="layoutGraph('LR')"
-      @dragover="onDragOver"
-      @dragleave="onDragLeave"
-    >
+    <VueFlow v-model:nodes="nodes" v-model:edges="edges" :default-edge-options="{ type: 'animation', animated: true }"
+      @nodes-initialized="layoutGraph('LR')" @dragover="onDragOver" @dragleave="onDragLeave">
+      <DropEffect :style="{
+        backgroundColor: isDragOver ? '#e7f3ff' : 'transparent',
+        transition: 'background-color 0.2s ease',
+      }">
+        <p v-if="isDragOver">Drop here</p>
+      </DropEffect>
       <template #node-process="props">
-        <ProcessNode :data="props.data" :source-position="props.sourcePosition" :target-position="props.targetPosition" />
+        <ProcessNode :data="props.data" :source-position="props.sourcePosition"
+          :target-position="props.targetPosition" />
       </template>
 
       <template #edge-animation="edgeProps">
-        <AnimationEdge
-          :id="edgeProps.id"
-          :source="edgeProps.source"
-          :target="edgeProps.target"
-          :source-x="edgeProps.sourceX"
-          :source-y="edgeProps.sourceY"
-          :targetX="edgeProps.targetX"
-          :targetY="edgeProps.targetY"
-          :source-position="edgeProps.sourcePosition"
-          :target-position="edgeProps.targetPosition"
-          :data="edgeProps.data"
-        />
+        <AnimationEdge :id="edgeProps.id" :source="edgeProps.source" :target="edgeProps.target"
+          :source-x="edgeProps.sourceX" :source-y="edgeProps.sourceY" :targetX="edgeProps.targetX"
+          :targetY="edgeProps.targetY" :source-position="edgeProps.sourcePosition"
+          :target-position="edgeProps.targetPosition" :data="edgeProps.data" />
+      </template>
+
+      <template #node-circle="{ data }">
+        <div style="width:28px;height:28px;border-radius:50%;background:#c6f7d0;display:flex;align-items:center;justify-content:center;font-weight:bold;border:2px solid #8ce99a;">
+          {{ data.label }}
+        </div>
+      </template>
+      <template #node-square="{ data }">
+        <div style="width:28px;height:28px;border-radius:6px;background:#c6f7d0;display:flex;align-items:center;justify-content:center;font-weight:bold;border:2px solid #8ce99a;">
+          {{ data.label }}
+        </div>
+      </template>
+      <template #node-text="{ data }">
+        <div style="width:28px;height:28px;border-radius:6px;background:#c6f7d0;display:flex;align-items:center;justify-content:center;font-weight:bold;border:2px solid #8ce99a;">
+          {{ data.label }}
+        </div>
+      </template>
+      <template v-for="node in kgNodes" :key="node.type" v-slot:[`node-${node.type}`]="{ data }">
+        <div style="width:28px;height:28px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;border:1px solid #e0e6ed;">
+          <Icon :name="data.icon" />
+        </div>
+        <div style="font-size:12px;color:#666;text-align:center;width:28px;">{{ data.label }}</div>
       </template>
 
       <Background />
@@ -66,11 +81,11 @@ import Icon from '@/components/Icon.vue'
 import ProcessNode from '@/components/ProcessNode.vue'
 import AnimationEdge from '@/components/AnimationEdge.vue'
 import SideBar from '@/components/SideBar.vue'
-import { initialEdges, initialNodes } from '@/utils/initial-elements.js'
+import { initialEdges, initialNodes, kgNodes } from '@/utils/initial-elements.js'
 import { useRunProcess } from '@/utils/useRunProcess'
 import { useLayout } from '@/utils/useLayout'
 import useDragAndDrop from '@/utils/useDnD'
-
+import DropEffect from '@/components/DropEffect.vue'
 const nodes = ref(initialNodes)
 const edges = ref(initialEdges)
 const cancelOnError = ref(true)
@@ -173,8 +188,9 @@ async function layoutGraph(direction) {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
-</style> 
+</style>
