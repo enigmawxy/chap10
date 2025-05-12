@@ -11,6 +11,8 @@ declare module 'vue' {
     AnimationEdge: typeof import('./components/AnimationEdge.vue')['default']
     Icon: typeof import('./components/Icon.vue')['default']
     ProcessNode: typeof import('./components/ProcessNode.vue')['default']
+    RouterLink: typeof import('vue-router')['RouterLink']
+    RouterView: typeof import('vue-router')['RouterView']
     SideBar: typeof import('./components/SideBar.vue')['default']
   }
 }
