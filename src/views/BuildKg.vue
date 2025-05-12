@@ -2,7 +2,7 @@
   <div class="layout-flow" @drop="onDrop">
     <SideBar />
     <VueFlow v-model:nodes="nodes" v-model:edges="edges" :default-edge-options="{ type: 'animation', animated: true }"
-      @nodes-initialized="layoutGraph('LR')" @dragover="onDragOver" @dragleave="onDragLeave">
+      @nodes-initialized="layoutGraph('LR')" @dragover="onDragOver" @dragleave="onDragLeave" :class="{ dark }">
       <DropEffect :style="{
         backgroundColor: isDragOver ? '#e7f3ff' : 'transparent',
         transition: 'background-color 0.2s ease',
@@ -43,7 +43,7 @@
         <div style="font-size:12px;color:#666;text-align:center;width:28px;">{{ data.label }}</div>
       </template>
 
-      <Background :gap="8" />
+      <Background pattern-color="red" :gap="8" variant="lines" />
 
       <Panel class="process-panel" position="top-right">
         <div class="layout-panel">
@@ -69,6 +69,25 @@
           <input v-model="cancelOnError" type="checkbox" />
         </div>
       </Panel>
+
+      <Controls position="bottom-right">
+      <ControlButton title="Reset Transform" @click="resetTransform">
+        <Icon name="reset" />
+      </ControlButton>
+
+      <ControlButton title="Shuffle Node Positions" @click="updatePos">
+        <Icon name="update" />
+      </ControlButton>
+
+      <ControlButton title="Toggle Dark Mode" @click="toggleDarkMode">
+        <Icon v-if="dark" name="sun" />
+        <Icon v-else name="moon" />
+      </ControlButton>
+
+      <ControlButton title="Log `toObject`" @click="logToObject">
+        <Icon name="log" />
+      </ControlButton>
+    </Controls>
     </VueFlow>
   </div>
 </template>
@@ -86,10 +105,12 @@ import { useRunProcess } from '@/utils/useRunProcess'
 import { useLayout } from '@/utils/useLayout'
 import useDragAndDrop from '@/utils/useDnD'
 import DropEffect from '@/components/DropEffect.vue'
+import { ControlButton, Controls } from '@vue-flow/controls'
+
 const nodes = ref(initialNodes)
 const edges = ref(initialEdges)
 const cancelOnError = ref(true)
-const dark = ref(false)
+const dark = ref(true)
 const { graph, layout } = useLayout()
 const { run, stop, reset, isRunning } = useRunProcess({ graph, cancelOnError })
 const { fitView } = useVueFlow()
@@ -102,6 +123,41 @@ async function layoutGraph(direction) {
   nextTick(() => {
     fitView()
   })
+}
+/**
+ * To update a node or multiple nodes, you can
+ * 1. Mutate the node objects *if* you're using `v-model`
+ * 2. Use the `updateNode` method (from `useVueFlow`) to update the node(s)
+ * 3. Create a new array of nodes and pass it to the `nodes` ref
+ */
+ function updatePos() {
+  // nodes.value = nodes.value.map((node) => {
+  //   return {
+  //     ...node,
+  //     position: {
+  //       x: Math.random() * 400,
+  //       y: Math.random() * 400,
+  //     },
+  //   }
+  // })
+}
+
+/**
+ * toObject transforms your current graph data to an easily persist-able object
+ */
+function logToObject() {
+  console.log(toObject())
+}
+
+/**
+ * Resets the current viewport transformation (zoom & pan)
+ */
+function resetTransform() {
+  setViewport({ x: 0, y: 0, zoom: 1 })
+}
+
+function toggleDarkMode() {
+  dark.value = !dark.value
 }
 </script>
 
