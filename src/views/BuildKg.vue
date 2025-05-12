@@ -43,7 +43,7 @@
         <div style="font-size:12px;color:#666;text-align:center;width:28px;">{{ data.label }}</div>
       </template>
 
-      <Background bgColor="#eee" />
+      <Background :gap="8" />
 
       <Panel class="process-panel" position="top-right">
         <div class="layout-panel">
@@ -89,7 +89,7 @@ import DropEffect from '@/components/DropEffect.vue'
 const nodes = ref(initialNodes)
 const edges = ref(initialEdges)
 const cancelOnError = ref(true)
-
+const dark = ref(false)
 const { graph, layout } = useLayout()
 const { run, stop, reset, isRunning } = useRunProcess({ graph, cancelOnError })
 const { fitView } = useVueFlow()
