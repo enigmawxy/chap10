@@ -11,9 +11,19 @@ import '@vue-flow/node-resizer/dist/style.css'
 
 // 如果您正在使用CDN引入，请删除下面一行。
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import { createRouter, createWebHistory } from 'vue-router'
+import routes from './router'
 
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+})
+
+app.use(router)
+
 app.mount('#app')

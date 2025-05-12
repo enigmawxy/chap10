@@ -6,6 +6,7 @@ import Icon from '@/components/Icon.vue'
 import ProcessNode from '@/components/ProcessNode.vue'
 import AnimationEdge from '@/components/AnimationEdge.vue'
 import SideBar from '@/components/SideBar.vue'
+import Header from '@/components/Header.vue'
 
 import { initialEdges, initialNodes } from '@/utils/initial-elements.js'
 import { useRunProcess } from '@/utils/useRunProcess'
@@ -32,6 +33,7 @@ async function layoutGraph(direction) {
 </script>
 
 <template>
+  <Header />
   <div class="layout-flow" @drop="onDrop">
     <SideBar />
     <VueFlow
