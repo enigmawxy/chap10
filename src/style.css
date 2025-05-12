@@ -22,3 +22,9 @@ body,
   transform: scale(75%);
   transform-origin: bottom right;
 }
+
+/* 背景控制 */
+.dark {
+    background:#2d3748;
+    color:#fffffb
+}

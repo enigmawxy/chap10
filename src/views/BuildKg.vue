@@ -43,7 +43,7 @@
         <div style="font-size:12px;color:#666;text-align:center;width:28px;">{{ data.label }}</div>
       </template>
 
-      <Background pattern-color="red" :gap="8" variant="lines" />
+      <Background pattern-color="#aaa" :gap="8"/>
 
       <Panel class="process-panel" position="top-right">
         <div class="layout-panel">
@@ -110,7 +110,7 @@ import { ControlButton, Controls } from '@vue-flow/controls'
 const nodes = ref(initialNodes)
 const edges = ref(initialEdges)
 const cancelOnError = ref(true)
-const dark = ref(true)
+const dark = ref(false)
 const { graph, layout } = useLayout()
 const { run, stop, reset, isRunning } = useRunProcess({ graph, cancelOnError })
 const { fitView } = useVueFlow()
@@ -163,7 +163,7 @@ function toggleDarkMode() {
 
 <style scoped>
 .layout-flow {
-  background-color: #1a192b;
+  /* background-color: #1a192b; */
   height: 100%;
   width: 100%;
   position: relative;
