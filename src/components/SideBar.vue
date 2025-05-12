@@ -6,18 +6,18 @@ import useDragAndDrop from '@/utils/useDnD'
 const { onDragStart } = useDragAndDrop()
 const isCollapsed = ref(false)
 
-const nodes = [
-  {
-    type: 'circle',
-    label: '圆形节点',
-    data: { type: 'circle' }
-  },
-  {
-    type: 'square',
-    label: '方形节点',
-    data: { type: 'square' }
-  }
-]
+// const nodes = [
+//   {
+//     type: 'circle',
+//     label: '圆形节点',
+//     data: { type: 'circle' }
+//   },
+//   {
+//     type: 'square',
+//     label: '方形节点',
+//     data: { type: 'square' }
+//   }
+// ]
 
 </script>
 
@@ -28,12 +28,17 @@ const nodes = [
     </button>
 
     <div class="nodes-container">
-      <div class="vue-flow__node-input" :draggable="true" @dragstart="onDragStart($event, 'input')">Input Node</div>
-
-      <div class="vue-flow__node-default" :draggable="true" @dragstart="onDragStart($event, 'default')">Default Node
+      <div class="vue-flow__node-input mt-1" :draggable="true" @dragstart="onDragStart($event, 'input')">
+        Input Node
       </div>
 
-      <div class="vue-flow__node-output" :draggable="true" @dragstart="onDragStart($event, 'output')">Output Node</div>
+      <div class="vue-flow__node-default mt-1" :draggable="true" @dragstart="onDragStart($event, 'default')">
+        Default Node
+      </div>
+
+      <div class="vue-flow__node-output mt-1" :draggable="true" @dragstart="onDragStart($event, 'output')">
+        Output Node
+      </div>
     </div>
   </div>
 </template>
@@ -73,6 +78,11 @@ const nodes = [
 
 .nodes-container {
   padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* height: 100%; */
 }
 
 .node-item {
