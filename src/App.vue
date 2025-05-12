@@ -102,7 +102,7 @@ function toggleDarkMode() {
     :min-zoom="0.2"
     :max-zoom="4"
   >
-    <Background pattern-color="#aaa" :gap="16" />
+    <Background pattern-color="#aaa" :gap="8" />
 
     <MiniMap />
 
