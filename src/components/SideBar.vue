@@ -92,7 +92,7 @@ const kgNodes = [
   left: 0;
   top: 0;
   bottom: 0;
-  width: 220px;
+  width: 280px;
   background: #f7fafd;
   border-right: 1px solid #e0e6ed;
   transition: all 0.3s ease;
@@ -144,7 +144,7 @@ const kgNodes = [
   display: flex;
   gap: 16px;
   padding: 16px;
-  justify-content: flex-start;
+  justify-content: center;
 }
 .base-node {
   min-width: 70px;
@@ -185,7 +185,8 @@ const kgNodes = [
   flex-wrap: wrap;
   gap: 8px 0;
   padding: 12px 8px 8px 8px;
-  justify-content: flex-start;
+  /* justify-content: flex-start; */
+  justify-content: center;
 }
 .kg-node {
   width: 56px;
@@ -197,7 +198,7 @@ const kgNodes = [
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0 8px 12px 8px;
+  margin: 0 10px 12px 10px;
   cursor: move;
   transition: box-shadow 0.2s, border 0.2s;
 }
@@ -205,9 +206,15 @@ const kgNodes = [
   border: 2px solid #2563eb;
 }
 .kg-icon {
-  font-size: 24px;
+  font-size: 26px;
   color: #b0b0b0;
-  margin-bottom: 2px;
+  /* margin-bottom: 2px; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.kg-icon svg {
+  color: inherit;
 }
 .kg-label {
   font-size: 12px;
