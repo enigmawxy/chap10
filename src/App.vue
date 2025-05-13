@@ -12,7 +12,7 @@
       </div>
     </div>
   </nav>
-  <div class="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+  <div class="mx-2 mt-4 max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
     <img class="w-full h-48 object-cover" src="./images/image.jpg">
     <div class="px-6 py-4">
       <h3 class="text-xl font-bold mb-2">卡片标题</h3>
@@ -21,12 +21,12 @@
       </p>
     </div>
   </div>
-  <div>
-    <h1 class="text-3xl font-bold underline">
+  <div class="mt-3">
+    <h1 class="inline-block text-3xl font-bold underline mx-2">
       Hello world!
     </h1>
     <!-- Element Plus 组件示例 -->
-    <el-button type="primary">按钮</el-button>
+    <el-button class="inline-block mr-2" type="primary">按钮</el-button>
     <el-icon>
       <Search />
     </el-icon>
