@@ -1,75 +1,22 @@
-# Vue 3 + Vite + Tailwind CSS
 
-本项目使用 Vue 3、Vite 和 Tailwind CSS 构建。它采用 Vue 3 的 `<script setup>` 单文件组件语法，使组件代码更加简洁。
+# 继续安装配置ElementPlus
 
-## 项目设置
+## Element Plus 项目搭建
 
-### 1. 创建 Vue 项目
+### 1. 安装 Element Plus 和图标库
 
-```bash
-npm create vite@latest my-project -- --template vue
-cd my-project
-```
-
-### 2. 安装依赖
-
-```bash
-npm install
-```
-
-### 3. 安装 Tailwind CSS 及其依赖
-
-注意：使用以下命令先查看 Tailwind版本
-
-```bash
-npm view tailwind versions
-```
-
-请使用3.1.0版本以下的tailwindcss版本，否则npx可能会出现问题。
-
-```bash
-npm install -D tailwindcss@3.1.0 postcss autoprefixer
-npx tailwindcss init -p
-```
-
-### 4. 配置 Tailwind CSS
-
-更新 `tailwind.config.js` 文件：
-
-```js
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{vue,js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}
-```
-
-### 5. 添加 Tailwind 指令
-
-在 `./src/style.css` 中添加以下内容：
-
-```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-```
-
-### 6. 安装 Element Plus 和图标库
+依次运行以下命令安装 Element Plus 和图标库；然后安装支持自动导入的插件
 
 ```bash
 npm install element-plus @element-plus/icons-vue
 npm install -D unplugin-vue-components unplugin-auto-import unplugin-icons
 ```
 
-### 7. 配置 Element Plus和图标 自动导入
+### 2. 配置 Element Plus和图标 自动导入
 
-更新 `vite.config.js` 文件：
+这里我们配置了 Element Plus 和图标库的自动导入，这样在使用组件和图标时就不需要手动导入了。
+
+用以下内容更新 `vite.config.js` 文件：
 
 ```js
 import path from 'path'
@@ -134,15 +81,9 @@ export default defineConfig({
 
 ```
 
-### 8. 配置 ESLint（可选）
+### 3. 修改 main.js导入图标
 
-如果你使用 ESLint，需要安装以下依赖：
-
-```bash
-npm install -D eslint eslint-plugin-vue @typescript-eslint/parser @typescript-eslint/eslint-plugin
-```
-
-### 9. 修改 main.js导入图标
+为了支持自动导入，我们需要在 `main.js` 中导入所有的 Element Plus 图标。
 
 ```js
 import { createApp } from 'vue'
@@ -160,7 +101,9 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.mount('#app')
 ```
 
-### 10. 修改 App.vue
+### 4. 修改 App.vue
+
+在上一节的基础上，增加Element Plus组件的使用，来测试一下是否配置成功。
 
 ```vue
 <template>
@@ -179,7 +122,7 @@ app.mount('#app')
 </script>
 ```
 
-### 10. 启动开发服务器
+### 5. 启动开发服务器
 
 ```bash
 npm run dev
