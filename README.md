@@ -6,6 +6,8 @@
 
 ### 1. 创建 Vue 项目
 
+注意：my-project 是项目名称，你可以替换为你喜欢的项目名称。  
+
 ```bash
 npm create vite@latest my-project -- --template vue
 cd my-project
@@ -26,6 +28,7 @@ npm view tailwind versions
 ```
 
 请使用3.1.0版本以下的tailwindcss版本，否则npx可能会出现问题。
+依次运行以下命令：
 
 ```bash
 npm install -D tailwindcss@3.1.0 postcss autoprefixer
@@ -35,6 +38,8 @@ npx tailwindcss init -p
 ### 4. 配置 Tailwind CSS
 
 更新 `tailwind.config.js` 文件：
+注意：tailwind.config.js 中 content 配置项需要根据实际情况修改，否则 Tailwind CSS 无法识别你的组件。
+例如，如果你使用的是 Vue 3，那么你需要将 content 配置项需要增加 `"./src/**/*.{vue,js,ts,jsx,tsx}"`：
 
 ```js
 /** @type {import('tailwindcss').Config} */
@@ -61,6 +66,8 @@ export default {
 ```
 
 ### 6. 修改App.vue
+
+使用Tailwind CSS语法，修改App.vue为：
 
 ```vue
 <template>
