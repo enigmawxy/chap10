@@ -1,6 +1,5 @@
 <template>
-  <div class="bg-white h-screen">
-    <!-- 按钮组件 -->
+  <div class="bg-white h-screen p-4 text-center">
     <el-button type="danger" @click="showMessage">
       <el-icon>
         <Warning />
@@ -15,3 +14,4 @@ const showMessage = () => {
   ElMessage.error('危险操作警告！')
 }
 </script>
+
