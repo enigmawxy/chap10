@@ -6,36 +6,36 @@
     <section class="mb-12">
       <h2 class="text-2xl font-semibold mb-4">自定义颜色系统</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- 主色 -->
-        <div class="p-4 rounded-lg shadow">
-          <h3 class="font-medium mb-3">主色 (Primary)</h3>
-          <div class="flex flex-col space-y-2">
-            <div class="p-4 bg-primary-light text-white rounded">bg-primary-light</div>
-            <div class="p-4 bg-primary text-white rounded">bg-primary (DEFAULT)</div>
-            <div class="p-4 bg-primary-dark text-white rounded">bg-primary-dark</div>
-          </div>
-        </div>
-        
-        <!-- 次要色 -->
-        <div class="p-4 rounded-lg shadow">
-          <h3 class="font-medium mb-3">次要色 (Secondary)</h3>
-          <div class="flex flex-col space-y-2">
-            <div class="p-4 bg-secondary-light text-white rounded">bg-secondary-light</div>
-            <div class="p-4 bg-secondary text-white rounded">bg-secondary (DEFAULT)</div>
-            <div class="p-4 bg-secondary-dark text-white rounded">bg-secondary-dark</div>
-          </div>
-        </div>
-        
-        <!-- 状态色 -->
-        <div class="p-4 rounded-lg shadow">
-          <h3 class="font-medium mb-3">状态色 (State)</h3>
-          <div class="flex flex-col space-y-2">
-            <div class="p-4 bg-success text-white rounded">bg-success</div>
-            <div class="p-4 bg-warning text-white rounded">bg-warning</div>
-            <div class="p-4 bg-danger text-white rounded">bg-danger</div>
-            <div class="p-4 bg-info text-white rounded">bg-info</div>
-          </div>
-        </div>
+<!-- 主色 -->
+<div class="p-4 rounded-lg shadow">
+  <h3 class="font-medium mb-3">主色 (Primary)</h3>
+  <div class="flex flex-col space-y-2">
+    <div class="p-4 bg-primary-light text-white rounded">bg-primary-light</div>
+    <div class="p-4 bg-primary text-white rounded">bg-primary (DEFAULT)</div>
+    <div class="p-4 bg-primary-dark text-white rounded">bg-primary-dark</div>
+  </div>
+</div>
+
+<!-- 次要色 -->
+<div class="p-4 rounded-lg shadow">
+  <h3 class="font-medium mb-3">次要色 (Secondary)</h3>
+  <div class="flex flex-col space-y-2">
+    <div class="p-4 bg-secondary-light text-white rounded">bg-secondary-light</div>
+    <div class="p-4 bg-secondary text-white rounded">bg-secondary (DEFAULT)</div>
+    <div class="p-4 bg-secondary-dark text-white rounded">bg-secondary-dark</div>
+  </div>
+</div>
+
+<!-- 状态色 -->
+<div class="p-4 rounded-lg shadow">
+  <h3 class="font-medium mb-3">状态色 (State)</h3>
+  <div class="flex flex-col space-y-2">
+    <div class="p-4 bg-success text-white rounded">bg-success</div>
+    <div class="p-4 bg-warning text-white rounded">bg-warning</div>
+    <div class="p-4 bg-danger text-white rounded">bg-danger</div>
+    <div class="p-4 bg-info text-white rounded">bg-info</div>
+  </div>
+</div>
       </div>
       
       <!-- 文本颜色示例 -->

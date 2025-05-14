@@ -10,19 +10,11 @@ declare module 'vue' {
   export interface GlobalComponents {
     DarkModeDemo: typeof import('./components/DarkModeDemo.vue')['default']
     DarkModeToggle: typeof import('./components/DarkModeToggle.vue')['default']
-    ElAside: typeof import('element-plus/es')['ElAside']
-    ElButton: typeof import('element-plus/es')['ElButton']
-    ElContainer: typeof import('element-plus/es')['ElContainer']
-    ElHeader: typeof import('element-plus/es')['ElHeader']
     ElIcon: typeof import('element-plus/es')['ElIcon']
-    ElMain: typeof import('element-plus/es')['ElMain']
-    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     Header: typeof import('./components/Header.vue')['default']
     HeaderOne: typeof import('./components/HeaderOne.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SearchPage: typeof import('./components/SearchPage.vue')['default']
-    SideBar: typeof import('./components/SideBar.vue')['default']
     TailwindExamples: typeof import('./components/TailwindExamples.vue')['default']
   }
 }
