@@ -1,7 +1,8 @@
 import { createApp } from 'vue'
 import './style.css'
+import App from './AppBasic.vue'
 // import App from './App.vue'
-import App from './AppCustom.vue'
+// import App from './AppCustom.vue'
 // main.ts
 
 // 如果您正在使用CDN引入，请删除下面一行。
