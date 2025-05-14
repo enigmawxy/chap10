@@ -8,18 +8,16 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElDialog: typeof import('element-plus/es')['ElDialog']
-    ElForm: typeof import('element-plus/es')['ElForm']
-    ElFormItem: typeof import('element-plus/es')['ElFormItem']
+    ElContainer: typeof import('element-plus/es')['ElContainer']
+    ElHeader: typeof import('element-plus/es')['ElHeader']
     ElIcon: typeof import('element-plus/es')['ElIcon']
-    ElInput: typeof import('element-plus/es')['ElInput']
-    ElPagination: typeof import('element-plus/es')['ElPagination']
-    ElRadio: typeof import('element-plus/es')['ElRadio']
-    ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
-    ElTable: typeof import('element-plus/es')['ElTable']
-    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
-    ElTag: typeof import('element-plus/es')['ElTag']
-    ElUpload: typeof import('element-plus/es')['ElUpload']
+    ElMain: typeof import('element-plus/es')['ElMain']
+    ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    Header: typeof import('./components/Header.vue')['default']
+    HeaderOne: typeof import('./components/HeaderOne.vue')['default']
+    SearchPage: typeof import('./components/SearchPage.vue')['default']
+    SideBar: typeof import('./components/SideBar.vue')['default']
   }
 }
