@@ -17,7 +17,7 @@
         
         <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 transition-colors">
           <h3 class="text-lg font-semibold mb-3 text-gray-800 dark:text-white">自动切换背景色</h3>
-          <div class="bg-blue-100 dark:bg-blue-900 p-4 rounded text-blue-800 dark:text-blue-100 transition-colors">
+          <div class="bg-blue-100 dark:bg-green-900 p-4 rounded text-blue-800 dark:text-green-100 transition-colors">
             这个元素会根据当前主题自动切换背景色
           </div>
         </div>

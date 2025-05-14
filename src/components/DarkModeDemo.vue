@@ -1,8 +1,7 @@
 <template>
   <div class="p-8">
-    <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">深色模式示例</h2>
-    
     <div class="mb-6">
+      <span class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">深色模式示例</span>
       <DarkModeToggle />
     </div>
     
@@ -67,9 +66,9 @@
           <div class="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 p-3 rounded transition-colors">
             成功提示
           </div>
-          <div class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-100 p-3 rounded transition-colors">
+          <!-- <div class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-100 p-3 rounded transition-colors">
             警告提示
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

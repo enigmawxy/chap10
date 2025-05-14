@@ -15,7 +15,6 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import { Moon, Sunny } from '@element-plus/icons-vue';
 
 // 创建一个响应式变量来跟踪当前模式
 const isDarkMode = ref(false);
