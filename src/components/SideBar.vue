@@ -49,8 +49,8 @@
 import {
   ChatDotRound,
   Document,
-  CirclePlus,
-  Connection,
+  Search,
+  Connection, 
   Monitor,
   User,
   Setting
@@ -59,7 +59,7 @@ import {
 const navItems = [
   { iconComponent: ChatDotRound, name: 'Chat', route: '/chat' },
   { iconComponent: Document, name: 'Documents', route: '/documents' },
-  { iconComponent: CirclePlus, name: 'Search', route: '/search' },
+  { iconComponent: Search, name: 'Search', route: '/search' },
   { iconComponent: Connection, name: 'Connect', route: '/connect' },
   { iconComponent: Monitor, name: 'Monitor', route: '/monitor' },
   { iconComponent: User, name: 'Profile', route: '/profile' }
