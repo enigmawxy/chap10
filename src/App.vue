@@ -1,60 +1,38 @@
 <template>
-  <div class="comparison-container">
-    <div class="header-section">
-      <!-- <h2 class="header-title">Tailwind CSS Header:</h2> -->
-      <Header />
+  <div class="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors">
+    <!-- Dark Mode Demo -->
+    <DarkModeDemo />
+    
+    <!-- Simple Examples -->
+    <div class="p-8 bg-white dark:bg-gray-800 transition-colors">
+      <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">简单示例</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 transition-colors">
+          <h3 class="text-lg font-semibold mb-3 text-gray-800 dark:text-white">响应式文字</h3>
+          <div class="text-sm md:text-base lg:text-lg text-gray-600 dark:text-gray-300">
+            这段文字会根据屏幕大小自动调整大小
+          </div>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 transition-colors">
+          <h3 class="text-lg font-semibold mb-3 text-gray-800 dark:text-white">自动切换背景色</h3>
+          <div class="bg-blue-100 dark:bg-blue-900 p-4 rounded text-blue-800 dark:text-blue-100 transition-colors">
+            这个元素会根据当前主题自动切换背景色
+          </div>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 transition-colors">
+          <h3 class="text-lg font-semibold mb-3 text-gray-800 dark:text-white">交互按钮</h3>
+          <button class="bg-blue-500 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-800 text-white px-4 py-2 rounded focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-700 transition-colors">
+            点击我
+          </button>
+        </div>
+      </div>
     </div>
-
-    <div class="header-section mt-8">
-      <!-- <h2 class="header-title">Regular CSS Header:</h2> -->
-      <HeaderOne />
-    </div>
-  </div>
-
-  <div class="mx-2 mt-8 max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-    <img class="w-full h-48 object-cover" src="./images/image.jpg">
-    <div class="px-6 py-4">
-      <h3 class="text-xl font-bold mb-2">卡片标题</h3>
-      <p class="text-gray-600 text-base">
-        这是一个使用 Tailwind 构建的卡片组件示例...
-      </p>
-    </div>
-  </div>
-
-  <div class="mt-3">
-    <h1 class="inline-block text-3xl font-bold underline mx-2">
-      Hello world!
-    </h1>
-    <!-- Element Plus 组件示例 -->
-    <el-button class="inline-block mr-2" type="primary">按钮</el-button>
-    <el-icon>
-      <Search />
-    </el-icon>
   </div>
 </template>
 
 <script setup>
-import Header from './components/Header.vue';
-import HeaderOne from './components/HeaderOne.vue';
-// 无需手动导入组件和图标，已通过自动导入配置
+import DarkModeDemo from './components/DarkModeDemo.vue';
 </script>
-
-<style>
-.comparison-container {
-  padding: 1rem;
-}
-
-.header-section {
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-.header-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: #4b5563;
-}
-</style>
