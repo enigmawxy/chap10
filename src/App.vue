@@ -18,25 +18,28 @@ import MainView from '@/components/MainView.vue'
 import QuickStart from '@/views/QuickStart.vue'
 import FormSample from '@/views/FormSample.vue'
 import DataSample from '@/views/DataSample.vue'
-import FeedSample from '@/views/FeedSample.vue'
-import UserPanel from '@/views/UserPanel.vue'
-import PicUpload from '@/views/PicUpload.vue'
+import TableSample from '@/views/TableSample.vue'
+import FeedbackSample from '@/views/FeedbackSample.vue'
+import BasicSample from '@/views/BasicSample.vue'
+import NavigationSample from '@/views/NavigationSample.vue'
 const tabList = [
   { name: 'QuickStart', label: '快速使用' },
+  { name: 'BasicSample', label: '基础组件' },
   { name: 'FormSample', label: '表单类组件' },
   { name: 'DataSample', label: '数据类组件' },
-  { name: 'FeedSample', label: '消息系统' },
-  { name: 'UserPanel', label: '用户系统' },
-  { name: 'PicUpload', label: '图片上传' },
+  { name: 'TableSample', label: '表格类组件' },
+  { name: 'NavigationSample', label: '导航类组件' },
+  { name: 'FeedbackSample', label: '反馈类组件' },
 ]
 
 const tabMap = {
   QuickStart,
+  BasicSample,
   FormSample,
   DataSample,
-  FeedSample,
-  UserPanel,
-  PicUpload,
+  TableSample,
+  NavigationSample,
+  FeedbackSample,
 }
 
 const currentTab = ref(tabList[0].name)
