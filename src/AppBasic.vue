@@ -1,12 +1,10 @@
 <template>
-  <div class="mb-6">
-    <span class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">深色模式示例</span>
-    <DarkModeToggle />
-  </div>
   <div class="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors">
+
     <!-- Simple Examples -->
     <div class="p-8 bg-white dark:bg-gray-800 transition-colors">
-      <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">简单示例</h2>
+      <DarkModeToggle />
+      <span class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">简单示例</span>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 transition-colors">
