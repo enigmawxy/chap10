@@ -13,6 +13,7 @@ declare module 'vue' {
     ElHeader: typeof import('element-plus/es')['ElHeader']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElMain: typeof import('element-plus/es')['ElMain']
+    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     SearchPage: typeof import('./components/SearchPage.vue')['default']
     SideBar: typeof import('./components/SideBar.vue')['default']
   }
