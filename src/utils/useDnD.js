@@ -87,7 +87,7 @@ export default function useDragAndDrop() {
     const sidebarWidth = sidebar?.classList.contains('collapsed') ? 40 : 280
     
     const position = screenToFlowCoordinate({
-      x: event.clientX - sidebarWidth,
+      x: event.clientX /*- sidebarWidth*/,
       y: event.clientY,
     })
     
