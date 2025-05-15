@@ -81,11 +81,16 @@ export default function useDragAndDrop() {
       const raw = event.dataTransfer.getData('application/vueflow')
       if (raw) nodeData = JSON.parse(raw)
     } catch {}
+    
+    // Get the sidebar element to check its state
+    const sidebar = document.querySelector('.sidebar')
+    const sidebarWidth = sidebar?.classList.contains('collapsed') ? 40 : 280
+    
     const position = screenToFlowCoordinate({
-      x: event.clientX - 280,
+      x: event.clientX - sidebarWidth,
       y: event.clientY,
     })
-    console.log(position)
+    
     const nodeId = getId()
     const newNode = {
       id: nodeId,
@@ -93,12 +98,14 @@ export default function useDragAndDrop() {
       position,
       data: { ...nodeData, label: nodeData.label || nodeId },
     }
+    
     const { off } = onNodesInitialized(() => {
       updateNode(nodeId, (node) => ({
         position: { x: node.position.x - node.dimensions.width / 2, y: node.position.y - node.dimensions.height / 2 },
       }))
       off()
     })
+    
     addNodes(newNode)
   }
 

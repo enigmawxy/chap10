@@ -93,7 +93,7 @@
 </template>
 
 <script setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, onMounted } from 'vue'
 import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import Icon from '@/components/Icon.vue'
@@ -107,14 +107,27 @@ import useDragAndDrop from '@/utils/useDnD'
 import DropEffect from '@/components/DropEffect.vue'
 import { ControlButton, Controls } from '@vue-flow/controls'
 
-const nodes = ref(initialNodes)
-const edges = ref(initialEdges)
+// Load saved nodes and edges from localStorage, or use initial values
+const savedNodes = localStorage.getItem('kg-nodes')
+const savedEdges = localStorage.getItem('kg-edges')
+
+const nodes = ref(savedNodes ? JSON.parse(savedNodes) : initialNodes)
+const edges = ref(savedEdges ? JSON.parse(savedEdges) : initialEdges)
 const cancelOnError = ref(true)
 const dark = ref(false)
 const { graph, layout } = useLayout()
 const { run, stop, reset, isRunning } = useRunProcess({ graph, cancelOnError })
-const { fitView } = useVueFlow()
+const { fitView, onNodesChange, onEdgesChange } = useVueFlow()
 const { onDragOver, onDrop, onDragLeave, isDragOver } = useDragAndDrop()
+
+// Save nodes and edges to localStorage whenever they change
+onNodesChange((changes) => {
+  localStorage.setItem('kg-nodes', JSON.stringify(nodes.value))
+})
+
+onEdgesChange((changes) => {
+  localStorage.setItem('kg-edges', JSON.stringify(edges.value))
+})
 
 async function layoutGraph(direction) {
   await stop()
