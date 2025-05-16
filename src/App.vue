@@ -23,13 +23,13 @@ import FeedbackSample from '@/views/FeedbackSample.vue'
 import BasicSample from '@/views/BasicSample.vue'
 import NavigationSample from '@/views/NavigationSample.vue'
 const tabList = [
-  { name: 'QuickStart', label: '快速使用' },
-  { name: 'BasicSample', label: '基础组件' },
-  { name: 'FormSample', label: '表单类组件' },
-  { name: 'DataSample', label: '数据类组件' },
-  { name: 'TableSample', label: '表格类组件' },
-  { name: 'NavigationSample', label: '导航类组件' },
-  { name: 'FeedbackSample', label: '反馈类组件' },
+  { name: 'QuickStart', label: '快速使用', icon: 'Promotion' },
+  { name: 'BasicSample', label: '基础组件', icon: 'ElementPlus' },
+  { name: 'FormSample', label: '表单类组件', icon: 'Edit' },
+  { name: 'DataSample', label: '数据类组件', icon: 'DataAnalysis' },
+  { name: 'TableSample', label: '表格类组件', icon: 'Grid' },
+  { name: 'NavigationSample', label: '导航类组件', icon: 'Menu' },
+  { name: 'FeedbackSample', label: '反馈类组件', icon: 'Bell' },
 ]
 
 const tabMap = {

@@ -1,18 +1,40 @@
 <template>
   <div class="sidebar" :class="{ collapsed: isCollapsed }">
     <div class="collapse-button" @click="toggleCollapse">
-      <span v-if="isCollapsed">›</span>
-      <span v-else>‹</span>
+      <el-icon v-if="isCollapsed">
+        <Expand />
+      </el-icon>
+      <el-icon v-else>
+        <Fold />
+      </el-icon>
     </div>
-    <button v-for="tab in tabList" :key="tab.name" :class="{ active: current === tab.name }"
-      @click="$emit('update:currentTab', tab.name)">
-      {{ tab.label }}
-    </button>
+
+    <div class="menu-items">
+      <el-tooltip
+        v-for="tab in tabList"
+        :key="tab.name"
+        :content="tab.label"
+        placement="right"
+        :disabled="!isCollapsed"
+        :effect="tooltipEffect"
+      >
+        <button
+          :class="{ active: current === tab.name }"
+          @click="$emit('update:currentTab', tab.name)"
+        >
+          <el-icon class="menu-icon">
+            <component :is="tab.icon" />
+          </el-icon>
+          <span class="menu-text" v-show="!isCollapsed">{{ tab.label }}</span>
+        </button>
+      </el-tooltip>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { Expand, Fold } from '@element-plus/icons-vue'
 
 const props = defineProps({
   tabList: Array,
@@ -20,6 +42,7 @@ const props = defineProps({
 })
 
 const isCollapsed = ref(false)
+const tooltipEffect = ref('dark')
 
 const toggleCollapse = () => {
   isCollapsed.value = !isCollapsed.value
@@ -28,18 +51,18 @@ const toggleCollapse = () => {
 
 <style scoped>
 .sidebar {
-  width: 180px;
+  width: 200px;
   background: #2e3b4e;
   padding: 10px 0;
   min-height: 100vh;
-  transition: width 0.3s ease;
+  transition: all 0.3s ease;
   position: relative;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   border-right: 1px solid #4a5568;
 }
 
 .sidebar.collapsed {
-  width: 40px;
+  width: 64px;
 }
 
 .collapse-button {
@@ -57,21 +80,31 @@ const toggleCollapse = () => {
   color: white;
   font-size: 18px;
   z-index: 1;
+  transition: transform 0.3s;
+}
+
+.menu-items {
+  margin-top: 20px;
 }
 
 button {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
-  margin: 8px 0;
-  padding: 10px;
+  margin: 4px 0;
+  padding: 12px 16px;
   background: none;
   color: white;
   border: none;
-  text-align: left;
   cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  transition: all 0.2s;
+  border-radius: 4px;
+  margin: 4px 8px;
+  width: calc(100% - 16px);
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 button.active {
@@ -79,8 +112,26 @@ button.active {
   color: white;
 }
 
+.menu-icon {
+  font-size: 18px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.menu-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.3s;
+}
+
 .collapsed button {
-  padding: 10px 5px;
-  text-align: center;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.collapsed .menu-icon {
+  margin-right: 0;
+  font-size: 20px;
 }
 </style>
