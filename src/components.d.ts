@@ -86,8 +86,6 @@ declare module 'vue' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     HeaderView: typeof import('./components/HeaderView.vue')['default']
     MainView: typeof import('./components/MainView.vue')['default']
-    RouterLink: typeof import('vue-router')['RouterLink']
-    RouterView: typeof import('vue-router')['RouterView']
     Sidebar: typeof import('./components/Sidebar.vue')['default']
   }
 }
