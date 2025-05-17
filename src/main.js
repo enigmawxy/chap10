@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import './style.css'
-import App from './AppBasic.vue'
-// import App from './App.vue'
+import App from './App.vue'
+// import App from './AppBasic.vue'
 // import App from './AppCustom.vue'
 // main.ts
 

@@ -88,11 +88,9 @@ declare module 'vue' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     Header: typeof import('./components/Header.vue')['default']
     HeaderOne: typeof import('./components/HeaderOne.vue')['default']
-    HeaderView: typeof import('./components/HeaderView.vue')['default']
-    MainView: typeof import('./components/MainView.vue')['default']
+    IEpMenu: typeof import('~icons/ep/menu')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Sidebar: typeof import('./components/Sidebar.vue')['default']
     TailwindExamples: typeof import('./components/TailwindExamples.vue')['default']
   }
 }
