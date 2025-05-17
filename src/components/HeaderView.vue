@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-const title = '前端开发框架技术与应用例子-当前主要采用了 <span class="highlight">动态组件</span> 技术实现组件的切换，后续会使用 <span class="highlight">Vue Router</span> 技术实现路由的切换'
+const title = '前端开发框架技术与应用例子 - Element Plus + Tailwind CSS + Vue3 + Vite'
 </script>
 
 <style>
