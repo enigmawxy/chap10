@@ -1,137 +1,88 @@
 <template>
-  <div class="sidebar" :class="{ collapsed: isCollapsed }">
-    <div class="collapse-button" @click="toggleCollapse">
-      <el-icon v-if="isCollapsed">
+  <div
+    class="relative w-[200px] min-h-screen bg-[#2e3b4e] transition-all duration-300 shadow-md border-r border-[#4a5568]"
+    :class="{ 'w-16': isCollapsed }"
+  >
+    <div
+      class="absolute -right-3 top-5 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center cursor-pointer text-white z-10 transition-transform duration-300"
+      @click="toggleCollapse"
+    >
+      <el-icon v-if="isCollapsed" class="text-lg">
         <Expand />
       </el-icon>
-      <el-icon v-else>
+      <el-icon v-else class="text-lg">
         <Fold />
       </el-icon>
     </div>
 
-    <div class="menu-items">
-      <el-tooltip
+    <el-menu
+      :default-active="current"
+      class="border-none h-full"
+      :class="{ 'w-full': !isCollapsed }"
+      :collapse="isCollapsed"
+      :collapse-transition="false"
+      :unique-opened="true"
+      background-color="#2e3b4e"
+      text-color="#ffffff"
+      active-text-color="#ffffff"
+      @select="handleSelect"
+    >
+      <el-menu-item
         v-for="tab in tabList"
         :key="tab.name"
-        :content="tab.label"
-        placement="right"
-        :disabled="!isCollapsed"
-        :effect="tooltipEffect"
+        :index="tab.name"
+        class="h-[50px] leading-[50px] my-1"
       >
-        <button
-          :class="{ active: current === tab.name }"
-          @click="$emit('update:currentTab', tab.name)"
+        <el-tooltip
+          v-if="isCollapsed"
+          :content="tab.label"
+          placement="right"
+          effect="dark"
         >
-          <el-icon class="menu-icon">
-            <component :is="tab.icon" />
-          </el-icon>
-          <span class="menu-text" v-show="!isCollapsed">{{ tab.label }}</span>
-        </button>
-      </el-tooltip>
-    </div>
+          <el-icon class="text-lg"><component :is="tab.icon" /></el-icon>
+        </el-tooltip>
+        <template v-else>
+          <el-icon class="mr-3 text-lg"><component :is="tab.icon" /></el-icon>
+          <span>{{ tab.label }}</span>
+        </template>
+      </el-menu-item>
+    </el-menu>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { Expand, Fold } from '@element-plus/icons-vue'
 
 const props = defineProps({
   tabList: Array,
   current: String
 })
 
+const emit = defineEmits(['update:currentTab'])
+
 const isCollapsed = ref(false)
-const tooltipEffect = ref('dark')
 
 const toggleCollapse = () => {
   isCollapsed.value = !isCollapsed.value
 }
+
+const handleSelect = (key) => {
+  emit('update:currentTab', key)
+}
 </script>
 
 <style scoped>
-.sidebar {
-  width: 200px;
-  background: #2e3b4e;
-  padding: 10px 0;
-  min-height: 100vh;
-  transition: all 0.3s ease;
-  position: relative;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  border-right: 1px solid #4a5568;
+/* 自定义菜单项样式 */
+:deep(.el-menu-item.is-active) {
+  background-color: #4caf50 !important;
 }
 
-.sidebar.collapsed {
-  width: 64px;
+:deep(.el-menu-item:hover) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-.collapse-button {
-  position: absolute;
-  right: -12px;
-  top: 20px;
-  width: 24px;
-  height: 24px;
-  background: #4caf50;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: white;
-  font-size: 18px;
-  z-index: 1;
-  transition: transform 0.3s;
-}
-
-.menu-items {
-  margin-top: 20px;
-}
-
-button {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin: 4px 0;
-  padding: 12px 16px;
-  background: none;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-radius: 4px;
-  margin: 4px 8px;
-  width: calc(100% - 16px);
-}
-
-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-button.active {
-  background: #4caf50;
-  color: white;
-}
-
-.menu-icon {
-  font-size: 18px;
-  margin-right: 12px;
-  flex-shrink: 0;
-}
-
-.menu-text {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: opacity 0.3s;
-}
-
-.collapsed button {
-  justify-content: center;
-  padding: 12px 0;
-}
-
-.collapsed .menu-icon {
-  margin-right: 0;
-  font-size: 20px;
+:deep(.el-menu--collapse .el-menu-item .el-icon) {
+  margin: 0;
+  font-size: 1.25rem;
 }
 </style>
