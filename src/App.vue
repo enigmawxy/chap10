@@ -24,6 +24,11 @@ import ContentView from './components/ContentView.vue'
 import AppBasic from './AppBasic.vue'
 import AppDark from './AppDark.vue'
 import AppCustom from './AppCustom.vue'
+import BasicSample from './views/BasicSample.vue'
+import FormSample from './views/FormSample.vue'
+import DataSample from './views/DataSample.vue'
+import NavigationSample from './views/NavigationSample.vue'
+import FeedbackSample from './views/FeedbackSample.vue'
 
 const appTitle = '前端开发框架技术与应用例子 - Element Plus + Tailwind CSS + Vue3 + Vite'
 
@@ -31,6 +36,11 @@ const appTitle = '前端开发框架技术与应用例子 - Element Plus + Tailw
 
 // 菜单项配置
 const menuItems = [
+  { name: 'BasicSample', label: '基础类组件', component: BasicSample, icon: 'Collection' },
+  { name: 'FormSample', label: '表单类组件', component: FormSample, icon: 'Tickets' },
+  { name: 'DataSample', label: '数据展示', component: DataSample, icon: 'DataLine' },
+  { name: 'NavigationSample', label: '导航组件', component: NavigationSample, icon: 'Guide' },
+  { name: 'FeedbackSample', label: '反馈组件', component: FeedbackSample, icon: 'Bell' },
   { name: 'AppBasic', label: '基础组件', component: AppBasic, icon: 'Menu' },
   { name: 'AppDark', label: '深色组件', component: AppDark, icon: 'Moon' },
   { name: 'AppCustom', label: '自定义组件', component: AppCustom, icon: 'Setting' },
