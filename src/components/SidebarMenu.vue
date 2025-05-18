@@ -5,7 +5,7 @@
   >
     <!-- 折叠/展开按钮 -->
     <div
-      class="absolute bottom-4 -right-3 w-6 h-6 bg-[#1abc9c] rounded-full flex items-center justify-center cursor-pointer text-white z-10 transition-transform hover:bg-[#16a085]"
+      class="absolute top-1/2 -translate-y-1/2 -right-3 w-6 h-6 bg-[#1abc9c] rounded-full flex items-center justify-center cursor-pointer text-white z-10 transition-transform hover:bg-[#16a085]"
       @click="toggleCollapse"
     >
       <el-icon class="text-xs">
