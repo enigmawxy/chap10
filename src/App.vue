@@ -1,17 +1,25 @@
 <template>
   <div class="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
-    <!-- 顶部深色导航栏 -->
-    <HeaderView :title="appTitle" />
-    <div class="flex flex-1 min-h-0">
-      <!-- 左侧菜单栏 -->
-      <SidebarMenu
-        :menuItems="menuItems"
-        :activeMenu="activeMenu"
-        @select="handleMenuSelect"
-      />
+    <!-- 顶部深色导航栏 - 固定在顶部 -->
+    <HeaderView :title="appTitle" class="fixed top-0 left-0 right-0 z-10" />
 
-      <!-- 右侧内容区 -->
-      <ContentView :currentComponent="currentComponent" />
+    <!-- 主体内容区域 -->
+    <div class="flex pt-12 h-[calc(100vh-3rem)]">
+      <!-- 左侧菜单栏 - 固定位置 -->
+      <div class="fixed top-12 left-0 bottom-0 z-10">
+        <SidebarMenu
+          :menuItems="menuItems"
+          :activeMenu="activeMenu"
+          @select="handleMenuSelect"
+          @collapse-change="handleSidebarCollapse"
+        />
+      </div>
+
+      <!-- 右侧内容区 - 添加左侧边距以避免被固定的侧边栏遮挡 -->
+      <div class="flex-1 transition-all duration-300"
+           :class="{ 'ml-16': sidebarCollapsed, 'ml-56': !sidebarCollapsed }">
+        <ContentView :currentComponent="currentComponent" />
+      </div>
     </div>
   </div>
 </template>
@@ -31,6 +39,9 @@ import NavigationSample from './views/NavigationSample.vue'
 import FeedbackSample from './views/FeedbackSample.vue'
 
 const appTitle = '前端开发框架技术与应用例子 - Element Plus + Tailwind CSS + Vue3 + Vite'
+
+// 侧边栏折叠状态
+const sidebarCollapsed = ref(false)
 
 // 不需要显式导入图标，因为已在 main.js 中全局注册
 
@@ -55,5 +66,10 @@ function handleMenuSelect(key) {
     activeMenu.value = key
     currentComponent.value = found.component
   }
+}
+
+// 处理侧边栏折叠状态变化
+function handleSidebarCollapse(collapsed) {
+  sidebarCollapsed.value = collapsed
 }
 </script>

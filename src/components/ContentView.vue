@@ -1,5 +1,5 @@
 <template>
-  <main class="flex-1 bg-gray-100 dark:bg-gray-900 p-6 overflow-auto">
+  <main class="flex-1 bg-gray-100 dark:bg-gray-900 p-6 overflow-auto h-[calc(100vh-3rem)]">
     <component :is="currentComponent" />
   </main>
 </template>

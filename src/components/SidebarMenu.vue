@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="relative bg-[#223047] text-white min-h-0 transition-all duration-300"
+    class="relative bg-[#223047] text-white transition-all duration-300 h-full overflow-y-auto"
     :class="{ 'w-56': !isCollapsed, 'w-16': isCollapsed }"
   >
     <!-- 折叠/展开按钮 -->
@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { ArrowRight, ArrowLeft } from '@element-plus/icons-vue'
 
 const props = defineProps({
@@ -61,8 +61,13 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['select'])
+const emit = defineEmits(['select', 'collapse-change'])
 const isCollapsed = ref(false)
+
+// 监听折叠状态变化，并通知父组件
+watch(isCollapsed, (newValue) => {
+  emit('collapse-change', newValue)
+})
 
 function handleMenuSelect(key) {
   emit('select', key)
