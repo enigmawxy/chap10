@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ContentView: typeof import('./components/ContentView.vue')['default']
     DarkModeDemo: typeof import('./components/DarkModeDemo.vue')['default']
     DarkModeToggle: typeof import('./components/DarkModeToggle.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']
@@ -88,9 +89,11 @@ declare module 'vue' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     Header: typeof import('./components/Header.vue')['default']
     HeaderOne: typeof import('./components/HeaderOne.vue')['default']
+    HeaderView: typeof import('./components/HeaderView.vue')['default']
     IEpMenu: typeof import('~icons/ep/menu')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SidebarMenu: typeof import('./components/SidebarMenu.vue')['default']
     TailwindExamples: typeof import('./components/TailwindExamples.vue')['default']
   }
 }
