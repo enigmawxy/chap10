@@ -116,7 +116,20 @@ const nodeType = computed(() => props.data.nodeType || 'default')
 .custom-node[data-id="teleport"] .icon-wrapper,
 .custom-node[data-id="component-v-model"] .icon-wrapper,
 .custom-node[data-id="dependency-injection"] .icon-wrapper,
-.custom-node[data-id="attrs"] .icon-wrapper {
+.custom-node[data-id="attrs"] .icon-wrapper,
+.custom-node[data-id="single-file-component"] .icon-wrapper,
+.custom-node[data-id="component-basics-2"] .icon-wrapper,
+.custom-node[data-id="slots"] .icon-wrapper,
+.custom-node[data-id="computed"] .icon-wrapper,
+.custom-node[data-id="watchers"] .icon-wrapper,
+.custom-node[data-id="lifecycle"] .icon-wrapper,
+.custom-node[data-id="hooks"] .icon-wrapper,
+.custom-node[data-id="readonly"] .icon-wrapper,
+.custom-node[data-id="caching"] .icon-wrapper,
+.custom-node[data-id="define-component"] .icon-wrapper,
+.custom-node[data-id="use-component"] .icon-wrapper,
+.custom-node[data-id="props"] .icon-wrapper,
+.custom-node[data-id="events"] .icon-wrapper {
   background-color: #ebf5fb;
   border: 2px solid #3498db;
 }

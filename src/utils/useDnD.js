@@ -281,6 +281,59 @@ export default function useDragAndDrop() {
         nodeLabel = '透传Attributes'
         nodeClass = 'attrs-node'
         break
+      // 新增Vue概念节点
+      case 'single-file-component':
+        nodeLabel = '单文件组件'
+        nodeClass = 'single-file-component-node'
+        break
+      case 'component-basics-2':
+        nodeLabel = '组件基础'
+        nodeClass = 'component-basics-2-node'
+        break
+      case 'slots':
+        nodeLabel = '插槽'
+        nodeClass = 'slots-node'
+        break
+      case 'computed':
+        nodeLabel = '计算属性'
+        nodeClass = 'computed-node'
+        break
+      case 'watchers':
+        nodeLabel = '侦听器'
+        nodeClass = 'watchers-node'
+        break
+      case 'lifecycle':
+        nodeLabel = '生命周期'
+        nodeClass = 'lifecycle-node'
+        break
+      case 'hooks':
+        nodeLabel = '钩子函数'
+        nodeClass = 'hooks-node'
+        break
+      case 'readonly':
+        nodeLabel = '只读性'
+        nodeClass = 'readonly-node'
+        break
+      case 'caching':
+        nodeLabel = '缓存性'
+        nodeClass = 'caching-node'
+        break
+      case 'define-component':
+        nodeLabel = '定义组件'
+        nodeClass = 'define-component-node'
+        break
+      case 'use-component':
+        nodeLabel = '使用组件'
+        nodeClass = 'use-component-node'
+        break
+      case 'props':
+        nodeLabel = '传递Props'
+        nodeClass = 'props-node'
+        break
+      case 'events':
+        nodeLabel = '监听事件'
+        nodeClass = 'events-node'
+        break
       default:
         nodeLabel = nodeId
     }

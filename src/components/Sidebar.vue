@@ -23,27 +23,6 @@ const basicElements = [
 
 // 图谱元素数据
 const graphElements = [
-  // { id: 'person', name: '个人' },
-  // { id: 'people', name: '人物' },
-  // { id: 'bookmark', name: '标记' },
-  // { id: 'case', name: '病例' },
-  // { id: 'car', name: '出租车' },
-  // { id: 'phone', name: '电话' },
-  // { id: 'location', name: '地址' },
-  // { id: 'bus', name: '动车' },
-  // { id: 'plane', name: '航班' },
-  // { id: 'doctor', name: '护士' },
-  // { id: 'building', name: '监狱' },
-  // { id: 'truck', name: '机动车' },
-  // { id: 'hotel', name: '酒店' },
-  // { id: 'ambulance', name: '救护车' },
-  // { id: 'camera', name: '卡口' },
-  // { id: 'harbor', name: '口岸' },
-  // { id: 'ship', name: '轮船' },
-  // { id: 'event', name: '事件' },
-  // { id: 'time', name: '时空' },
-  // { id: 'document', name: '通话记录' },
-  // { id: 'bbs', name: '网吧' },
   // 新增节点
   { id: 'element-plus', name: 'ElementPlus' },
   { id: 'tailwind', name: 'Tailwind CSS' },
@@ -66,7 +45,21 @@ const graphElements = [
   { id: 'teleport', name: 'Teleport' },
   { id: 'component-v-model', name: '组件V-Model' },
   { id: 'dependency-injection', name: '依赖注入' },
-  { id: 'attrs', name: '透传Attributes' }
+  { id: 'attrs', name: '透传Attributes' },
+  // 新增Vue概念节点
+  { id: 'single-file-component', name: '单文件组件' },
+  { id: 'component-basics-2', name: '组件基础' },
+  { id: 'slots', name: '插槽' },
+  { id: 'computed', name: '计算属性' },
+  { id: 'watchers', name: '侦听器' },
+  { id: 'lifecycle', name: '生命周期' },
+  { id: 'hooks', name: '钩子函数' },
+  { id: 'readonly', name: '只读性' },
+  { id: 'caching', name: '缓存性' },
+  { id: 'define-component', name: '定义组件' },
+  { id: 'use-component', name: '使用组件' },
+  { id: 'props', name: '传递Props' },
+  { id: 'events', name: '监听事件' }
 ]
 
 // 计算样式

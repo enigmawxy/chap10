@@ -301,4 +301,72 @@ defineProps({
   <svg v-if="name === 'attrs'" width="16" height="16" viewBox="0 0 24 24">
     <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" fill="#3498db" />
   </svg>
+
+  <!-- 单文件组件图标 -->
+  <svg v-if="name === 'single-file-component'" width="16" height="16" viewBox="0 0 24 24">
+    <path d="M6 2c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6H6zm7 7V3.5L18.5 9H13z" fill="#3498db" />
+    <path d="M8 14h8v2H8v-2z" fill="#3498db" />
+  </svg>
+
+  <!-- 组件基础图标 -->
+  <svg v-if="name === 'component-basics-2'" width="16" height="16" viewBox="0 0 24 24">
+    <path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z" fill="#3498db" />
+  </svg>
+
+  <!-- 插槽图标 -->
+  <svg v-if="name === 'slots'" width="16" height="16" viewBox="0 0 24 24">
+    <path d="M2 20h20v-4H2v4zm2-3h2v2H4v-2zM2 4v4h20V4H2zm4 3H4V5h2v2zm-4 7h20v-4H2v4zm2-3h2v2H4v-2z" fill="#3498db" />
+  </svg>
+
+  <!-- 计算属性图标 -->
+  <svg v-if="name === 'computed'" width="16" height="16" viewBox="0 0 24 24">
+    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2V9h-2V7h4v10z" fill="#3498db" />
+  </svg>
+
+  <!-- 侦听器图标 -->
+  <svg v-if="name === 'watchers'" width="16" height="16" viewBox="0 0 24 24">
+    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="#3498db" />
+  </svg>
+
+  <!-- 生命周期图标 -->
+  <svg v-if="name === 'lifecycle'" width="16" height="16" viewBox="0 0 24 24">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" fill="#3498db" />
+    <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" fill="#3498db" />
+  </svg>
+
+  <!-- 钩子函数图标 -->
+  <svg v-if="name === 'hooks'" width="16" height="16" viewBox="0 0 24 24">
+    <path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z" fill="#3498db" />
+  </svg>
+
+  <!-- 只读性图标 -->
+  <svg v-if="name === 'readonly'" width="16" height="16" viewBox="0 0 24 24">
+    <path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z" fill="#3498db" />
+  </svg>
+
+  <!-- 缓存性图标 -->
+  <svg v-if="name === 'caching'" width="16" height="16" viewBox="0 0 24 24">
+    <path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z" fill="#3498db" />
+  </svg>
+
+  <!-- 定义组件图标 -->
+  <svg v-if="name === 'define-component'" width="16" height="16" viewBox="0 0 24 24">
+    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="#3498db" />
+  </svg>
+
+  <!-- 使用组件图标 -->
+  <svg v-if="name === 'use-component'" width="16" height="16" viewBox="0 0 24 24">
+    <path d="M16 1H8C6.34 1 5 2.34 5 4v16c0 1.66 1.34 3 3 3h8c1.66 0 3-1.34 3-3V4c0-1.66-1.34-3-3-3zm-2 20h-4v-1h4v1zm3.25-3H6.75V4h10.5v14z" fill="#3498db" />
+  </svg>
+
+  <!-- 传递Props图标 -->
+  <svg v-if="name === 'props'" width="16" height="16" viewBox="0 0 24 24">
+    <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z" fill="#3498db" />
+    <path d="M8 13h8v2H8z" fill="#3498db" />
+  </svg>
+
+  <!-- 监听事件图标 -->
+  <svg v-if="name === 'events'" width="16" height="16" viewBox="0 0 24 24">
+    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" fill="#3498db" />
+  </svg>
 </template>
