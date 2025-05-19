@@ -47,22 +47,58 @@ const sidebarCollapsed = ref(false)
 
 // 菜单项配置
 const menuItems = [
-  { name: 'BasicSample', label: '基础类组件', component: BasicSample, icon: 'Collection' },
-  { name: 'FormSample', label: '表单类组件', component: FormSample, icon: 'Tickets' },
-  { name: 'DataSample', label: '数据展示', component: DataSample, icon: 'DataLine' },
-  { name: 'NavigationSample', label: '导航组件', component: NavigationSample, icon: 'Guide' },
-  { name: 'FeedbackSample', label: '反馈组件', component: FeedbackSample, icon: 'Bell' },
-  { name: 'AppBasic', label: '基础组件', component: AppBasic, icon: 'Menu' },
-  { name: 'AppDark', label: '深色组件', component: AppDark, icon: 'Moon' },
-  { name: 'AppCustom', label: '自定义组件', component: AppCustom, icon: 'Setting' },
+  {
+    name: 'ElementPlusExamples',
+    label: '第10章-Element Plus例子',
+    icon: 'Eleme',
+    children: [
+      { name: 'BasicSample', label: '基础类组件', component: BasicSample, icon: 'Collection' },
+      { name: 'FormSample', label: '表单类组件', component: FormSample, icon: 'Tickets' },
+      { name: 'DataSample', label: '数据展示', component: DataSample, icon: 'DataLine' },
+      { name: 'NavigationSample', label: '导航组件', component: NavigationSample, icon: 'Guide' },
+      { name: 'FeedbackSample', label: '反馈组件', component: FeedbackSample, icon: 'Bell' },
+    ]
+  },
+  {
+    name: 'TailwindExamples',
+    label: '第10章-Tailwind例子',
+    icon: 'Histogram',
+    children: [
+      { name: 'AppBasic', label: '基础组件', component: AppBasic, icon: 'Menu' },
+      { name: 'AppDark', label: '深色组件', component: AppDark, icon: 'Moon' },
+      { name: 'AppCustom', label: '自定义组件', component: AppCustom, icon: 'Setting' },
+    ]
+  }
 ]
 
-const activeMenu = ref(menuItems[0].name)
-const currentComponent = shallowRef(menuItems[0].component)
+// 设置默认选中的菜单项为第一个子菜单的第一项
+const defaultMenuItem = menuItems[0].children[0]
+const activeMenu = ref(defaultMenuItem.name)
+const currentComponent = shallowRef(defaultMenuItem.component)
 
 function handleMenuSelect(key) {
-  const found = menuItems.find(item => item.name === key)
-  if (found) {
+  // 在所有菜单项中查找匹配的项
+  let found = null
+
+  // 先在顶级菜单中查找
+  for (const item of menuItems) {
+    if (item.name === key) {
+      found = item
+      break
+    }
+
+    // 如果有子菜单，则在子菜单中查找
+    if (item.children && item.children.length > 0) {
+      const childItem = item.children.find(child => child.name === key)
+      if (childItem) {
+        found = childItem
+        break
+      }
+    }
+  }
+
+  // 如果找到了匹配的菜单项，并且它有组件，则更新当前组件
+  if (found && found.component) {
     activeMenu.value = key
     currentComponent.value = found.component
   }

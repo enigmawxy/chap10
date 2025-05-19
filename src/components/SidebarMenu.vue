@@ -30,18 +30,42 @@
       active-text-color="#67c23a"
       popper-class="sidebar-tooltip"
     >
-      <el-menu-item
-        v-for="item in menuItems"
-        :key="item.name"
-        :index="item.name"
-      >
-        <el-icon>
-          <component :is="item.icon" />
-        </el-icon>
-        <template #title>
-          <span>{{ item.label }}</span>
-        </template>
-      </el-menu-item>
+      <!-- 处理有子菜单的菜单项 -->
+      <template v-for="item in menuItems" :key="item.name">
+        <!-- 如果有子菜单，则渲染子菜单组 -->
+        <el-sub-menu v-if="item.children && item.children.length > 0" :index="item.name">
+          <template #title>
+            <el-icon>
+              <component :is="item.icon" />
+            </el-icon>
+            <span>{{ item.label }}</span>
+          </template>
+
+          <!-- 渲染子菜单项 -->
+          <el-menu-item
+            v-for="child in item.children"
+            :key="child.name"
+            :index="child.name"
+          >
+            <el-icon>
+              <component :is="child.icon" />
+            </el-icon>
+            <template #title>
+              <span>{{ child.label }}</span>
+            </template>
+          </el-menu-item>
+        </el-sub-menu>
+
+        <!-- 如果没有子菜单，则渲染普通菜单项 -->
+        <el-menu-item v-else :index="item.name">
+          <el-icon>
+            <component :is="item.icon" />
+          </el-icon>
+          <template #title>
+            <span>{{ item.label }}</span>
+          </template>
+        </el-menu-item>
+      </template>
     </el-menu>
   </aside>
 </template>
@@ -95,6 +119,39 @@ function toggleCollapse() {
 /* 确保折叠状态下的图标居中 */
 .el-menu--collapse .el-menu-item .el-icon {
   margin: 0 auto;
+}
+
+/* 子菜单样式 */
+:deep(.el-sub-menu__title) {
+  color: #fff !important;
+}
+
+:deep(.el-sub-menu__title:hover) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+:deep(.el-sub-menu.is-active .el-sub-menu__title) {
+  color: #67c23a !important;
+}
+
+/* 子菜单弹出样式 */
+:deep(.el-menu--popup) {
+  background-color: #1e293b !important;
+  border: none;
+}
+
+:deep(.el-menu--popup .el-menu-item) {
+  background-color: #1e293b !important;
+  color: #fff !important;
+}
+
+:deep(.el-menu--popup .el-menu-item.is-active) {
+  background-color: #1abc9c !important;
+  color: #fff !important;
+}
+
+:deep(.el-menu--popup .el-menu-item:hover) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
 </style>
 
