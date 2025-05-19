@@ -8,11 +8,10 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AnimationEdge: typeof import('./components/AnimationEdge.vue')['default']
+    DropzoneBackground: typeof import('./components/DropzoneBackground.vue')['default']
     Icon: typeof import('./components/Icon.vue')['default']
-    ProcessNode: typeof import('./components/ProcessNode.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SideBar: typeof import('./components/SideBar.vue')['default']
+    Sidebar: typeof import('./components/Sidebar.vue')['default']
   }
 }
