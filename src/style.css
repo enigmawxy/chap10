@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 全局字体设置为微软雅黑 */
+@layer base {
+  html {
+    font-family: "Microsoft YaHei", "微软雅黑", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+}
+
 html,
 body,
 #app {
@@ -10,8 +17,9 @@ body,
 }
 
 #app {
-  text-transform: uppercase;
-  font-family: 'JetBrains Mono', monospace;
+  /* 移除大写转换，使文字更易读 */
+  /* text-transform: uppercase; */
+  font-family: "Microsoft YaHei", "微软雅黑", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

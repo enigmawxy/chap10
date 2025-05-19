@@ -35,4 +35,46 @@ defineProps({
       d="M20 19V7H4v12h16m0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16m-7 14v-2h5v2h-5m-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59l3.99-4Z"
     />
   </svg>
+
+  <!-- GRAPHVIS图标 -->
+  <svg v-if="name === 'graph'" width="16" height="16" viewBox="0 0 24 24">
+    <path
+      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"
+      fill="currentColor"
+    />
+  </svg>
+
+  <svg v-if="name === 'network'" width="16" height="16" viewBox="0 0 24 24">
+    <path
+      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93c0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41c0 2.08-.8 3.97-2.1 5.39z"
+      fill="currentColor"
+    />
+  </svg>
+
+  <svg v-if="name === 'knowledge'" width="16" height="16" viewBox="0 0 24 24">
+    <path
+      d="M12 2L2 7l10 5l10-5l-10-5zM2 17l10 5l10-5M2 12l10 5l10-5"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    />
+  </svg>
+
+  <svg v-if="name === 'thinking'" width="16" height="16" viewBox="0 0 24 24">
+    <path
+      d="M21 11.5a8.38 8.38 0 0 1-.9 3.8a8.5 8.5 0 0 1-7.6 4.7a8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8a8.5 8.5 0 0 1 4.7-7.6a8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    />
+  </svg>
+
+  <svg v-if="name === 'organization'" width="16" height="16" viewBox="0 0 24 24">
+    <path
+      d="M12 3L1 9l11 6l11-6l-11-6zM1 9v6l11 6l11-6V9M12 15v6"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    />
+  </svg>
 </template>

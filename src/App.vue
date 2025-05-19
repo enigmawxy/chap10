@@ -1,30 +1,15 @@
 <script setup>
-import { ref } from 'vue'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
-import DropzoneBackground from '@/components/DropzoneBackground.vue'
-import Sidebar from '@/components/Sidebar.vue'
-import useDragAndDrop from '@/utils/useDnD.js'
-
-const { onConnect, addEdges } = useVueFlow()
-
-const { onDragOver, onDrop, onDragLeave, isDragOver } = useDragAndDrop()
-
-const nodes = ref([])
-
-onConnect(addEdges)
+import Header from '@/components/Header.vue'
 </script>
 
 <template>
-  <div class="dnd-flow" @drop="onDrop">
-    <VueFlow :nodes="nodes" @dragover="onDragOver" @dragleave="onDragLeave">
-      <DropzoneBackground :style="{
-        backgroundColor: isDragOver ? '#e7f3ff' : 'transparent',
-        transition: 'background-color 0.2s ease',
-      }">
-        <p v-if="isDragOver">Drop here</p>
-      </DropzoneBackground>
-    </VueFlow>
+  <div class="app-container h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <Header />
 
-    <Sidebar />
+    <!-- 主要内容区域 -->
+    <div class="flex-1 overflow-hidden">
+      <router-view />
+    </div>
   </div>
 </template>

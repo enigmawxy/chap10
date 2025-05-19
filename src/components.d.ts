@@ -9,6 +9,9 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     DropzoneBackground: typeof import('./components/DropzoneBackground.vue')['default']
+    GraphLogo: typeof import('./components/GraphLogo.vue')['default']
+    Header: typeof import('./components/Header.vue')['default']
+    Home: typeof import('./components/Home.vue')['default']
     Icon: typeof import('./components/Icon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
