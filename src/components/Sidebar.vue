@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import useDragAndDrop from '@/utils/useDnD'
 import Icon from './Icon.vue'
 
@@ -9,6 +9,10 @@ const { onDragStart } = useDragAndDrop()
 const basicExpanded = ref(true)
 // 图谱元素分类是否展开
 const graphExpanded = ref(true)
+// Sidebar宽度
+const sidebarWidth = ref(220)
+// 是否正在调整宽度
+const isResizing = ref(false)
 
 // 基础元素数据
 const basicElements = [
@@ -42,9 +46,32 @@ const graphElements = [
   { id: 'bbs', name: '网吧' }
 ]
 
+// 计算样式
+const sidebarStyle = computed(() => {
+  return {
+    width: `${sidebarWidth.value}px`
+  }
+})
+
 // 确保组件正确初始化
 onMounted(() => {
   console.log('Sidebar component mounted')
+
+  // 添加全局鼠标事件监听器
+  document.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('mouseup', handleMouseUp)
+
+  // 初始化content-area的位置
+  setTimeout(() => {
+    updateMainContentMargin()
+  }, 100)
+})
+
+// 组件卸载时清理
+onUnmounted(() => {
+  // 移除全局鼠标事件监听器
+  document.removeEventListener('mousemove', handleMouseMove)
+  document.removeEventListener('mouseup', handleMouseUp)
 })
 
 // 切换分类展开/折叠状态
@@ -55,12 +82,54 @@ const toggleCategory = (category) => {
     graphExpanded.value = !graphExpanded.value
   }
 }
+
+// 开始调整宽度
+const startResize = (event) => {
+  isResizing.value = true
+  event.preventDefault()
+}
+
+// 处理鼠标移动
+const handleMouseMove = (event) => {
+  if (!isResizing.value) return
+
+  // 计算新宽度 (鼠标X坐标即为宽度，因为Sidebar从左侧0位置开始)
+  const newWidth = Math.max(200, Math.min(250, event.clientX))
+
+  // 设置新宽度
+  sidebarWidth.value = newWidth
+
+  // 更新主内容区域的左边距
+  updateMainContentMargin()
+}
+
+// 处理鼠标释放
+const handleMouseUp = () => {
+  isResizing.value = false
+}
+
+// 更新主内容区域的左边距
+const updateMainContentMargin = () => {
+  // 获取content-area元素
+  const contentArea = document.querySelector('.content-area')
+
+  // 更新左边距
+  if (contentArea) {
+    contentArea.style.left = `${sidebarWidth.value}px`
+  }
+}
 </script>
 
 <template>
-  <aside class="sidebar-container fixed left-0 top-14 bottom-0 w-[250px] bg-white border-r border-gray-200 z-10">
+  <aside
+    class="sidebar-container fixed left-0 bottom-0 bg-white border-r border-gray-200 z-10"
+    :style="{ ...sidebarStyle, top: '6px' }"
+  >
     <!-- 可滚动的内容区域 -->
     <div class="sidebar-content">
+      <!-- 调整宽度的手柄 -->
+      <div class="resize-handle" @mousedown="startResize"></div>
+
       <!-- 基础元素分类 -->
       <div class="category">
         <div class="category-header" @click="toggleCategory('basic')">
@@ -132,6 +201,11 @@ const toggleCategory = (category) => {
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
+  transition: width 0.1s ease;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
 /* 侧边栏内容区域样式 */
@@ -139,11 +213,44 @@ const toggleCategory = (category) => {
   flex: 1;
   overflow-y: auto;
   height: 100%;
+  position: relative;
+  padding-top: 0;
+  margin-top: 0;
+  border-top: none;
+}
+
+/* 调整宽度手柄样式 */
+.resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  background-color: transparent;
+  cursor: ew-resize;
+  z-index: 20;
+}
+
+.resize-handle:hover,
+.resize-handle:active {
+  background-color: rgba(0, 120, 255, 0.3);
 }
 
 /* 分类样式 */
 .category {
   border-bottom: 1px solid #f0f0f0;
+}
+
+/* 第一个分类没有顶部边距 */
+.category:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* 第一个分类的标题栏没有顶部边距 */
+.category:first-child .category-header {
+  padding-top: 8px;
 }
 
 .category-header {

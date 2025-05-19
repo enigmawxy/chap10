@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-[#2d3a4b] text-white shadow-md h-14">
+  <header class="bg-[#2d3a4b] text-white shadow-md" style="height: 56px; margin-bottom: 0; padding-bottom: 0;">
     <div class="px-4 py-2 flex items-center h-full">
       <!-- Logo and Title -->
       <div class="flex items-center space-x-2 mr-8">
@@ -64,5 +64,7 @@ nav {
 /* 移除大写转换，使文字更易读 */
 header {
   text-transform: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 </style>

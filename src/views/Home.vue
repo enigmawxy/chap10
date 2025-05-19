@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 import DropzoneBackground from '@/components/DropzoneBackground.vue'
-import Sidebar from '@/components/Sidebar.vue'
 import useDragAndDrop from '@/utils/useDnD.js'
 
 const { onConnect, addEdges } = useVueFlow()
@@ -17,7 +16,7 @@ onConnect(addEdges)
 <template>
     <div class="dnd-flow h-full" @drop="onDrop">
         <!-- 内容区域，左边距与Sidebar宽度匹配 -->
-        <div class="vue-flow-wrapper ml-[250px] pt-0">
+        <div class="vue-flow-wrapper pt-0">
             <VueFlow
               :nodes="nodes"
               @dragover="onDragOver"
@@ -32,9 +31,6 @@ onConnect(addEdges)
                 </DropzoneBackground>
             </VueFlow>
         </div>
-
-        <!-- Sidebar组件 -->
-        <Sidebar />
     </div>
 </template>
 
