@@ -123,7 +123,15 @@ onMounted(() => {
 :deep(.event-node),
 :deep(.time-node),
 :deep(.record-node),
-:deep(.bbs-node) {
+:deep(.bbs-node),
+:deep(.element-plus-node),
+:deep(.tailwind-node),
+:deep(.core-concepts-node),
+:deep(.installation-node),
+:deep(.configuration-node),
+:deep(.basic-usage-node),
+:deep(.auto-import-node),
+:deep(.vue-router-node) {
   border-radius: 50%;
   width: 80px;
   height: 80px;
@@ -132,5 +140,39 @@ onMounted(() => {
   justify-content: center;
   background-color: #f5f5f5;
   border: 2px solid #ddd;
+}
+
+/* 特殊样式 */
+:deep(.element-plus-node) {
+  background-color: #f0f9ff;
+  border-color: #409EFF;
+}
+
+:deep(.tailwind-node) {
+  background-color: #f0fdf9;
+  border-color: #38B2AC;
+}
+
+:deep(.vue-router-node) {
+  background-color: #f0fdf4;
+  border-color: #42B883;
+}
+
+/* 组件相关节点样式 */
+:deep(.component-advanced-node),
+:deep(.component-basics-node),
+:deep(.component-registration-node),
+:deep(.global-registration-node),
+:deep(.local-registration-node),
+:deep(.built-in-components-node),
+:deep(.dynamic-components-node),
+:deep(.keep-alive-node),
+:deep(.transition-node),
+:deep(.teleport-node),
+:deep(.component-v-model-node),
+:deep(.dependency-injection-node),
+:deep(.attrs-node) {
+  background-color: #ebf5fb;
+  border-color: #3498db;
 }
 </style>

@@ -195,6 +195,92 @@ export default function useDragAndDrop() {
         nodeLabel = '网吧'
         nodeClass = 'bbs-node'
         break
+      // 新增节点类型
+      case 'element-plus':
+        nodeLabel = 'ElementPlus'
+        nodeClass = 'element-plus-node'
+        break
+      case 'tailwind':
+        nodeLabel = 'Tailwind CSS'
+        nodeClass = 'tailwind-node'
+        break
+      case 'core-concepts':
+        nodeLabel = '核心概念'
+        nodeClass = 'core-concepts-node'
+        break
+      case 'installation':
+        nodeLabel = '安装'
+        nodeClass = 'installation-node'
+        break
+      case 'configuration':
+        nodeLabel = '配置'
+        nodeClass = 'configuration-node'
+        break
+      case 'basic-usage':
+        nodeLabel = '基本使用'
+        nodeClass = 'basic-usage-node'
+        break
+      case 'auto-import':
+        nodeLabel = '自动导入'
+        nodeClass = 'auto-import-node'
+        break
+      case 'vue-router':
+        nodeLabel = 'Vue Router'
+        nodeClass = 'vue-router-node'
+        break
+      // 组件相关节点
+      case 'component-advanced':
+        nodeLabel = '组件进阶'
+        nodeClass = 'component-advanced-node'
+        break
+      case 'component-basics':
+        nodeLabel = '组件基础'
+        nodeClass = 'component-basics-node'
+        break
+      case 'component-registration':
+        nodeLabel = '组件注册'
+        nodeClass = 'component-registration-node'
+        break
+      case 'global-registration':
+        nodeLabel = '全局注册'
+        nodeClass = 'global-registration-node'
+        break
+      case 'local-registration':
+        nodeLabel = '局部注册'
+        nodeClass = 'local-registration-node'
+        break
+      case 'built-in-components':
+        nodeLabel = '内置组件'
+        nodeClass = 'built-in-components-node'
+        break
+      case 'dynamic-components':
+        nodeLabel = '动态组件'
+        nodeClass = 'dynamic-components-node'
+        break
+      case 'keep-alive':
+        nodeLabel = 'KeepAlive'
+        nodeClass = 'keep-alive-node'
+        break
+      case 'transition':
+        nodeLabel = '动画组件'
+        nodeClass = 'transition-node'
+        break
+      case 'teleport':
+        nodeLabel = 'Teleport'
+        nodeClass = 'teleport-node'
+        break
+      case 'component-v-model':
+        nodeLabel = '组件V-Model'
+        nodeClass = 'component-v-model-node'
+        break
+      case 'dependency-injection':
+        nodeLabel = '依赖注入'
+        nodeClass = 'dependency-injection-node'
+        break
+      case 'attrs':
+        nodeLabel = '透传Attributes'
+        nodeClass = 'attrs-node'
+        break
       default:
         nodeLabel = nodeId
     }
