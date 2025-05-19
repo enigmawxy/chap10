@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    CustomNode: typeof import('./components/CustomNode.vue')['default']
     DropzoneBackground: typeof import('./components/DropzoneBackground.vue')['default']
     GraphLogo: typeof import('./components/GraphLogo.vue')['default']
     Header: typeof import('./components/Header.vue')['default']

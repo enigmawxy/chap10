@@ -287,14 +287,19 @@ export default function useDragAndDrop() {
 
     const newNode = {
       id: nodeId,
-      type: nodeType,
+      type: 'custom', // 使用自定义节点类型
       position,
       data: {
         label: nodeLabel,
         nodeType: nodeType
       },
       style: nodeStyle,
-      class: nodeClass
+      class: nodeClass,
+      connectable: true,
+      // 添加自定义属性，用于CSS选择器
+      attrs: {
+        'data-id': nodeId
+      }
     }
 
     /**

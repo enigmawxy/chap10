@@ -10,7 +10,7 @@ const basicExpanded = ref(true)
 // 图谱元素分类是否展开
 const graphExpanded = ref(true)
 // Sidebar宽度
-const sidebarWidth = ref(220)
+const sidebarWidth = ref(250)
 // 是否正在调整宽度
 const isResizing = ref(false)
 
@@ -117,7 +117,7 @@ const handleMouseMove = (event) => {
   if (!isResizing.value) return
 
   // 计算新宽度 (鼠标X坐标即为宽度，因为Sidebar从左侧0位置开始)
-  const newWidth = Math.max(200, Math.min(250, event.clientX))
+  const newWidth = Math.max(250, Math.min(280, event.clientX))
 
   // 设置新宽度
   sidebarWidth.value = newWidth
@@ -309,9 +309,17 @@ const updateMainContentMargin = () => {
 /* 节点网格布局 */
 .node-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  padding: 2px;
+  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  gap: 8px;
+  padding: 4px;
+  margin-bottom: 4px;
+}
+
+/* 确保在250px宽度下每行显示3个节点 */
+@media (max-width: 250px) {
+  .node-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 /* 节点项样式 */
@@ -321,40 +329,73 @@ const updateMainContentMargin = () => {
   align-items: center;
   justify-content: center;
   padding: 8px 2px;
-  border-radius: 6px;
   cursor: grab;
   text-align: center;
   transition: all 0.2s;
-  background-color: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  background-color: transparent;
+  border: none;
 }
 
 .node-item:hover {
-  background-color: #f5f5f5;
   transform: translateY(-2px);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 .node-item span {
-  margin-top: 4px;
-  font-size: 11px;
-  color: #666;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
   width: 100%;
+  max-width: 80px;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.node-item:hover span {
+  color: #1890ff;
 }
 
 /* 基础元素特殊样式 */
-.circle-node {
+.circle-node .icon-wrapper {
   background-color: #f0f9eb;
+  border: 2px solid #67c23a;
 }
 
-.square-node {
+.square-node .icon-wrapper {
   background-color: #f0f9eb;
+  border: 2px solid #67c23a;
 }
 
-.text-node {
+.text-node .icon-wrapper {
   background-color: #f0f9eb;
+  border: 2px solid #67c23a;
+}
+
+/* ElementPlus特殊样式 */
+.element-plus-node .icon-wrapper {
+  background-color: #f0f9ff;
+  border: 2px solid #409EFF;
+}
+
+/* Tailwind特殊样式 */
+.tailwind-node .icon-wrapper {
+  background-color: #f0fdf9;
+  border: 2px solid #38B2AC;
+}
+
+/* Vue Router特殊样式 */
+.vue-router-node .icon-wrapper {
+  background-color: #f0fdf4;
+  border: 2px solid #42B883;
 }
 
 /* 图标包装器样式 */
@@ -362,11 +403,33 @@ const updateMainContentMargin = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
   border-radius: 50%;
   background-color: #f0f0f0;
-  margin-bottom: 3px;
+  margin-bottom: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.node-item:hover .icon-wrapper {
+  transform: scale(1.05);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* 组件相关节点特殊样式 */
+[class*="component-"] .icon-wrapper,
+.keep-alive-node .icon-wrapper,
+.transition-node .icon-wrapper,
+.teleport-node .icon-wrapper,
+.attrs-node .icon-wrapper,
+.dependency-injection-node .icon-wrapper {
+  background-color: #ebf5fb;
+  border: 2px solid #3498db;
 }
 
 /* 图标样式 */
