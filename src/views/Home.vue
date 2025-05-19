@@ -17,7 +17,7 @@ onConnect(addEdges)
 <template>
     <div class="dnd-flow h-full" @drop="onDrop">
         <!-- 内容区域，左边距与Sidebar宽度匹配 -->
-        <div class="vue-flow-wrapper ml-52 pt-0">
+        <div class="vue-flow-wrapper ml-[250px] pt-0">
             <VueFlow
               :nodes="nodes"
               @dragover="onDragOver"

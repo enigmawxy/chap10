@@ -84,12 +84,131 @@ export default function useDragAndDrop() {
     })
 
     const nodeId = getId()
+    const nodeType = draggedType.value
+
+    // 根据节点类型设置不同的标签和样式
+    let nodeLabel = nodeId
+    let nodeStyle = {}
+    let nodeClass = ''
+
+    // 设置节点标签
+    switch (nodeType) {
+      // 基础元素
+      case 'circle':
+        nodeLabel = '圆形节点'
+        nodeStyle = { backgroundColor: '#f0f9eb', borderRadius: '50%', border: '2px solid #67c23a' }
+        nodeClass = 'circle-node'
+        break
+      case 'square':
+        nodeLabel = '矩形节点'
+        nodeStyle = { backgroundColor: '#f0f9eb', border: '2px solid #67c23a' }
+        nodeClass = 'square-node'
+        break
+      case 'text':
+        nodeLabel = '文字节点'
+        nodeStyle = { backgroundColor: '#f0f9eb', border: '2px solid #67c23a' }
+        nodeClass = 'text-node'
+        break
+
+      // 图谱元素
+      case 'person':
+        nodeLabel = '个人'
+        nodeClass = 'person-node'
+        break
+      case 'people':
+        nodeLabel = '人物'
+        nodeClass = 'people-node'
+        break
+      case 'bookmark':
+        nodeLabel = '标记'
+        nodeClass = 'bookmark-node'
+        break
+      case 'case':
+        nodeLabel = '病例'
+        nodeClass = 'case-node'
+        break
+      case 'car':
+        nodeLabel = '出租车'
+        nodeClass = 'car-node'
+        break
+      case 'phone':
+        nodeLabel = '电话'
+        nodeClass = 'phone-node'
+        break
+      case 'location':
+        nodeLabel = '地址'
+        nodeClass = 'location-node'
+        break
+      case 'bus':
+        nodeLabel = '动车'
+        nodeClass = 'bus-node'
+        break
+      case 'plane':
+        nodeLabel = '航班'
+        nodeClass = 'plane-node'
+        break
+      case 'doctor':
+        nodeLabel = '护士'
+        nodeClass = 'doctor-node'
+        break
+      case 'building':
+        nodeLabel = '监狱'
+        nodeClass = 'building-node'
+        break
+      case 'truck':
+        nodeLabel = '机动车'
+        nodeClass = 'truck-node'
+        break
+      case 'hotel':
+        nodeLabel = '酒店'
+        nodeClass = 'hotel-node'
+        break
+      case 'ambulance':
+        nodeLabel = '救护车'
+        nodeClass = 'ambulance-node'
+        break
+      case 'camera':
+        nodeLabel = '卡口'
+        nodeClass = 'camera-node'
+        break
+      case 'harbor':
+        nodeLabel = '口岸'
+        nodeClass = 'harbor-node'
+        break
+      case 'ship':
+        nodeLabel = '轮船'
+        nodeClass = 'ship-node'
+        break
+      case 'event':
+        nodeLabel = '事件'
+        nodeClass = 'event-node'
+        break
+      case 'time':
+        nodeLabel = '时空'
+        nodeClass = 'time-node'
+        break
+      case 'record':
+        nodeLabel = '通话记录'
+        nodeClass = 'record-node'
+        break
+      case 'bbs':
+        nodeLabel = '网吧'
+        nodeClass = 'bbs-node'
+        break
+      default:
+        nodeLabel = nodeId
+    }
 
     const newNode = {
       id: nodeId,
-      type: draggedType.value,
+      type: nodeType,
       position,
-      data: { label: nodeId },
+      data: {
+        label: nodeLabel,
+        nodeType: nodeType
+      },
+      style: nodeStyle,
+      class: nodeClass
     }
 
     /**
