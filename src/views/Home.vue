@@ -4,14 +4,82 @@ import { VueFlow, useVueFlow } from '@vue-flow/core'
 import DropzoneBackground from '@/components/DropzoneBackground.vue'
 import useDragAndDrop from '@/utils/useDnD.js'
 import CustomNode from '@/components/CustomNode.vue'
+import SettingsPanel from '@/components/SettingsPanel.vue'
 
 const { onConnect, addEdges } = useVueFlow()
 
 const { onDragOver, onDrop, onDragLeave, isDragOver } = useDragAndDrop()
 
 const nodes = ref([])
+const edges = ref([])
+const selectedElements = ref([])
 
-onConnect(addEdges)
+onConnect((params) => {
+  // 添加新的边到edges数组
+  edges.value.push(params)
+})
+
+// 更新节点设置
+const updateNodeSettings = ({ id, settings }) => {
+  const nodeIndex = nodes.value.findIndex(node => node.id === id)
+  if (nodeIndex > -1) {
+    nodes.value[nodeIndex] = {
+      ...nodes.value[nodeIndex],
+      data: {
+        ...nodes.value[nodeIndex].data,
+        label: settings.nodeText,
+        imageUrl: settings.imageUrl
+      },
+      style: {
+        ...nodes.value[nodeIndex].style,
+        backgroundColor: settings.bgColor,
+        color: settings.textColor,
+        fontSize: settings.textStyle.split(' ')[1],
+        fontFamily: settings.textStyle.split(' ')[2],
+        width: settings.size,
+        height: settings.size
+      }
+    }
+  }
+}
+
+// 更新连线设置
+const updateConnectionSettings = ({ id, settings }) => {
+  const edgeIndex = edges.value.findIndex(edge => edge.id === id)
+  if (edgeIndex > -1) {
+    edges.value[edgeIndex] = {
+      ...edges.value[edgeIndex],
+      label: settings.text,
+      type: settings.type === '直线' ? 'default' : settings.type === '曲线' ? 'smoothstep' : 'step',
+      style: {
+        ...edges.value[edgeIndex].style,
+        stroke: settings.color,
+        strokeWidth: settings.width,
+        strokeDasharray: settings.dashedStyle
+      },
+      markerEnd: settings.showArrow === '是' ? { type: 'arrow' } : undefined,
+      labelStyle: {
+        ...edges.value[edgeIndex].labelStyle,
+        fill: settings.textColor,
+        fontFamily: settings.textStyle.split(' ')[2],
+        fontSize: settings.textStyle.split(' ')[1]
+      }
+    }
+  }
+}
+
+// 更新全局设置
+const updateGlobalSettings = (settings) => {
+  // 更新所有连线的默认样式
+  edges.value = edges.value.map(edge => ({
+    ...edge,
+    style: {
+      ...edge.style,
+      stroke: settings.lineColor,
+      strokeWidth: settings.lineWidth
+    }
+  }))
+}
 </script>
 
 <template>
@@ -20,6 +88,7 @@ onConnect(addEdges)
         <div class="vue-flow-wrapper pt-0">
             <VueFlow
               :nodes="nodes"
+              :edges="edges"
               @dragover="onDragOver"
               @dragleave="onDragLeave"
               class="vue-flow-instance"
@@ -27,6 +96,7 @@ onConnect(addEdges)
               :connect-on-drop="true"
               :snap-to-grid="true"
               :snap-grid="[15, 15]"
+              @selectionchange="selectedElements = $event"
             >
                 <!-- 使用具名插槽注册自定义节点 -->
                 <template #node-custom="nodeProps">
@@ -40,6 +110,14 @@ onConnect(addEdges)
                 </DropzoneBackground>
             </VueFlow>
         </div>
+
+        <!-- 设置面板 -->
+        <SettingsPanel
+          :selectedElements="selectedElements"
+          @update-node-settings="updateNodeSettings"
+          @update-connection-settings="updateConnectionSettings"
+          @update-global-settings="updateGlobalSettings"
+        />
     </div>
 </template>
 
