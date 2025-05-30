@@ -369,6 +369,7 @@ export default function useDragAndDrop() {
     })
 
     addNodes(newNode)
+    return newNode
   }
 
   return {

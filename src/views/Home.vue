@@ -15,8 +15,13 @@ const { onDragOver, onDragLeave, isDragOver } = useDragAndDrop()
 // 自定义onDrop函数，添加节点后保存图谱
 const { onDrop: originalOnDrop } = useDragAndDrop()
 const onDrop = (event) => {
-  // 调用原始onDrop函数
-  originalOnDrop(event)
+  // 调用原始onDrop函数并获取新节点
+  const newNode = originalOnDrop(event)
+
+  // 将新节点添加到本地nodes数组
+  if (newNode) {
+    nodes.value.push(newNode)
+  }
 
   // 保存图谱数据
   setTimeout(() => {
@@ -43,52 +48,70 @@ onConnect((params) => {
 })
 
 // 加载图谱数据
-const loadGraph = async () => {
-  try {
-    isLoading.value = true
-    const data = await loadGraphData()
-    if (data && data.nodes && data.edges) {
-      nodes.value = data.nodes
-      edges.value = data.edges
-      console.log('图谱数据加载成功:', data)
+    const loadGraph = async () => {
+      try {
+        isLoading.value = true
+        console.log('开始加载图谱数据')
+        const data = await loadGraphData()
+        console.log('加载的图谱数据:', data)
+        if (data && data.nodes && data.edges) {
+          nodes.value = data.nodes
+          edges.value = data.edges
+          console.log('图谱数据加载成功')
+        } else {
+          console.log('加载的图谱数据格式不正确，使用空图谱')
+          nodes.value = []
+          edges.value = []
+        }
+      } catch (error) {
+        console.error('加载图谱数据失败:', error)
+        // 显示错误消息
+        message.value = '加载失败: ' + error.message
+        showMessage.value = true
+        setTimeout(() => {
+          showMessage.value = false
+        }, 3000)
+      } finally {
+        isLoading.value = false
+      }
     }
-  } catch (error) {
-    console.error('加载图谱数据失败:', error)
-  } finally {
-    isLoading.value = false
-  }
-}
 
 // 保存图谱数据
-const saveGraph = async () => {
-  try {
-    isSaving.value = true
-    const graphData = {
-      nodes: nodes.value,
-      edges: edges.value
+    const saveGraph = async () => {
+      try {
+        isSaving.value = true
+        const graphData = {
+          nodes: nodes.value,
+          edges: edges.value
+        }
+        console.log('开始保存图谱数据', graphData)
+        const success = await saveGraphData(graphData)
+        console.log('保存结果:', success ? '成功' : '失败')
+
+        if (success) {
+          console.log('图谱数据保存成功')
+          // 显示成功消息
+          message.value = '图谱已保存'
+          showMessage.value = true
+          setTimeout(() => {
+            showMessage.value = false
+          }, 2000)
+        } else {
+          throw new Error('保存操作返回失败状态')
+        }
+      } catch (error) {
+        console.error('保存图谱数据失败:', error)
+
+        // 显示错误消息
+        message.value = '保存失败: ' + error.message
+        showMessage.value = true
+        setTimeout(() => {
+          showMessage.value = false
+        }, 3000)
+      } finally {
+        isSaving.value = false
+      }
     }
-    await saveGraphData(graphData)
-    console.log('图谱数据保存成功')
-
-    // 显示成功消息
-    message.value = '图谱已保存'
-    showMessage.value = true
-    setTimeout(() => {
-      showMessage.value = false
-    }, 2000)
-  } catch (error) {
-    console.error('保存图谱数据失败:', error)
-
-    // 显示错误消息
-    message.value = '保存失败'
-    showMessage.value = true
-    setTimeout(() => {
-      showMessage.value = false
-    }, 2000)
-  } finally {
-    isSaving.value = false
-  }
-}
 
 // 清除图谱
 const clearGraph = async () => {
