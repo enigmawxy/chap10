@@ -29,21 +29,20 @@ const nodeType = computed(() => props.data.nodeType || 'default')
 
 <template>
   <div class="custom-node" :class="{ selected }" :data-id="id">
-    <!-- 图标包装器 -->
+    <!-- 图标包装器（包含连接点） -->
     <div class="icon-wrapper">
       <Icon :name="nodeType" />
+      <!-- 连接点置于圆形图标上下左右 -->
+      <Handle type="target" :position="Position.Top" class="handle handle-top nodrag" />
+      <Handle type="source" :position="Position.Right" class="handle handle-right nodrag" />
+      <Handle type="source" :position="Position.Bottom" class="handle handle-bottom nodrag" />
+      <Handle type="target" :position="Position.Left" class="handle handle-left nodrag" />
     </div>
 
     <!-- 标签 -->
     <div class="node-label">
       {{ data.label }}
     </div>
-
-    <!-- 连接点 -->
-    <Handle type="target" :position="Position.Top" class="handle handle-top nodrag" />
-    <Handle type="source" :position="Position.Right" class="handle handle-right nodrag" />
-    <Handle type="source" :position="Position.Bottom" class="handle handle-bottom nodrag" />
-    <Handle type="target" :position="Position.Left" class="handle handle-left nodrag" />
   </div>
 </template>
 
@@ -83,6 +82,7 @@ const nodeType = computed(() => props.data.nodeType || 'default')
   background-color: #f0f0f0;
   margin-bottom: 6px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative; /* 作为连接点的定位参考 */
 }
 
 /* ElementPlus节点 */
@@ -198,5 +198,22 @@ const nodeType = computed(() => props.data.nodeType || 'default')
   top: 50%;
   left: 0;
   transform: translateX(-50%) translateY(-50%);
+}
+
+/* 调整连接点位置到圆形边缘 */
+.custom-node .icon-wrapper .handle-top {
+  top: -4px;
+}
+
+.custom-node .icon-wrapper .handle-right {
+  right: -4px;
+}
+
+.custom-node .icon-wrapper .handle-bottom {
+  bottom: -4px;
+}
+
+.custom-node .icon-wrapper .handle-left {
+  left: -4px;
 }
 </style>

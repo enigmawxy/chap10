@@ -48,70 +48,70 @@ onConnect((params) => {
 })
 
 // 加载图谱数据
-    const loadGraph = async () => {
-      try {
-        isLoading.value = true
-        console.log('开始加载图谱数据')
-        const data = await loadGraphData()
-        console.log('加载的图谱数据:', data)
-        if (data && data.nodes && data.edges) {
-          nodes.value = data.nodes
-          edges.value = data.edges
-          console.log('图谱数据加载成功')
-        } else {
-          console.log('加载的图谱数据格式不正确，使用空图谱')
-          nodes.value = []
-          edges.value = []
-        }
-      } catch (error) {
-        console.error('加载图谱数据失败:', error)
-        // 显示错误消息
-        message.value = '加载失败: ' + error.message
-        showMessage.value = true
-        setTimeout(() => {
-          showMessage.value = false
-        }, 3000)
-      } finally {
-        isLoading.value = false
-      }
+const loadGraph = async () => {
+  try {
+    isLoading.value = true
+    console.log('开始加载图谱数据')
+    const data = await loadGraphData()
+    console.log('加载的图谱数据:', data)
+    if (data && data.nodes && data.edges) {
+      nodes.value = data.nodes
+      edges.value = data.edges
+      console.log('图谱数据加载成功')
+    } else {
+      console.log('加载的图谱数据格式不正确，使用空图谱')
+      nodes.value = []
+      edges.value = []
     }
+  } catch (error) {
+    console.error('加载图谱数据失败:', error)
+    // 显示错误消息
+    message.value = '加载失败: ' + error.message
+    showMessage.value = true
+    setTimeout(() => {
+      showMessage.value = false
+    }, 3000)
+  } finally {
+    isLoading.value = false
+  }
+}
 
 // 保存图谱数据
-    const saveGraph = async () => {
-      try {
-        isSaving.value = true
-        const graphData = {
-          nodes: nodes.value,
-          edges: edges.value
-        }
-        console.log('开始保存图谱数据', graphData)
-        const success = await saveGraphData(graphData)
-        console.log('保存结果:', success ? '成功' : '失败')
-
-        if (success) {
-          console.log('图谱数据保存成功')
-          // 显示成功消息
-          message.value = '图谱已保存'
-          showMessage.value = true
-          setTimeout(() => {
-            showMessage.value = false
-          }, 2000)
-        } else {
-          throw new Error('保存操作返回失败状态')
-        }
-      } catch (error) {
-        console.error('保存图谱数据失败:', error)
-
-        // 显示错误消息
-        message.value = '保存失败: ' + error.message
-        showMessage.value = true
-        setTimeout(() => {
-          showMessage.value = false
-        }, 3000)
-      } finally {
-        isSaving.value = false
-      }
+const saveGraph = async () => {
+  try {
+    isSaving.value = true
+    const graphData = {
+      nodes: nodes.value,
+      edges: edges.value
     }
+    console.log('开始保存图谱数据', graphData)
+    const success = await saveGraphData(graphData)
+    console.log('保存结果:', success ? '成功' : '失败')
+
+    if (success) {
+      console.log('图谱数据保存成功')
+      // 显示成功消息
+      message.value = '图谱已保存'
+      showMessage.value = true
+      setTimeout(() => {
+        showMessage.value = false
+      }, 2000)
+    } else {
+      throw new Error('保存操作返回失败状态')
+    }
+  } catch (error) {
+    console.error('保存图谱数据失败:', error)
+
+    // 显示错误消息
+    message.value = '保存失败: ' + error.message
+    showMessage.value = true
+    setTimeout(() => {
+      showMessage.value = false
+    }, 3000)
+  } finally {
+    isSaving.value = false
+  }
+}
 
 // 清除图谱
 const clearGraph = async () => {
@@ -240,66 +240,45 @@ const updateGlobalSettings = (settings) => {
 </script>
 
 <template>
-    <div class="dnd-flow h-full" @drop="onDrop">
-        <!-- 内容区域，左边距与Sidebar宽度匹配 -->
-        <div class="vue-flow-wrapper pt-0">
-            <!-- 工具栏 -->
-            <div class="toolbar">
-                <button
-                  class="toolbar-button save-button"
-                  @click="saveGraph"
-                  :disabled="isSaving"
-                >
-                  {{ isSaving ? '保存中...' : '保存图谱' }}
-                </button>
-                <button
-                  class="toolbar-button clear-button"
-                  @click="clearGraph"
-                  :disabled="isClearing"
-                >
-                  {{ isClearing ? '清除中...' : '清除图谱' }}
-                </button>
-                <span v-if="isLoading" class="loading-indicator">加载中...</span>
-            </div>
+  <div class="dnd-flow h-full" @drop="onDrop">
+    <!-- 内容区域，左边距与Sidebar宽度匹配 -->
+    <div class="vue-flow-wrapper pt-0">
+      <!-- 工具栏 -->
+      <div class="toolbar">
+        <button class="toolbar-button save-button" @click="saveGraph" :disabled="isSaving">
+          {{ isSaving ? '保存中...' : '保存图谱' }}
+        </button>
+        <button class="toolbar-button clear-button" @click="clearGraph" :disabled="isClearing">
+          {{ isClearing ? '清除中...' : '清除图谱' }}
+        </button>
+        <span v-if="isLoading" class="loading-indicator">加载中...</span>
+      </div>
 
-            <VueFlow
-              :nodes="nodes"
-              :edges="edges"
-              @dragover="onDragOver"
-              @dragleave="onDragLeave"
-              class="vue-flow-instance"
-              :default-viewport="{ zoom: 1 }"
-              :connect-on-drop="true"
-              :snap-to-grid="true"
-              :snap-grid="[15, 15]"
-              @selectionchange="selectedElements = $event"
-            >
-                <!-- 使用具名插槽注册自定义节点 -->
-                <template #node-custom="nodeProps">
-                  <CustomNode v-bind="nodeProps" />
-                </template>
-                <DropzoneBackground :style="{
-                    backgroundColor: isDragOver ? '#e7f3ff' : 'transparent',
-                    transition: 'background-color 0.2s ease',
-                }">
-                    <p v-if="isDragOver">拖放到这里</p>
-                </DropzoneBackground>
-            </VueFlow>
+      <VueFlow :nodes="nodes" :edges="edges" @dragover="onDragOver" @dragleave="onDragLeave" class="vue-flow-instance"
+        :default-viewport="{ zoom: 1 }" :connect-on-drop="true" :snap-to-grid="true" :snap-grid="[15, 15]"
+        @selectionchange="selectedElements = $event">
+        <!-- 使用具名插槽注册自定义节点 -->
+        <template #node-custom="nodeProps">
+          <CustomNode v-bind="nodeProps" />
+        </template>
+        <DropzoneBackground :style="{
+          backgroundColor: isDragOver ? '#e7f3ff' : 'transparent',
+          transition: 'background-color 0.2s ease',
+        }">
+          <p v-if="isDragOver">拖放到这里</p>
+        </DropzoneBackground>
+      </VueFlow>
 
-            <!-- 消息提示 -->
-            <div v-if="showMessage" class="message-toast">
-                {{ message }}
-            </div>
-        </div>
-
-        <!-- 设置面板 -->
-        <SettingsPanel
-          :selectedElements="selectedElements"
-          @update-node-settings="updateNodeSettings"
-          @update-connection-settings="updateConnectionSettings"
-          @update-global-settings="updateGlobalSettings"
-        />
+      <!-- 消息提示 -->
+      <div v-if="showMessage" class="message-toast">
+        {{ message }}
+      </div>
     </div>
+
+    <!-- 设置面板 -->
+    <SettingsPanel :selectedElements="selectedElements" @update-node-settings="updateNodeSettings"
+      @update-connection-settings="updateConnectionSettings" @update-global-settings="updateGlobalSettings" />
+  </div>
 </template>
 
 <style scoped>
@@ -393,10 +372,21 @@ const updateGlobalSettings = (settings) => {
 }
 
 @keyframes fadeInOut {
-  0% { opacity: 0; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 @media screen and (min-width: 640px) {
