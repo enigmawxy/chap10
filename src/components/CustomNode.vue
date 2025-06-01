@@ -175,45 +175,10 @@ const nodeType = computed(() => props.data.nodeType || 'default')
   opacity: 0.8;
 }
 
-/* 连接点位置 */
-.handle-top {
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-}
-
-.handle-right {
+/* 连接点位置 - 全部聚合到圆心 */
+.handle {
   top: 50%;
-  right: 0;
-  transform: translateX(50%) translateY(-50%);
-}
-
-.handle-bottom {
-  bottom: 0;
   left: 50%;
-  transform: translateX(-50%) translateY(50%);
-}
-
-.handle-left {
-  top: 50%;
-  left: 0;
-  transform: translateX(-50%) translateY(-50%);
-}
-
-/* 调整连接点位置到圆形边缘 */
-.custom-node .icon-wrapper .handle-top {
-  top: -4px;
-}
-
-.custom-node .icon-wrapper .handle-right {
-  right: -4px;
-}
-
-.custom-node .icon-wrapper .handle-bottom {
-  bottom: -4px;
-}
-
-.custom-node .icon-wrapper .handle-left {
-  left: -4px;
+  transform: translate(-50%, -50%);
 }
 </style>
