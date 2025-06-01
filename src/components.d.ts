@@ -8,6 +8,10 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    CustomConnectionLine: typeof import('./components/CustomConnectionLine.vue')['default']
+    CustomEdge: typeof import('./components/CustomEdge.vue')['default']
+    CustomMaker: typeof import('./components/CustomMaker.vue')['default']
+    CustomMarker: typeof import('./components/CustomMarker.vue')['default']
     CustomNode: typeof import('./components/CustomNode.vue')['default']
     DropzoneBackground: typeof import('./components/DropzoneBackground.vue')['default']
     GraphLogo: typeof import('./components/GraphLogo.vue')['default']

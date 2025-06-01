@@ -6,6 +6,7 @@ import useDragAndDrop from '@/utils/useDnD.js'
 import CustomNode from '@/components/CustomNode.vue'
 import SettingsPanel from '@/components/SettingsPanel.vue'
 import { saveGraphData, loadGraphData } from '@/utils/graphStorage.js'
+import CustomEdge from '@/components/CustomEdge.vue'
 
 const { onConnect, addEdges } = useVueFlow()
 
@@ -41,7 +42,9 @@ const message = ref('')
 
 // 连接节点时的处理函数
 onConnect((params) => {
+  console.log('连接节点:', params)
   // 添加新的边到edges数组
+  params.type = 'custom'
   edges.value.push(params)
   // 保存图谱数据
   saveGraph()
@@ -260,6 +263,10 @@ const updateGlobalSettings = (settings) => {
         <!-- 使用具名插槽注册自定义节点 -->
         <template #node-custom="nodeProps">
           <CustomNode v-bind="nodeProps" />
+        </template>
+        <!-- 自定义连接线 -->
+        <template #edge-custom="edgeProps">
+          <CustomEdge v-bind="edgeProps" />
         </template>
         <DropzoneBackground :style="{
           backgroundColor: isDragOver ? '#e7f3ff' : 'transparent',
