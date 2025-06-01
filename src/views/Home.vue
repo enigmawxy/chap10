@@ -181,9 +181,13 @@ onUnmounted(() => {
 })
 
 // 处理连线点击事件
-const handleEdgeClick = (event, edge) => {
+const handleEdgeClick = (edge) => {
+  console.log('点击连线:', edge);
   // 设置当前选中的元素为被点击的连线
   selectedElements.value = [edge];
+  
+  // 调试信息：检查设置面板是否更新
+  console.log('选中的元素已更新:', selectedElements.value);
 };
 
 // 更新节点设置

@@ -197,10 +197,32 @@ watchEffect(() => {
   const elements = props.selectedElements
 
   if (elements.length === 1) {
-    const element = elements[0]
+    const element = elements[0].edge
+    console.log('当前选中元素:', element);
 
-    // 判断是节点还是连线
+    // 判断是节点还是连线：通过检查是否有source和target属性
     if (element.type === 'custom') {
+      // 是连线
+      activeTab.value = 'connection'
+      connectionSettings.value = {
+        id: element.id || '',
+        source: element.source || '',
+        target: element.target || '',
+        sourcePosition: element.sourcePosition || '',
+        targetPosition: element.targetPosition || '',
+        text: element.label || '',
+        textStyle: element.labelStyle?.fontStyle
+          ? `${element.labelStyle.fontStyle} ${element.labelStyle.fontSize || '14px'} ${element.labelStyle.fontFamily || 'Arial'}`
+          : 'normal 14px Arial',
+        type: element.type === 'default' ? '直线' : element.type === 'smoothstep' ? '曲线' : '折线',
+        width: element.style?.strokeWidth || 2,
+        showArrow: element.markerEnd ? '是' : '否',
+        dashedStyle: element.style?.strokeDasharray || '[0]',
+        color: element.style?.stroke || '#ff9999',
+        textColor: element.labelStyle?.fill || '#333333'
+      }
+      console.log('连线设置已更新:', connectionSettings.value);
+    } else {
       // 是节点
       activeTab.value = 'node'
       nodeSettings.value = {
@@ -215,25 +237,12 @@ watchEffect(() => {
         imageUrl: element.data?.imageUrl || '',
         size: element.style?.width || 34
       }
-    } else {
-      // 是连线
-      activeTab.value = 'connection'
-      connectionSettings.value = {
-        text: element.label || '',
-        textStyle: element.labelStyle?.fontStyle
-          ? `${element.labelStyle.fontStyle} ${element.labelStyle.fontSize || '14px'} ${element.labelStyle.fontFamily || 'Arial'}`
-          : 'normal 14px Arial',
-        type: element.type === 'default' ? '直线' : element.type === 'smoothstep' ? '曲线' : '折线',
-        width: element.style?.strokeWidth || 2,
-        showArrow: element.markerEnd ? '是' : '否',
-        dashedStyle: element.style?.strokeDasharray || '[0]',
-        color: element.style?.stroke || '#ff9999',
-        textColor: element.labelStyle?.fill || '#333333'
-      }
+      console.log('节点设置已更新:', nodeSettings.value);
     }
   } else {
     // 没有选中元素或选中多个元素，显示全局设置
     activeTab.value = 'global'
+    console.log('切换到全局设置');
   }
 })
 
@@ -394,6 +403,31 @@ const saveConnectionSettings = () => {
 
       <!-- 连线设置 -->
       <div v-if="activeTab === 'connection'" class="tab-content">
+        <div class="form-group">
+          <label>连线ID</label>
+          <input type="text" v-model="connectionSettings.id" readonly class="form-input readonly">
+        </div>
+        
+        <div class="form-group">
+          <label>源节点</label>
+          <input type="text" v-model="connectionSettings.source" readonly class="form-input readonly">
+        </div>
+        
+        <div class="form-group">
+          <label>目标节点</label>
+          <input type="text" v-model="connectionSettings.target" readonly class="form-input readonly">
+        </div>
+        
+        <div class="form-group">
+          <label>源节点位置</label>
+          <input type="text" v-model="connectionSettings.sourcePosition" readonly class="form-input readonly">
+        </div>
+        
+        <div class="form-group">
+          <label>目标节点位置</label>
+          <input type="text" v-model="connectionSettings.targetPosition" readonly class="form-input readonly">
+        </div>
+        
         <div class="form-group">
           <label>连线文字</label>
           <input type="text" v-model="connectionSettings.text" class="form-input">
