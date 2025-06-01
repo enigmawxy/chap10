@@ -61,6 +61,7 @@ const path = computed(() => {
     return getBezierPath(props);
   } else {
     // 计算节点半径（假设节点是圆形）
+    const sourceRadius = (sourceNode?.dimensions?.width || 34) / 2;
     const targetRadius = (targetNode?.dimensions?.width || 34) / 2;
     
     // 计算从源点到目标点的向量
@@ -68,15 +69,22 @@ const path = computed(() => {
     const dy = props.targetY - props.sourceY;
     const length = Math.sqrt(dx * dx + dy * dy);
     
-    // 计算目标点边缘位置（在向量方向上回退一个半径长度）
-    if (length > 0 && targetRadius > 0) {
-      const ratio = targetRadius / length;
-      const adjustedTargetX = props.targetX - dx * ratio;
-      const adjustedTargetY = props.targetY - dy * ratio;
+    if (length > 0) {
+      // 计算源点边缘位置（在向量方向上前进一个半径长度）
+      const sourceRatio = sourceRadius / length;
+      const adjustedSourceX = props.sourceX + dx * sourceRatio;
+      const adjustedSourceY = props.sourceY + dy * sourceRatio;
       
-      // 使用调整后的目标点坐标
+      // 计算目标点边缘位置（在向量方向上回退一个半径长度）
+      const targetRatio = targetRadius / length;
+      const adjustedTargetX = props.targetX - dx * targetRatio;
+      const adjustedTargetY = props.targetY - dy * targetRatio;
+      
+      // 使用调整后的坐标
       return getStraightPath({
         ...props,
+        sourceX: adjustedSourceX,
+        sourceY: adjustedSourceY,
         targetX: adjustedTargetX,
         targetY: adjustedTargetY
       });
@@ -135,7 +143,6 @@ export default {
   <BaseEdge
     :id="id"
     :path="path[0]"
-    :marker-end="`url(#${markerId})`"
     :marker-start="`url(#${markerId})`"
     :label="`${markerType} marker`"
     :label-x="path[1]"
