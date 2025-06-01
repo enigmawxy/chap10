@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { VueFlow, useVueFlow, MarkerType } from '@vue-flow/core'
 import DropzoneBackground from '@/components/DropzoneBackground.vue'
 import useDragAndDrop from '@/utils/useDnD.js'
 import CustomNode from '@/components/CustomNode.vue'
@@ -47,7 +47,18 @@ onConnect((params) => {
   const newEdge = {
     ...params,
     id: `edge-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
-    type: 'custom'
+    type: 'custom',
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      color: '#ff0072',
+    },
+    markerStart: {
+      type: MarkerType.ArrowClosed,
+      color: '#ff0072',
+    },
+    data: {
+      edgeType: 'straight' // 默认使用直线
+    }
   }
   // 添加新的边到edges数组
   edges.value.push(newEdge)
@@ -59,15 +70,11 @@ onConnect((params) => {
 const loadGraph = async () => {
   try {
     isLoading.value = true
-    console.log('开始加载图谱数据')
     const data = await loadGraphData()
-    console.log('加载的图谱数据:', data)
     if (data && data.nodes && data.edges) {
       nodes.value = data.nodes
       edges.value = data.edges
-      console.log('图谱数据加载成功')
     } else {
-      console.log('加载的图谱数据格式不正确，使用空图谱')
       nodes.value = []
       edges.value = []
     }
@@ -92,12 +99,10 @@ const saveGraph = async () => {
       nodes: nodes.value,
       edges: edges.value
     }
-    console.log('开始保存图谱数据', graphData)
     const success = await saveGraphData(graphData)
     console.log('保存结果:', success ? '成功' : '失败')
 
     if (success) {
-      console.log('图谱数据保存成功')
       // 显示成功消息
       message.value = '图谱已保存'
       showMessage.value = true
@@ -175,6 +180,12 @@ onUnmounted(() => {
   }
 })
 
+// 处理连线点击事件
+const handleEdgeClick = (event, edge) => {
+  // 设置当前选中的元素为被点击的连线
+  selectedElements.value = [edge];
+};
+
 // 更新节点设置
 const updateNodeSettings = ({ id, settings }) => {
   const nodeIndex = nodes.value.findIndex(node => node.id === id)
@@ -206,10 +217,11 @@ const updateNodeSettings = ({ id, settings }) => {
 const updateConnectionSettings = ({ id, settings }) => {
   const edgeIndex = edges.value.findIndex(edge => edge.id === id)
   if (edgeIndex > -1) {
+    // 更新连线样式
     edges.value[edgeIndex] = {
       ...edges.value[edgeIndex],
       label: settings.text,
-      type: settings.type === '直线' ? 'default' : settings.type === '曲线' ? 'smoothstep' : 'step',
+      type: settings.vueFlowType, // 使用映射后的类型
       style: {
         ...edges.value[edgeIndex].style,
         stroke: settings.color,
@@ -222,6 +234,11 @@ const updateConnectionSettings = ({ id, settings }) => {
         fill: settings.textColor,
         fontFamily: settings.textStyle.split(' ')[2],
         fontSize: settings.textStyle.split(' ')[1]
+      },
+      // 更新自定义类型用于CustomEdge组件
+      data: {
+        ...edges.value[edgeIndex].data,
+        edgeType: settings.type === '直线' ? 'straight' : 'bezier'
       }
     }
 
@@ -264,7 +281,7 @@ const updateGlobalSettings = (settings) => {
 
       <VueFlow :nodes="nodes" :edges="edges" @dragover="onDragOver" @dragleave="onDragLeave" class="vue-flow-instance"
         :default-viewport="{ zoom: 1 }" :connect-on-drop="true" :snap-to-grid="true" :snap-grid="[15, 15]"
-        @selectionchange="selectedElements = $event">
+        @selectionchange="selectedElements = $event" @edge-click="handleEdgeClick">
         <!-- 使用具名插槽注册自定义节点 -->
         <template #node-custom="nodeProps">
           <CustomNode v-bind="nodeProps" />

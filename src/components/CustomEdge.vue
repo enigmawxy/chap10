@@ -1,5 +1,5 @@
 <script setup>
-import { BaseEdge, getBezierPath, useVueFlow } from '@vue-flow/core'
+import { BaseEdge, getBezierPath, getStraightPath, useVueFlow } from '@vue-flow/core'
 import { computed } from 'vue'
 import CustomMarker from '@/components/CustomMarker.vue'
 
@@ -48,7 +48,44 @@ const props = defineProps({
 
 const { findNode } = useVueFlow()
 
-const path = computed(() => getBezierPath(props))
+// 根据连线类型选择路径生成函数
+const path = computed(() => {
+  // 使用data.edgeType决定路径类型
+  const edgeType = props.data?.edgeType || 'straight';
+  
+  // 获取源节点和目标节点
+  const sourceNode = findNode(props.source);
+  const targetNode = findNode(props.target);
+  
+  if (edgeType === 'bezier') {
+    return getBezierPath(props);
+  } else {
+    // 计算节点半径（假设节点是圆形）
+    const targetRadius = (targetNode?.dimensions?.width || 34) / 2;
+    
+    // 计算从源点到目标点的向量
+    const dx = props.targetX - props.sourceX;
+    const dy = props.targetY - props.sourceY;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    
+    // 计算目标点边缘位置（在向量方向上回退一个半径长度）
+    if (length > 0 && targetRadius > 0) {
+      const ratio = targetRadius / length;
+      const adjustedTargetX = props.targetX - dx * ratio;
+      const adjustedTargetY = props.targetY - dy * ratio;
+      
+      // 使用调整后的目标点坐标
+      return getStraightPath({
+        ...props,
+        targetX: adjustedTargetX,
+        targetY: adjustedTargetY
+      });
+    }
+    
+    // 如果无法计算，使用原始坐标
+    return getStraightPath(props);
+  }
+})
 
 const markerId = computed(() => `${props.id}-marker`)
 
@@ -70,16 +107,21 @@ const markerColor = computed(() => {
 const markerType = computed(() => {
   const sourceNode = findNode(props.source)
   const targetNode = findNode(props.target)
-
-  if (sourceNode.selected) {
-    return 'diamond'
+  
+  let type = 'arrow'
+  
+  // 如果边上有箭头标记配置，使用箭头类型
+  if (props.markerEnd || props.markerStart) {
+    type = 'arrow'
+  } else if (sourceNode.selected) {
+    type = 'diamond'
+  } else if (targetNode.selected) {
+    type = 'circle'
   }
 
-  if (targetNode.selected) {
-    return 'circle'
-  }
-
-  return 'square'
+  // 调试：打印标记类型
+  console.log(`Edge ${props.id} marker type: ${type}`)
+  return type
 })
 </script>
 

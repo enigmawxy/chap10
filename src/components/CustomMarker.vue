@@ -1,4 +1,5 @@
 <script setup>
+
 defineProps({
   id: {
     type: String,
@@ -34,6 +35,7 @@ defineProps({
     default: 12.5,
   },
 })
+
 </script>
 
 <template>
@@ -50,6 +52,19 @@ defineProps({
         markerUnits="strokeWidth"
         orient="auto-start-reverse"
       >
+        <!-- 箭头路径 -->
+        <path
+          v-if="type === 'arrow'"
+          :style="{
+            stroke,
+            strokeWidth,
+          }"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          :fill="fill"
+          d="M 0,-5 L 10,0 L 0,5 Z"
+        />
+        
         <path
           v-if="type === 'diamond'"
           :style="{

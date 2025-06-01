@@ -77,7 +77,7 @@ const nodeType = computed(() => props.data.nodeType || 'default')
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #f0f0f0;
+  /* background-color: #f0f0f0; */
   margin-bottom: 6px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative; /* 作为连接点的定位参考 */

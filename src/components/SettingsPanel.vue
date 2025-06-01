@@ -255,9 +255,22 @@ const saveNodeSettings = () => {
 // 保存连线设置
 const saveConnectionSettings = () => {
   if (props.selectedElements.length === 1 && props.selectedElements[0].type !== 'custom') {
+    const settings = connectionSettings.value;
+    
+    // 映射连线类型到Vue Flow类型
+    let vueFlowType = 'default';
+    if (settings.type === '曲线') {
+      vueFlowType = 'smoothstep';
+    } else if (settings.type === '折线') {
+      vueFlowType = 'step';
+    }
+    
     emit('update-connection-settings', {
       id: props.selectedElements[0].id,
-      settings: connectionSettings.value
+      settings: {
+        ...settings,
+        vueFlowType: vueFlowType
+      }
     })
   }
 }
