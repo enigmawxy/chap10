@@ -38,10 +38,24 @@ const openDB = () => {
  */
 export const saveGraphData = async (graphData, key = DEFAULT_KEY) => {
   try {
+    // 移除重复边（相同节点对只保留一条边，不考虑方向）
+    const edgeMap = new Map();
+    const uniqueEdges = [];
+    graphData.edges.forEach(edge => {
+      // 创建规范化键（按字母顺序排序的节点ID对）
+      const sortedPair = [edge.source, edge.target].sort();
+      const key = `${sortedPair[0]}-${sortedPair[1]}`;
+      
+      if (!edgeMap.has(key)) {
+        edgeMap.set(key, true);
+        uniqueEdges.push(edge);
+      }
+    });
+
     // 创建可序列化的副本
     const serializableData = {
       nodes: JSON.parse(JSON.stringify(graphData.nodes)),
-      edges: JSON.parse(JSON.stringify(graphData.edges))
+      edges: JSON.parse(JSON.stringify(uniqueEdges))
     };
     
     const db = await openDB();
