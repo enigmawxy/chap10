@@ -182,12 +182,12 @@ onUnmounted(() => {
 
 // 处理连线点击事件
 const handleEdgeClick = (edge) => {
-  console.log('点击连线:', edge);
-  // 设置当前选中的元素为被点击的连线
   selectedElements.value = [edge];
-  
-  // 调试信息：检查设置面板是否更新
-  console.log('选中的元素已更新:', selectedElements.value);
+};
+
+// 新增：处理节点点击事件
+const handleNodeClick = (node) => {
+  selectedElements.value = [node];
 };
 
 // 更新节点设置
@@ -285,7 +285,8 @@ const updateGlobalSettings = (settings) => {
 
       <VueFlow :nodes="nodes" :edges="edges" @dragover="onDragOver" @dragleave="onDragLeave" class="vue-flow-instance"
         :default-viewport="{ zoom: 1 }" :connect-on-drop="true" :snap-to-grid="true" :snap-grid="[15, 15]"
-        @selectionchange="selectedElements = $event" @edge-click="handleEdgeClick">
+        @selectionchange="selectedElements = $event" @edge-click="handleEdgeClick" @node-click="handleNodeClick"
+        fit-view-on-init>
         <!-- 使用具名插槽注册自定义节点 -->
         <template #node-custom="nodeProps">
           <CustomNode v-bind="nodeProps" />

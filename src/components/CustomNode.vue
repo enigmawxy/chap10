@@ -30,7 +30,7 @@ const nodeType = computed(() => props.data.nodeType || 'default')
 <template>
   <div class="custom-node" :class="{ selected }" :data-id="id">
     <!-- 图标包装器（包含连接点） -->
-    <div class="icon-wrapper">
+    <div class="icon-wrapper" :style="selected ? { backgroundColor: '#F5F5FB', borderColor: '#F5F5FB' } : {}">
       <Icon :name="nodeType" />
       <!-- 连接点置于圆心（支持输入输出） -->
       <Handle type="source" :position="Position.Top" class="handle nodrag" />

@@ -195,54 +195,52 @@ const incrementConnectionWidth = () => {
 // 监听选中元素变化
 watchEffect(() => {
   const elements = props.selectedElements
-
+  // console.log('当前选中元素:', elements);
   if (elements.length === 1) {
-    const element = elements[0].edge
-    console.log('当前选中元素:', element);
-
-    // 判断是节点还是连线：通过检查是否有source和target属性
-    if (element.type === 'custom') {
-      // 是连线
+    const element = elements[0]
+    // 判断是连线还是节点
+    if (element.hasOwnProperty('edge')) {
+      // 连线
       activeTab.value = 'connection'
+      console.log('连线设置:', element);
+      const edge = element.edge
       connectionSettings.value = {
-        id: element.id || '',
-        source: element.source || '',
-        target: element.target || '',
-        sourcePosition: element.sourcePosition || '',
-        targetPosition: element.targetPosition || '',
-        text: element.label || '',
+        id: edge.id || '',
+        source: edge.source || '',
+        target: edge.target || '',
+        sourcePosition: edge.source || '',
+        targetPosition: edge.target || '',
+        text: edge.label || '',
         textStyle: element.labelStyle?.fontStyle
           ? `${element.labelStyle.fontStyle} ${element.labelStyle.fontSize || '14px'} ${element.labelStyle.fontFamily || 'Arial'}`
           : 'normal 14px Arial',
-        type: element.type === 'default' ? '直线' : element.type === 'smoothstep' ? '曲线' : '折线',
-        width: element.style?.strokeWidth || 2,
-        showArrow: element.markerEnd ? '是' : '否',
-        dashedStyle: element.style?.strokeDasharray || '[0]',
-        color: element.style?.stroke || '#ff9999',
-        textColor: element.labelStyle?.fill || '#333333'
+        type: edge.data.edgeType === 'straight' ? '直线' : edge.data.edgeType === 'straight' ? '直线':'曲线',
+        width: edge.style?.strokeWidth || 2,
+        showArrow: edge.data.markerStart || edge.data.markerEnd ? '是' : '否',
+        dashedStyle: edge.style?.strokeDasharray || '[0]',
+        color: edge.data.markerStart.color || '#ff9999',
+        textColor: edge.labelStyle?.fill || '#333333'
       }
-      console.log('连线设置已更新:', connectionSettings.value);
     } else {
-      // 是节点
+      // 节点
       activeTab.value = 'node'
+      console.log('节点设置:', element);
+      const node = element.node
       nodeSettings.value = {
-        nodeId: element.id || '',
-        nodeText: element.data?.label || '',
-        textPosition: '下方', // 默认文字位置
-        textStyle: element.style?.fontStyle
-          ? `${element.style.fontStyle} ${element.style.fontSize || '13px'} ${element.style.fontFamily || 'YaHei'}`
+        nodeId: node.id || '',
+        nodeText: node.data?.label || '',
+        textPosition: node.data?.textPosition || '下方',
+        textStyle: node.style?.fontStyle
+          ? `${node.style.fontStyle} ${node.style.fontSize || '13px'} ${node.style.fontFamily || 'YaHei'}`
           : 'normal 13px YaHei',
-        textColor: element.style?.color || '#000000',
-        bgColor: element.style?.backgroundColor || '#ffcccc',
-        imageUrl: element.data?.imageUrl || '',
-        size: element.style?.width || 34
+        textColor: node.style?.color || '#000000',
+        bgColor: node.style?.backgroundColor || '#ffcccc',
+        imageUrl: node.data?.imageUrl || '',
+        size: node.style?.width || 34
       }
-      console.log('节点设置已更新:', nodeSettings.value);
     }
   } else {
-    // 没有选中元素或选中多个元素，显示全局设置
     activeTab.value = 'global'
-    console.log('切换到全局设置');
   }
 })
 
