@@ -43,9 +43,14 @@ const message = ref('')
 // 连接节点时的处理函数
 onConnect((params) => {
   console.log('连接节点:', params)
+  // 为新的边生成一个唯一的id
+  const newEdge = {
+    ...params,
+    id: `edge-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+    type: 'custom'
+  }
   // 添加新的边到edges数组
-  params.type = 'custom'
-  edges.value.push(params)
+  edges.value.push(newEdge)
   // 保存图谱数据
   saveGraph()
 })

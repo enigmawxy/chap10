@@ -32,11 +32,9 @@ const nodeType = computed(() => props.data.nodeType || 'default')
     <!-- 图标包装器（包含连接点） -->
     <div class="icon-wrapper">
       <Icon :name="nodeType" />
-      <!-- 连接点置于圆形图标上下左右 -->
-      <Handle type="target" :position="Position.Top" class="handle handle-top nodrag" />
-      <Handle type="source" :position="Position.Right" class="handle handle-right nodrag" />
-      <Handle type="source" :position="Position.Bottom" class="handle handle-bottom nodrag" />
-      <Handle type="target" :position="Position.Left" class="handle handle-left nodrag" />
+      <!-- 连接点置于圆心（支持输入输出） -->
+      <Handle type="source" :position="Position.Top" class="handle nodrag" />
+      <Handle type="target" :position="Position.Top" class="handle nodrag" />
     </div>
 
     <!-- 标签 -->
