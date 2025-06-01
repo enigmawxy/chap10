@@ -48,16 +48,16 @@ onConnect((params) => {
     ...params,
     id: `edge-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
     type: 'custom',
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-      color: '#ff0072',
-    },
-    markerStart: {
-      type: MarkerType.ArrowClosed,
-      color: '#ff0072',
-    },
     data: {
-      edgeType: 'straight' // 默认使用直线
+      edgeType: 'straight', // 默认使用直线
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        color: '#ff0072',
+      },
+      markerStart: {
+        type: MarkerType.ArrowClosed,
+        color: '#ff0072',
+      },
     }
   }
   // 添加新的边到edges数组

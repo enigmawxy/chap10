@@ -98,6 +98,13 @@ const path = computed(() => {
 const markerId = computed(() => `${props.id}-marker`)
 
 const markerColor = computed(() => {
+  console.log(`Edge ${props.id} :`, props)
+  console.log(`Edge ${props.id} marker color:`, props.data.markerStart?.color)
+  // 优先使用markerStart.color颜色
+  if (props.data.markerStart && props.data.markerStart.color) {
+    return props.data.markerStart.color
+  }
+  
   const sourceNode = findNode(props.source)
   const targetNode = findNode(props.target)
 
@@ -116,10 +123,10 @@ const markerType = computed(() => {
   const sourceNode = findNode(props.source)
   const targetNode = findNode(props.target)
   
-  let type = 'arrow'
+  let type = 'square'
   
   // 如果边上有箭头标记配置，使用箭头类型
-  if (props.markerEnd || props.markerStart) {
+  if (props.data.markerEnd || props.data.markerStart) {
     type = 'arrow'
   } else if (sourceNode.selected) {
     type = 'diamond'
