@@ -1,5 +1,6 @@
 import { useVueFlow } from '@vue-flow/core'
 import { ref, watch } from 'vue'
+import { nanoid } from "nanoid";
 
 let id = 0
 
@@ -83,7 +84,7 @@ export default function useDragAndDrop() {
       y: event.clientY,
     })
 
-    const nodeId = getId()
+    const nodeId = nanoid()//getId()
     const nodeType = draggedType.value
 
     // 根据节点类型设置不同的标签和样式
