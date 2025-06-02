@@ -10,7 +10,7 @@ const basicExpanded = ref(true)
 // 图谱元素分类是否展开
 const graphExpanded = ref(true)
 // Sidebar宽度
-const sidebarWidth = ref(250)
+const sidebarWidth = ref(280)
 // 是否正在调整宽度
 const isResizing = ref(false)
 
@@ -110,7 +110,7 @@ const handleMouseMove = (event) => {
   if (!isResizing.value) return
 
   // 计算新宽度 (鼠标X坐标即为宽度，因为Sidebar从左侧0位置开始)
-  const newWidth = Math.max(250, Math.min(280, event.clientX))
+  const newWidth = Math.max(250, Math.min(320, event.clientX))
 
   // 设置新宽度
   sidebarWidth.value = newWidth
