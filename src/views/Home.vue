@@ -8,10 +8,17 @@ import SettingsPanel from '@/components/SettingsPanel.vue'
 import { saveGraphData, loadGraphData } from '@/utils/graphStorage.js'
 import CustomEdge from '@/components/CustomEdge.vue'
 
-const { onConnect, addEdges } = useVueFlow()
+// 获取更多VueFlow功能
+const { onConnect, addEdges, onNodeDragStop, toObject } = useVueFlow()
 
 // 获取拖放相关函数
 const { onDragOver, onDragLeave, isDragOver } = useDragAndDrop()
+
+// 添加节点拖拽结束事件处理
+onNodeDragStop(() => {
+  console.log('节点拖拽结束，保存位置信息')
+  saveGraph()
+})
 
 // 自定义onDrop函数，添加节点后保存图谱
 const { onDrop: originalOnDrop } = useDragAndDrop()
@@ -95,9 +102,11 @@ const loadGraph = async () => {
 const saveGraph = async () => {
   try {
     isSaving.value = true
+    // 使用 toObject() 获取完整的图谱状态，确保包含最新的节点位置
+    const flow = toObject()
     const graphData = {
-      nodes: nodes.value,
-      edges: edges.value
+      nodes: flow.nodes || nodes.value,
+      edges: flow.edges || edges.value
     }
     const success = await saveGraphData(graphData)
     console.log('保存结果:', success ? '成功' : '失败')
@@ -286,7 +295,7 @@ const updateGlobalSettings = (settings) => {
       <VueFlow :nodes="nodes" :edges="edges" @dragover="onDragOver" @dragleave="onDragLeave" class="vue-flow-instance"
         :default-viewport="{ zoom: 1 }" :connect-on-drop="true" :snap-to-grid="true" :snap-grid="[15, 15]"
         @selectionchange="selectedElements = $event" @edge-click="handleEdgeClick" @node-click="handleNodeClick"
-        fit-view-on-init>
+        @nodeDragStop="saveGraph" fit-view-on-init>
         <!-- 使用具名插槽注册自定义节点 -->
         <template #node-custom="nodeProps">
           <CustomNode v-bind="nodeProps" />
