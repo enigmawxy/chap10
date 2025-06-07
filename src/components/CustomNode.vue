@@ -23,14 +23,72 @@ const props = defineProps({
   }
 })
 
+// 定义事件
+const emit = defineEmits(['node-click'])
+
+// 节点点击处理函数
+const handleNodeClick = () => {
+  console.log('节点被点击:', props.id)
+  emit('node-click', { id: props.id, data: props.data })
+}
+
 // 计算节点类型
 const nodeType = computed(() => props.data.nodeType || 'default')
+
+// 计算文字位置样式
+const labelPositionStyle = computed(() => {
+  const position = props.data.textPosition || '下方'
+  switch (position) {
+    case '上方':
+      return { order: -1, marginBottom: '6px', marginTop: '0' }
+    case '下方':
+      return { order: 1, marginTop: '6px', marginBottom: '0' }
+    case '左边':
+      return { order: -1, marginRight: '6px', alignSelf: 'center' }
+    case '右边':
+      return { order: 1, marginLeft: '6px', alignSelf: 'center' }
+    case '居中':
+      return { position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }
+    default:
+      return { order: 1, marginTop: '6px', marginBottom: '0' }
+  }
+})
+
+// 计算节点容器样式
+const nodeContainerStyle = computed(() => {
+  const position = props.data.textPosition || '下方'
+  return {
+    flexDirection: position === '左边' || position === '右边' ? 'row' : 'column'
+  }
+})
+
+// 计算图标包装器样式
+const iconWrapperStyle = computed(() => {
+  const baseStyle = props.selected ? { borderColor: '#409EFF', borderWidth: '2px' } : {}
+  const size = props.data.size || 40
+  const bgColor = props.data.bgColor || '#f0f0f0'
+  
+  return {
+    ...baseStyle,
+    width: `${size}px`,
+    height: `${size}px`,
+    backgroundColor: bgColor
+  }
+})
+
+// 计算文字样式
+const labelStyle = computed(() => {
+  const textColor = props.data.textColor || '#333'
+  return {
+    color: textColor
+  }
+})
 </script>
 
 <template>
-  <div class="custom-node" :class="{ selected }" :data-id="id">
+  <div class="custom-node" :class="{ selected: props.selected }" :data-id="id" :style="nodeContainerStyle" @click="handleNodeClick">
     <!-- 图标包装器（包含连接点） -->
-    <div class="icon-wrapper" :style="selected ? { borderColor: '#409EFF', borderWidth: '2px' } : {}">
+    <div class="icon-wrapper" :style="iconWrapperStyle">
       <Icon :name="nodeType" />
       <!-- 连接点置于圆心（支持输入输出） -->
       <Handle type="source" :position="Position.Top" class="handle nodrag" />
@@ -38,7 +96,7 @@ const nodeType = computed(() => props.data.nodeType || 'default')
     </div>
 
     <!-- 标签 -->
-    <div class="node-label">
+    <div class="node-label" :style="{ ...labelPositionStyle, ...labelStyle }">
       {{ data.label }}
     </div>
   </div>
@@ -48,7 +106,6 @@ const nodeType = computed(() => props.data.nodeType || 'default')
 .custom-node {
   position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: transparent !important;
@@ -61,6 +118,7 @@ const nodeType = computed(() => props.data.nodeType || 'default')
   margin: 0 !important;
   box-shadow: none !important;
   outline: none !important;
+  cursor: pointer;
 }
 
 .custom-node.selected {
@@ -143,7 +201,6 @@ const nodeType = computed(() => props.data.nodeType || 'default')
 .node-label {
   font-size: 12px;
   font-weight: 500;
-  color: #333;
   text-align: center;
   max-width: 80px;
   overflow: hidden;

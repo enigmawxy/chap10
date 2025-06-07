@@ -1,11 +1,11 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { VueFlow, useVueFlow, MarkerType } from '@vue-flow/core'
 import DropzoneBackground from '@/components/DropzoneBackground.vue'
 import useDragAndDrop from '@/utils/useDnD.js'
 import CustomNode from '@/components/CustomNode.vue'
 import SettingsPanel from '@/components/SettingsPanel.vue'
-import { saveGraphData, loadGraphData } from '@/utils/graphStorage.js'
+import { saveGraphData, loadGraphData, deleteGraphData } from '@/utils/graphStorage.js'
 import CustomEdge from '@/components/CustomEdge.vue'
 
 // 获取更多VueFlow功能
@@ -144,8 +144,8 @@ const clearGraph = async () => {
     nodes.value = []
     edges.value = []
 
-    // 保存空图谱
-    await saveGraph()
+    // 删除IndexDB数据
+    await deleteGraphData()
 
     // 显示成功消息
     message.value = '图谱已清除'
@@ -202,13 +202,23 @@ const handleNodeClick = (node) => {
 // 更新节点设置
 const updateNodeSettings = ({ id, settings }) => {
   const nodeIndex = nodes.value.findIndex(node => node.id === id)
+  console.log('更新节点设置inHome:', id, settings)
+  console.log('找到节点索引:', nodeIndex)
+  
   if (nodeIndex > -1) {
-    nodes.value[nodeIndex] = {
+    console.log('更新前的节点数据:', JSON.stringify(nodes.value[nodeIndex], null, 2))
+    
+    // 创建新的节点对象
+    const updatedNode = {
       ...nodes.value[nodeIndex],
       data: {
         ...nodes.value[nodeIndex].data,
         label: settings.nodeText,
-        imageUrl: settings.imageUrl
+        imageUrl: settings.imageUrl,
+        textPosition: settings.textPosition, // 添加文字位置
+        textColor: settings.textColor, // 添加文字颜色
+        bgColor: settings.bgColor, // 添加节点底色
+        size: settings.size // 添加节点大小
       },
       style: {
         ...nodes.value[nodeIndex].style,
@@ -220,18 +230,38 @@ const updateNodeSettings = ({ id, settings }) => {
         height: settings.size
       }
     }
+    
+    // 使用Vue 3的响应式更新
+    nodes.value.splice(nodeIndex, 1, updatedNode)
+    
+    console.log('更新后的节点数据:', JSON.stringify(nodes.value[nodeIndex], null, 2))
+    console.log('当前所有节点:', JSON.stringify(nodes.value, null, 2))
 
-    // 保存图谱数据
-    saveGraph()
+    // 强制触发响应式更新
+    nodes.value = [...nodes.value]
+    
+    // 延迟保存，确保DOM更新完成
+    setTimeout(() => {
+      console.log('准备保存图谱数据')
+      saveGraph()
+    }, 100)
+  } else {
+    console.error('未找到要更新的节点:', id)
   }
 }
 
 // 更新连线设置
+// 更新连线设置
 const updateConnectionSettings = ({ id, settings }) => {
   const edgeIndex = edges.value.findIndex(edge => edge.id === id)
+  console.log('更新连线设置inHome:', id, settings)
+  console.log('找到连线索引:', edgeIndex)
+  
   if (edgeIndex > -1) {
-    // 更新连线样式
-    edges.value[edgeIndex] = {
+    console.log('更新前的连线数据:', JSON.stringify(edges.value[edgeIndex], null, 2))
+    
+    // 创建新的连线对象
+    const updatedEdge = {
       ...edges.value[edgeIndex],
       label: settings.text,
       type: settings.vueFlowType, // 使用映射后的类型
@@ -239,24 +269,46 @@ const updateConnectionSettings = ({ id, settings }) => {
         ...edges.value[edgeIndex].style,
         stroke: settings.color,
         strokeWidth: settings.width,
-        strokeDasharray: settings.dashedStyle
+        strokeDasharray: settings.dashedStyle !== 'none' ? settings.dashedStyle : undefined
       },
       markerEnd: settings.showArrow === '是' ? { type: 'arrow' } : undefined,
       labelStyle: {
         ...edges.value[edgeIndex].labelStyle,
         fill: settings.textColor,
-        fontFamily: settings.textStyle.split(' ')[2],
-        fontSize: settings.textStyle.split(' ')[1]
+        fontFamily: settings.textStyle.split(' ')[2] || 'Microsoft YaHei',
+        fontSize: settings.textStyle.split(' ')[1] || '12px'
       },
-      // 更新自定义类型用于CustomEdge组件
+      // 更新自定义数据用于CustomEdge组件
       data: {
         ...edges.value[edgeIndex].data,
-        edgeType: settings.type === '直线' ? 'straight' : 'bezier'
+        edgeType: settings.type === '直线' ? 'straight' : (settings.type === '曲线' ? 'bezier' : 'straight'),
+        text: settings.text,
+        color: settings.color,
+        width: settings.width,
+        dashedStyle: settings.dashedStyle,
+        textColor: settings.textColor,
+        bgColor: settings.bgColor,
+        textStyle: settings.textStyle,
+        showArrow: settings.showArrow
       }
     }
+    
+    // 使用Vue 3的响应式更新
+    edges.value.splice(edgeIndex, 1, updatedEdge)
+    
+    console.log('更新后的连线数据:', JSON.stringify(edges.value[edgeIndex], null, 2))
+    console.log('当前所有连线:', JSON.stringify(edges.value, null, 2))
 
-    // 保存图谱数据
-    saveGraph()
+    // 强制触发响应式更新
+    edges.value = [...edges.value]
+    
+    // 使用nextTick确保DOM更新完成后再保存
+    nextTick(() => {
+      console.log('DOM更新完成，准备保存图谱数据')
+      saveGraph()
+    })
+  } else {
+    console.error('未找到要更新的连线:', id)
   }
 }
 

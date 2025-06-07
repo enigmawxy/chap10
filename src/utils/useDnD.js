@@ -91,23 +91,27 @@ export default function useDragAndDrop() {
     let nodeLabel = nodeId
     let nodeStyle = {}
     let nodeClass = ''
+    let bgColor = '#f0f0f0' // 默认节点底色
 
     // 设置节点标签
     switch (nodeType) {
       // 基础元素
       case 'circle':
         nodeLabel = '圆形节点'
-        nodeStyle = { backgroundColor: '#f0f9eb', borderRadius: '50%', border: '2px solid #67c23a' }
+        bgColor = '#f0f9eb'
+        nodeStyle = { backgroundColor: bgColor, borderRadius: '50%', border: '2px solid #67c23a' }
         nodeClass = 'circle-node'
         break
       case 'square':
         nodeLabel = '矩形节点'
-        nodeStyle = { backgroundColor: '#f0f9eb', border: '2px solid #67c23a' }
+        bgColor = '#f0f9eb'
+        nodeStyle = { backgroundColor: bgColor, border: '2px solid #67c23a' }
         nodeClass = 'square-node'
         break
       case 'text':
         nodeLabel = '文字节点'
-        nodeStyle = { backgroundColor: '#f0f9eb', border: '2px solid #67c23a' }
+        bgColor = '#f0f9eb'
+        nodeStyle = { backgroundColor: bgColor, border: '2px solid #67c23a' }
         nodeClass = 'text-node'
         break
 
@@ -199,10 +203,12 @@ export default function useDragAndDrop() {
       // 新增节点类型
       case 'element-plus':
         nodeLabel = 'ElementPlus'
+        bgColor = '#f0f9ff'
         nodeClass = 'element-plus-node'
         break
       case 'tailwind':
         nodeLabel = 'Tailwind CSS'
+        bgColor = '#f0fdf9'
         nodeClass = 'tailwind-node'
         break
       case 'core-concepts':
@@ -227,117 +233,150 @@ export default function useDragAndDrop() {
         break
       case 'vue-router':
         nodeLabel = 'Vue Router'
+        bgColor = '#f0fdf4'
         nodeClass = 'vue-router-node'
         break
       // 组件相关节点
       case 'component-advanced':
         nodeLabel = '组件进阶'
+        bgColor = '#ebf5fb'
         nodeClass = 'component-advanced-node'
         break
       case 'component-basics':
         nodeLabel = '组件基础'
+        bgColor = '#ebf5fb'
         nodeClass = 'component-basics-node'
         break
       case 'component-registration':
         nodeLabel = '组件注册'
+        bgColor = '#ebf5fb'
         nodeClass = 'component-registration-node'
         break
       case 'global-registration':
         nodeLabel = '全局注册'
+        bgColor = '#ebf5fb'
         nodeClass = 'global-registration-node'
         break
       case 'local-registration':
         nodeLabel = '局部注册'
+        bgColor = '#ebf5fb'
         nodeClass = 'local-registration-node'
         break
       case 'built-in-components':
         nodeLabel = '内置组件'
+        bgColor = '#ebf5fb'
         nodeClass = 'built-in-components-node'
         break
       case 'dynamic-components':
         nodeLabel = '动态组件'
+        bgColor = '#ebf5fb'
         nodeClass = 'dynamic-components-node'
         break
       case 'keep-alive':
         nodeLabel = 'KeepAlive'
+        bgColor = '#ebf5fb'
         nodeClass = 'keep-alive-node'
         break
       case 'transition':
         nodeLabel = '动画组件'
+        bgColor = '#ebf5fb'
         nodeClass = 'transition-node'
         break
       case 'teleport':
         nodeLabel = 'Teleport'
+        bgColor = '#ebf5fb'
         nodeClass = 'teleport-node'
         break
       case 'component-v-model':
         nodeLabel = '组件V-Model'
+        bgColor = '#ebf5fb'
         nodeClass = 'component-v-model-node'
         break
       case 'dependency-injection':
         nodeLabel = '依赖注入'
+        bgColor = '#ebf5fb'
         nodeClass = 'dependency-injection-node'
         break
       case 'attrs':
         nodeLabel = '透传Attributes'
+        bgColor = '#ebf5fb'
         nodeClass = 'attrs-node'
         break
       // 新增Vue概念节点
       case 'single-file-component':
         nodeLabel = '单文件组件'
+        bgColor = '#ebf5fb'
         nodeClass = 'single-file-component-node'
         break
       case 'component-basics-2':
         nodeLabel = '组件基础'
+        bgColor = '#ebf5fb'
         nodeClass = 'component-basics-2-node'
         break
       case 'slots':
         nodeLabel = '插槽'
+        bgColor = '#ebf5fb'
         nodeClass = 'slots-node'
         break
       case 'computed':
         nodeLabel = '计算属性'
+        bgColor = '#ebf5fb'
         nodeClass = 'computed-node'
         break
       case 'watchers':
         nodeLabel = '侦听器'
+        bgColor = '#ebf5fb'
         nodeClass = 'watchers-node'
         break
       case 'lifecycle':
         nodeLabel = '生命周期'
+        bgColor = '#ebf5fb'
         nodeClass = 'lifecycle-node'
         break
       case 'hooks':
         nodeLabel = '钩子函数'
+        bgColor = '#ebf5fb'
         nodeClass = 'hooks-node'
         break
       case 'readonly':
         nodeLabel = '只读性'
+        bgColor = '#ebf5fb'
         nodeClass = 'readonly-node'
         break
       case 'caching':
         nodeLabel = '缓存性'
+        bgColor = '#ebf5fb'
         nodeClass = 'caching-node'
         break
       case 'define-component':
         nodeLabel = '定义组件'
+        bgColor = '#ebf5fb'
         nodeClass = 'define-component-node'
         break
       case 'use-component':
         nodeLabel = '使用组件'
+        bgColor = '#ebf5fb'
         nodeClass = 'use-component-node'
         break
       case 'props':
         nodeLabel = '传递Props'
+        bgColor = '#ebf5fb'
         nodeClass = 'props-node'
         break
       case 'events':
         nodeLabel = '监听事件'
+        bgColor = '#ebf5fb'
         nodeClass = 'events-node'
         break
       default:
         nodeLabel = nodeId
     }
+
+    // 设置默认值
+    const textColor = '#333333' // 默认文字颜色
+    const textPosition = '下方' // 默认文字位置
+    const nodeSize = 40 // 默认节点大小
+    const textStyle = 'normal 13px YaHei' // 默认文字样式
 
     const newNode = {
       id: nodeId,
@@ -345,9 +384,22 @@ export default function useDragAndDrop() {
       position,
       data: {
         label: nodeLabel,
-        nodeType: nodeType
+        nodeType: nodeType,
+        textPosition: textPosition, // 添加文字位置属性
+        bgColor: bgColor, // 添加节点底色属性
+        size: nodeSize, // 添加节点大小属性
+        textColor: textColor // 添加文字颜色属性
       },
-      style: nodeStyle,
+      style: {
+        ...nodeStyle,
+        color: textColor, // 添加文字颜色到样式
+        backgroundColor: bgColor, // 添加背景色到样式
+        width: nodeSize, // 添加节点宽度到样式
+        height: nodeSize, // 添加节点高度到样式
+        fontStyle: textStyle.split(' ')[0], // 添加字体样式
+        fontSize: textStyle.split(' ')[1], // 添加字体大小
+        fontFamily: textStyle.split(' ')[2] // 添加字体族
+      },
       class: nodeClass,
       connectable: true,
       // 添加自定义属性，用于CSS选择器

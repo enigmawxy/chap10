@@ -1,7 +1,7 @@
 <script setup>
+import { computed, watch } from 'vue'
 import { BaseEdge, getBezierPath, getStraightPath, useVueFlow } from '@vue-flow/core'
-import { computed } from 'vue'
-import CustomMarker from '@/components/CustomMarker.vue'
+import CustomMarker from './CustomMarker.vue'
 
 const props = defineProps({
   id: {
@@ -44,6 +44,26 @@ const props = defineProps({
     type: Object,
     required: false,
   },
+  style: {
+    type: Object,
+    default: () => ({})
+  },
+  label: {
+    type: String,
+    default: ''
+  },
+  labelStyle: {
+    type: Object,
+    default: () => ({})
+  },
+  markerEnd: {
+    type: Object,
+    default: undefined
+  },
+  selected: {
+    type: Boolean,
+    default: false
+  }
 })
 
 const { findNode } = useVueFlow()
@@ -97,28 +117,57 @@ const path = computed(() => {
 
 const markerId = computed(() => `${props.id}-marker`)
 
-const markerColor = computed(() => {
-  console.log(`Edge ${props.id} :`, props)
-  console.log(`Edge ${props.id} marker color:`, props.data.markerStart?.color)
-  // 优先使用markerStart.color颜色
-  if (props.data.markerStart && props.data.markerStart.color) {
-    return props.data.markerStart.color
+// 计算连线颜色
+const edgeColor = computed(() => {
+  // 优先检查连线自身的选中状态
+  if (props.selected) {
+    return '#ff0072' // 连线选中时的颜色
   }
   
-  const sourceNode = findNode(props.source)
-  const targetNode = findNode(props.target)
-
-  if (sourceNode.selected) {
-    return '#ff0072'
+  // 优先使用style中的stroke颜色
+  if (props.style?.stroke) {
+    return props.style.stroke
   }
-
-  if (targetNode.selected) {
-    return '#2563eb'
+  
+  // 其次使用data中的颜色
+  if (props.data?.color) {
+    return props.data.color
   }
-
+  
+  // 默认颜色
   return '#4a5568'
 })
 
+// 计算连线宽度
+const edgeWidth = computed(() => {
+  return props.style?.strokeWidth || props.data?.width || 2
+})
+
+// 计算虚线样式
+const edgeDashArray = computed(() => {
+  return props.style?.strokeDasharray || props.data?.dashedStyle || 'none'
+})
+
+// 计算标记颜色
+const markerColor = computed(() => {
+  console.log(`Edge ${props.id} :`, props)
+  console.log(`Edge ${props.id} marker color:`, props.data?.markerStart?.color)
+  
+  // 优先检查连线自身的选中状态
+  if (props.selected) {
+    return '#ff0072' // 连线选中时的标记颜色
+  }
+  
+  // 优先使用markerStart.color颜色
+  if (props.data?.markerStart?.color) {
+    return props.data.markerStart.color
+  }
+  
+  // 使用连线颜色作为标记颜色
+  return edgeColor.value
+})
+
+// 计算标记类型
 const markerType = computed(() => {
   const sourceNode = findNode(props.source)
   const targetNode = findNode(props.target)
@@ -126,17 +175,54 @@ const markerType = computed(() => {
   let type = 'square'
   
   // 如果边上有箭头标记配置，使用箭头类型
-  if (props.data.markerEnd || props.data.markerStart) {
+  if (props.markerEnd || props.data?.markerEnd) {
     type = 'arrow'
-  } else if (sourceNode.selected) {
+  } else if (sourceNode?.selected) {
     type = 'diamond'
-  } else if (targetNode.selected) {
+  } else if (targetNode?.selected) {
     type = 'circle'
   }
 
   // 调试：打印标记类型
   console.log(`Edge ${props.id} marker type: ${type}`)
   return type
+})
+
+// 计算标签样式
+const computedLabelStyle = computed(() => {
+  const defaultStyle = {
+    fill: '#333',
+    fontSize: '12px',
+    fontFamily: 'Microsoft YaHei'
+  }
+  
+  // 合并props.labelStyle和data中的样式
+  return {
+    ...defaultStyle,
+    ...props.labelStyle,
+    fill: props.labelStyle?.fill || props.data?.textColor || defaultStyle.fill,
+    fontSize: props.labelStyle?.fontSize || props.data?.textStyle?.split(' ')[1] || defaultStyle.fontSize,
+    fontFamily: props.labelStyle?.fontFamily || props.data?.textStyle?.split(' ')[2] || defaultStyle.fontFamily
+  }
+})
+
+// 计算标签背景样式
+const labelBgStyle = computed(() => {
+  const bgColor = props.data?.bgColor || 'whitesmoke'
+  return `fill: ${bgColor}; stroke: ${edgeColor.value}; stroke-width: 1px; rx: 3px;`
+})
+
+// 监听props变化，确保响应式更新
+watch(() => props.data, (newData, oldData) => {
+  console.log(`Edge ${props.id} data changed:`, { old: oldData, new: newData })
+}, { deep: true })
+
+watch(() => props.style, (newStyle, oldStyle) => {
+  console.log(`Edge ${props.id} style changed:`, { old: oldStyle, new: newStyle })
+}, { deep: true })
+
+watch(() => props.selected, (newSelected, oldSelected) => {
+  console.log(`Edge ${props.id} selected changed:`, { old: oldSelected, new: newSelected })
 })
 </script>
 
@@ -150,12 +236,26 @@ export default {
   <BaseEdge
     :id="id"
     :path="path[0]"
-    :marker-start="`url(#${markerId})`"
-    :label="`${markerType} marker`"
+    :marker-start="markerType === 'arrow' ? `url(#${markerId})` : undefined"
+    :marker-end="markerType === 'arrow' ? `url(#${markerId})` : undefined"
+    :label="label || data?.text || ''"
     :label-x="path[1]"
     :label-y="path[2]"
-    label-bg-style="fill: whitesmoke"
+    :label-style="computedLabelStyle"
+    :label-bg-style="labelBgStyle"
+    :style="{
+      stroke: edgeColor,
+      strokeWidth: edgeWidth,
+      strokeDasharray: edgeDashArray
+    }"
   />
 
-  <CustomMarker :id="markerId" :type="markerType" :stroke="markerColor" :stroke-width="2" :width="20" :height="20" />
+  <CustomMarker 
+    :id="markerId" 
+    :type="markerType" 
+    :stroke="markerColor" 
+    :stroke-width="2" 
+    :width="20" 
+    :height="20" 
+  />
 </template>

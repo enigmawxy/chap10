@@ -59,7 +59,8 @@ const connectionSettings = ref({
   showArrow: '是',
   dashedStyle: '[0]',
   color: '#ff9999',
-  textColor: '#333333'
+  textColor: '#333333',
+  bgColor: '#ffffff'
 })
 
 // 计算样式
@@ -251,34 +252,55 @@ const saveGlobalSettings = () => {
 
 // 保存节点设置
 const saveNodeSettings = () => {
-  if (props.selectedElements.length === 1 && props.selectedElements[0].type === 'custom') {
-    emit('update-node-settings', {
-      id: props.selectedElements[0].id,
-      settings: nodeSettings.value
-    })
+  console.log('保存节点设置被调用', props.selectedElements)
+  if (props.selectedElements.length === 1) {
+    const element = props.selectedElements[0]
+    // 检查是否是节点（不是连线）
+    if (element.hasOwnProperty('node') || element.type === 'custom') {
+      console.log('发送节点更新事件', {
+        id: element.id || element.node?.id,
+        settings: nodeSettings.value
+      })
+      emit('update-node-settings', {
+        id: element.id || element.node?.id,
+        settings: nodeSettings.value
+      })
+    }
   }
 }
 
 // 保存连线设置
 const saveConnectionSettings = () => {
-  if (props.selectedElements.length === 1 && props.selectedElements[0].type !== 'custom') {
-    const settings = connectionSettings.value;
-    
-    // 映射连线类型到Vue Flow类型
-    let vueFlowType = 'default';
-    if (settings.type === '曲线') {
-      vueFlowType = 'smoothstep';
-    } else if (settings.type === '折线') {
-      vueFlowType = 'step';
-    }
-    
-    emit('update-connection-settings', {
-      id: props.selectedElements[0].id,
-      settings: {
-        ...settings,
-        vueFlowType: vueFlowType
+  if (props.selectedElements.length === 1) {
+    const selectedElement = props.selectedElements[0];
+    // 检查选中的是连线（edge）而不是节点（node）
+    // 连线通常有source和target属性，而节点有position属性
+    if (selectedElement.source && selectedElement.target) {
+      const settings = connectionSettings.value;
+      
+      // 映射连线类型到Vue Flow类型
+      let vueFlowType = 'default';
+      if (settings.type === '曲线') {
+        vueFlowType = 'smoothstep';
+      } else if (settings.type === '折线') {
+        vueFlowType = 'step';
       }
-    })
+      
+      console.log('保存连线设置，连线ID:', selectedElement.id);
+      console.log('连线设置数据:', settings);
+      
+      emit('update-connection-settings', {
+        id: selectedElement.id,
+        settings: {
+          ...settings,
+          vueFlowType: vueFlowType
+        }
+      })
+    } else {
+      console.warn('选中的不是连线，无法保存连线设置');
+    }
+  } else {
+    console.warn('请选择一条连线');
   }
 }
 </script>
@@ -401,30 +423,26 @@ const saveConnectionSettings = () => {
 
       <!-- 连线设置 -->
       <div v-if="activeTab === 'connection'" class="tab-content">
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label>连线ID</label>
           <input type="text" v-model="connectionSettings.id" readonly class="form-input readonly">
         </div>
-        
         <div class="form-group">
           <label>源节点</label>
           <input type="text" v-model="connectionSettings.source" readonly class="form-input readonly">
         </div>
-        
         <div class="form-group">
           <label>目标节点</label>
           <input type="text" v-model="connectionSettings.target" readonly class="form-input readonly">
         </div>
-        
         <div class="form-group">
           <label>源节点位置</label>
           <input type="text" v-model="connectionSettings.sourcePosition" readonly class="form-input readonly">
         </div>
-        
         <div class="form-group">
           <label>目标节点位置</label>
           <input type="text" v-model="connectionSettings.targetPosition" readonly class="form-input readonly">
-        </div>
+        </div> -->
         
         <div class="form-group">
           <label>连线文字</label>
@@ -475,6 +493,11 @@ const saveConnectionSettings = () => {
         <div class="form-group">
           <label>文字颜色</label>
           <input type="color" v-model="connectionSettings.textColor" class="color-picker">
+        </div>
+
+        <div class="form-group">
+          <label>文字背景颜色</label>
+          <input type="color" v-model="connectionSettings.bgColor" class="color-picker">
         </div>
 
         <button class="save-button" @click="saveConnectionSettings">确定</button>
