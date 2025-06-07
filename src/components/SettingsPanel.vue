@@ -215,7 +215,7 @@ watchEffect(() => {
         textStyle: element.labelStyle?.fontStyle
           ? `${element.labelStyle.fontStyle} ${element.labelStyle.fontSize || '14px'} ${element.labelStyle.fontFamily || 'Arial'}`
           : 'normal 14px Arial',
-        type: edge.data.edgeType === 'straight' ? '直线' : edge.data.edgeType === 'straight' ? '直线':'曲线',
+        type: edge.data.edgeType === 'straight' ? '直线' : edge.data.edgeType === 'straight' ? '直线' : '曲线',
         width: edge.style?.strokeWidth || 2,
         showArrow: edge.data.markerStart || edge.data.markerEnd ? '是' : '否',
         dashedStyle: edge.style?.strokeDasharray || '[0]',
@@ -271,34 +271,25 @@ const saveNodeSettings = () => {
 
 // 保存连线设置
 const saveConnectionSettings = () => {
-  console.log('saveConnectionSettings', props.selectedElements);
   if (props.selectedElements.length === 1) {
     const selectedElement = props.selectedElements[0];
-    console.log('selectedElement', selectedElement);
-    // if (selectedElement.source && selectedElement.target) {
-      const settings = connectionSettings.value;
-      console.log('settings', settings);
-      // 映射连线类型到Vue Flow类型
-      let vueFlowType = 'default';
-      if (settings.type === '曲线') {
-        vueFlowType = 'smoothstep';
-      } else if (settings.type === '折线') {
-        vueFlowType = 'step';
+    const settings = connectionSettings.value;
+    console.log('settings', settings);
+    // 映射连线类型到Vue Flow类型
+    let vueFlowType = 'custom';
+    if (settings.type === '曲线') {
+      vueFlowType = 'smoothstep';
+    } else if (settings.type === '折线') {
+      vueFlowType = 'step';
+    }
+    console.log('保存连线设置，连线ID:', selectedElement.edge?.id);
+    emit('update-connection-settings', {
+      id: selectedElement.edge?.id,
+      settings: {
+        ...settings,
+        vueFlowType: vueFlowType
       }
-      
-      console.log('保存连线设置，连线ID:', selectedElement.edge?.id);
-      console.log('连线设置数据:', settings);
-      
-      emit('update-connection-settings', {
-        id: selectedElement.edge?.id,
-        settings: {
-          ...settings,
-          vueFlowType: vueFlowType
-        }
-      })
-    // } else {
-    //   console.warn('选中的不是连线，无法保存连线设置');
-    // }
+    })
   } else {
     console.warn('请选择一条连线');
   }
@@ -306,31 +297,20 @@ const saveConnectionSettings = () => {
 </script>
 
 <template>
-  <aside class="settings-panel-container fixed right-0 top-[56px] bottom-0 bg-white border-l border-gray-200 z-10" :style="panelStyle">
+  <aside class="settings-panel-container fixed right-0 top-[56px] bottom-0 bg-white border-l border-gray-200 z-10"
+    :style="panelStyle">
     <!-- 调整宽度的手柄 -->
     <div class="resize-handle" @mousedown="startResize" title="拖动调整宽度" id="settings-resize-handle"></div>
 
     <!-- 选项卡 -->
     <div class="settings-tabs">
-      <div
-        class="tab-item"
-        :class="{ active: activeTab === 'global' }"
-        @click="activeTab = 'global'"
-      >
+      <div class="tab-item" :class="{ active: activeTab === 'global' }" @click="activeTab = 'global'">
         全局设置
       </div>
-      <div
-        class="tab-item"
-        :class="{ active: activeTab === 'node' }"
-        @click="activeTab = 'node'"
-      >
+      <div class="tab-item" :class="{ active: activeTab === 'node' }" @click="activeTab = 'node'">
         节点设置
       </div>
-      <div
-        class="tab-item"
-        :class="{ active: activeTab === 'connection' }"
-        @click="activeTab = 'connection'"
-      >
+      <div class="tab-item" :class="{ active: activeTab === 'connection' }" @click="activeTab = 'connection'">
         连线设置
       </div>
     </div>
@@ -443,7 +423,7 @@ const saveConnectionSettings = () => {
           <label>目标节点位置</label>
           <input type="text" v-model="connectionSettings.targetPosition" readonly class="form-input readonly">
         </div> -->
-        
+
         <div class="form-group">
           <label>连线文字</label>
           <input type="text" v-model="connectionSettings.text" class="form-input">
@@ -459,7 +439,7 @@ const saveConnectionSettings = () => {
           <select v-model="connectionSettings.type" class="form-select">
             <option>直线</option>
             <option>曲线</option>
-            <option>折线</option>
+            <!-- <option>折线</option> -->
           </select>
         </div>
 

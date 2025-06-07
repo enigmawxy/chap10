@@ -59,11 +59,11 @@ onConnect((params) => {
       edgeType: 'straight', // 默认使用直线
       markerEnd: {
         type: MarkerType.ArrowClosed,
-        color: '#ff0072',
+        color: '#ffffff',
       },
       markerStart: {
         type: MarkerType.ArrowClosed,
-        color: '#ff0072',
+        color: '#ffffff',
       },
     }
   }
@@ -257,8 +257,6 @@ const updateConnectionSettings = ({ id, settings }) => {
   console.log('找到连线索引:', edgeIndex)
   
   if (edgeIndex > -1) {
-    console.log('更新前的连线数据:', JSON.stringify(edges.value[edgeIndex], null, 2))
-    
     // 创建新的连线对象
     const updatedEdge = {
       ...edges.value[edgeIndex],
@@ -280,7 +278,7 @@ const updateConnectionSettings = ({ id, settings }) => {
       // 更新自定义数据用于CustomEdge组件
       data: {
         ...edges.value[edgeIndex].data,
-        edgeType: settings.type === '直线' ? 'straight' : (settings.type === '曲线' ? 'bezier' : 'straight'),
+        edgeType: settings.type === '直线' ? 'straight' : 'bezier',
         text: settings.text,
         color: settings.color,
         width: settings.width,
@@ -291,19 +289,13 @@ const updateConnectionSettings = ({ id, settings }) => {
         showArrow: settings.showArrow
       }
     }
-    
     // 使用Vue 3的响应式更新
     edges.value.splice(edgeIndex, 1, updatedEdge)
-    
     console.log('更新后的连线数据:', JSON.stringify(edges.value[edgeIndex], null, 2))
-    console.log('当前所有连线:', JSON.stringify(edges.value, null, 2))
-
     // 强制触发响应式更新
     edges.value = [...edges.value]
-    
     // 使用nextTick确保DOM更新完成后再保存
     nextTick(() => {
-      console.log('DOM更新完成，准备保存图谱数据')
       saveGraph()
     })
   } else {
