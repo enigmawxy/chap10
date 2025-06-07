@@ -495,6 +495,7 @@ const saveConnectionSettings = () => {
   /* 确保宽度不会自动调整 */
   flex-shrink: 0;
   flex-grow: 0;
+  background-color: #fff;
 }
 
 /* 调整宽度手柄样式 */
@@ -577,23 +578,29 @@ const saveConnectionSettings = () => {
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .form-group label {
   font-size: 13px;
   color: #333;
+  font-weight: normal;
+  text-align: left;
 }
 
 .form-input,
 .form-select,
 .form-textarea {
-  padding: 8px 10px;
+  padding: 6px 8px;
   border: 1px solid #dcdfe6;
   border-radius: 4px;
   font-size: 13px;
   color: #606266;
   transition: border-color 0.2s;
+  background-color: #fff;
+  height: 32px;
+  box-sizing: border-box;
+  text-align: left;
 }
 
 .form-input:focus,
@@ -611,6 +618,7 @@ const saveConnectionSettings = () => {
 .form-textarea {
   min-height: 60px;
   resize: vertical;
+  height: auto;
 }
 
 /* 数字输入框样式 */
@@ -620,10 +628,12 @@ const saveConnectionSettings = () => {
   border: 1px solid #dcdfe6;
   border-radius: 4px;
   overflow: hidden;
+  background-color: #fff;
+  height: 32px;
 }
 
 .number-btn {
-  width: 40px;
+  width: 32px;
   height: 32px;
   background-color: #f5f7fa;
   border: none;
@@ -631,6 +641,10 @@ const saveConnectionSettings = () => {
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
 .number-btn:hover {
@@ -644,22 +658,25 @@ const saveConnectionSettings = () => {
   text-align: center;
   font-size: 14px;
   color: #606266;
+  background-color: #fff;
+  padding: 0;
 }
 
 /* 颜色选择器样式 */
 .color-picker {
-  width: 40px;
+  width: 32px;
   height: 32px;
   padding: 0;
   border: 1px solid #dcdfe6;
   border-radius: 4px;
   cursor: pointer;
+  background-color: transparent;
 }
 
 /* 保存按钮样式 */
 .save-button {
   margin-top: 10px;
-  padding: 10px 0;
+  padding: 8px 0;
   background-color: #409EFF;
   color: white;
   border: none;
@@ -667,6 +684,7 @@ const saveConnectionSettings = () => {
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.2s;
+  height: 36px;
 }
 
 .save-button:hover {
