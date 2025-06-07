@@ -251,10 +251,9 @@ const updateNodeSettings = ({ id, settings }) => {
 }
 
 // 更新连线设置
-// 更新连线设置
 const updateConnectionSettings = ({ id, settings }) => {
   const edgeIndex = edges.value.findIndex(edge => edge.id === id)
-  console.log('更新连线设置inHome:', id, settings)
+  console.log('更新连线设置:', id, settings)
   console.log('找到连线索引:', edgeIndex)
   
   if (edgeIndex > -1) {

@@ -271,13 +271,13 @@ const saveNodeSettings = () => {
 
 // 保存连线设置
 const saveConnectionSettings = () => {
+  console.log('saveConnectionSettings', props.selectedElements);
   if (props.selectedElements.length === 1) {
     const selectedElement = props.selectedElements[0];
-    // 检查选中的是连线（edge）而不是节点（node）
-    // 连线通常有source和target属性，而节点有position属性
-    if (selectedElement.source && selectedElement.target) {
+    console.log('selectedElement', selectedElement);
+    // if (selectedElement.source && selectedElement.target) {
       const settings = connectionSettings.value;
-      
+      console.log('settings', settings);
       // 映射连线类型到Vue Flow类型
       let vueFlowType = 'default';
       if (settings.type === '曲线') {
@@ -286,19 +286,19 @@ const saveConnectionSettings = () => {
         vueFlowType = 'step';
       }
       
-      console.log('保存连线设置，连线ID:', selectedElement.id);
+      console.log('保存连线设置，连线ID:', selectedElement.edge?.id);
       console.log('连线设置数据:', settings);
       
       emit('update-connection-settings', {
-        id: selectedElement.id,
+        id: selectedElement.edge?.id,
         settings: {
           ...settings,
           vueFlowType: vueFlowType
         }
       })
-    } else {
-      console.warn('选中的不是连线，无法保存连线设置');
-    }
+    // } else {
+    //   console.warn('选中的不是连线，无法保存连线设置');
+    // }
   } else {
     console.warn('请选择一条连线');
   }
