@@ -9,7 +9,7 @@ import { saveGraphData, loadGraphData, deleteGraphData } from '@/utils/graphStor
 import CustomEdge from '@/components/CustomEdge.vue'
 
 // 获取更多VueFlow功能
-const { onConnect, addEdges, onNodeDragStop, toObject } = useVueFlow()
+const { onConnect, addEdges, onNodeDragStop, toObject, removeNodes, removeEdges } = useVueFlow()
 
 // 获取拖放相关函数
 const { onDragOver, onDragLeave, isDragOver } = useDragAndDrop()
@@ -177,10 +177,150 @@ const clearGraph = async () => {
   }
 }
 
+// 键盘删除功能
+const handleKeyDown = (event) => {
+  // 检查是否有输入框获得焦点
+  if (isInputFocused()) {
+    return
+  }
+  
+  // 检查是否有其他可交互元素获得焦点
+  const activeElement = document.activeElement
+  if (activeElement && (
+    activeElement.tagName === 'INPUT' ||
+    activeElement.tagName === 'TEXTAREA' ||
+    activeElement.tagName === 'SELECT' ||
+    activeElement.tagName === 'BUTTON' ||
+    activeElement.contentEditable === 'true' ||
+    activeElement.classList.contains('tab-item') ||
+    activeElement.closest('.settings-panel-container')
+  )) {
+    return
+  }
+  
+  // 只有在按下Delete键且有选中元素时才执行删除
+   if ((event.key === 'Delete') && selectedElements.value.length > 0) {
+     console.log('Delete键被按下，执行删除操作')
+     console.log('选中的元素:', selectedElements.value)
+     event.preventDefault()
+     event.stopPropagation()
+    
+    const nodesToRemove = []
+    const edgesToRemove = []
+    
+    selectedElements.value.forEach(element => {
+      console.log('处理元素:', element)
+      
+      // 检查是否是通过点击事件产生的包装对象
+      let actualElement = element
+      if (element.node) {
+        // 这是一个节点点击事件对象
+        actualElement = element.node
+        console.log('从点击事件中提取节点:', actualElement)
+      } else if (element.edge) {
+        // 这是一个连线点击事件对象
+        actualElement = element.edge
+        console.log('从点击事件中提取连线:', actualElement)
+      }
+      
+      console.log('实际元素类型:', actualElement.type)
+      console.log('实际元素ID:', actualElement.id)
+      
+      if (actualElement.type && actualElement.type !== 'custom') {
+        // 这是一个节点（节点有type属性且不是'custom'边类型）
+        console.log('识别为节点:', actualElement.id)
+        nodesToRemove.push(actualElement.id)
+        // 找到与此节点相连的所有连线
+        const connectedEdges = edges.value.filter(edge => 
+          edge.source === actualElement.id || edge.target === actualElement.id
+        )
+        console.log('找到相关连线:', connectedEdges.length)
+        connectedEdges.forEach(edge => {
+          if (!edgesToRemove.includes(edge.id)) {
+            edgesToRemove.push(edge.id)
+          }
+        })
+      } else if (actualElement.source && actualElement.target) {
+        // 这是一个连线（有source和target属性）
+        console.log('识别为连线:', actualElement.id)
+        edgesToRemove.push(actualElement.id)
+      } else if (actualElement.type === 'custom' && !actualElement.source) {
+        // 这是一个自定义节点（type为custom但没有source属性）
+        console.log('识别为自定义节点:', actualElement.id)
+        nodesToRemove.push(actualElement.id)
+        // 找到与此节点相连的所有连线
+        const connectedEdges = edges.value.filter(edge => 
+          edge.source === actualElement.id || edge.target === actualElement.id
+        )
+        console.log('找到相关连线:', connectedEdges.length)
+        connectedEdges.forEach(edge => {
+          if (!edgesToRemove.includes(edge.id)) {
+            edgesToRemove.push(edge.id)
+          }
+        })
+      }
+    })
+    
+    console.log('待删除节点:', nodesToRemove)
+    console.log('待删除连线:', edgesToRemove)
+    
+    // 只使用VueFlow API删除，不手动更新数组
+    if (nodesToRemove.length > 0) {
+      console.log('删除节点:', nodesToRemove)
+      removeNodes(nodesToRemove)
+    }
+    
+    if (edgesToRemove.length > 0) {
+      console.log('删除连线:', edgesToRemove)
+      removeEdges(edgesToRemove)
+    }
+    
+    // 清空选中状态
+    selectedElements.value = []
+    
+    // 使用nextTick确保删除操作完成后再保存
+    nextTick(() => {
+      // 获取最新的图谱状态并更新本地数组
+      const flow = toObject()
+      nodes.value = flow.nodes || []
+      edges.value = flow.edges || []
+      
+      // 保存图谱
+      saveGraph()
+      
+      // 显示删除消息
+      const deletedCount = nodesToRemove.length + edgesToRemove.length
+      message.value = `已删除 ${deletedCount} 个元素（按Delete键删除）`
+      showMessage.value = true
+      setTimeout(() => {
+        showMessage.value = false
+      }, 2000)
+      
+      console.log(`已删除 ${deletedCount} 个元素`)
+      console.log('当前节点数量:', nodes.value.length)
+      console.log('当前连线数量:', edges.value.length)
+    })
+  }
+}
+
+// 检查是否有输入框获得焦点
+const isInputFocused = () => {
+  const activeElement = document.activeElement
+  return activeElement && (
+    activeElement.tagName === 'INPUT' || 
+    activeElement.tagName === 'TEXTAREA' || 
+    activeElement.tagName === 'SELECT' ||
+    activeElement.contentEditable === 'true'
+  )
+}
+
 // 组件挂载时加载图谱数据
 onMounted(async () => {
   console.log('Home组件挂载，加载图谱数据')
   await loadGraph()
+
+  // 添加键盘事件监听器
+  document.addEventListener('keydown', handleKeyDown)
 
   // 设置自动保存
   autoSaveInterval.value = setInterval(() => {
@@ -193,6 +333,9 @@ onMounted(async () => {
 
 // 组件卸载时清理
 onUnmounted(() => {
+  // 移除键盘事件监听器
+  document.removeEventListener('keydown', handleKeyDown)
+  
   // 清除自动保存定时器
   if (autoSaveInterval.value) {
     clearInterval(autoSaveInterval.value)
@@ -200,13 +343,39 @@ onUnmounted(() => {
 })
 
 // 处理连线点击事件
-const handleEdgeClick = (edge) => {
-  selectedElements.value = [edge];
+const handleEdgeClick = (edge, event) => {
+  // 如果按住Ctrl键，添加到选择中；否则替换选择
+  if (event && (event.ctrlKey || event.metaKey)) {
+    const existingIndex = selectedElements.value.findIndex(el => el.id === edge.id)
+    if (existingIndex >= 0) {
+      // 如果已选中，则取消选中
+      selectedElements.value.splice(existingIndex, 1)
+    } else {
+      // 添加到选择中
+      selectedElements.value.push(edge)
+    }
+  } else {
+    // 替换当前选择
+    selectedElements.value = [edge]
+  }
 };
 
 // 新增：处理节点点击事件
-const handleNodeClick = (node) => {
-  selectedElements.value = [node];
+const handleNodeClick = (node, event) => {
+  // 如果按住Ctrl键，添加到选择中；否则替换选择
+  if (event && (event.ctrlKey || event.metaKey)) {
+    const existingIndex = selectedElements.value.findIndex(el => el.id === node.id)
+    if (existingIndex >= 0) {
+      // 如果已选中，则取消选中
+      selectedElements.value.splice(existingIndex, 1)
+    } else {
+      // 添加到选择中
+      selectedElements.value.push(node)
+    }
+  } else {
+    // 替换当前选择
+    selectedElements.value = [node]
+  }
 };
 
 // 更新节点设置
