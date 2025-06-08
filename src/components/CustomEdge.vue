@@ -180,7 +180,17 @@ const markerType = computed(() => {
   return type
 })
 
-// 计算标签样式 - 统一使用data中的属性
+// 计算连线角度（弧度转角度）
+const edgeAngle = computed(() => {
+  const dx = props.targetX - props.sourceX
+  const dy = props.targetY - props.sourceY
+  // 计算角度（弧度），然后转换为度数
+  const angleRad = Math.atan2(dy, dx)
+  const angleDeg = angleRad * (180 / Math.PI)
+  return angleDeg
+})
+
+// 计算标签样式 - 统一使用data中的属性，并添加旋转
 const computedLabelStyle = computed(() => {
   const defaultStyle = {
     fill: '#333',
@@ -196,14 +206,23 @@ const computedLabelStyle = computed(() => {
     fill: props.data?.textColor || defaultStyle.fill,
     fontSize: textStyleParts[1] || defaultStyle.fontSize,
     fontFamily: textStyleParts[2] || defaultStyle.fontFamily,
-    fontWeight: textStyleParts[0] || 'normal'
+    fontWeight: textStyleParts[0] || 'normal',
+    textAnchor: 'middle',
+    dominantBaseline: 'middle'
   }
 })
 
-// 计算标签背景样式 - 使用data中的bgColor
+// 计算标签背景样式 - 使用data中的bgColor，确保背景可见
 const labelBgStyle = computed(() => {
-  const bgColor = props.data?.bgColor || 'whitesmoke'
-  return `fill: ${bgColor}; stroke: ${edgeColor.value}; stroke-width: 1px; rx: 3px;`
+  const bgColor = props.data?.bgColor || '#ffffff'
+  return {
+    fill: bgColor,
+    stroke: edgeColor.value,
+    strokeWidth: '1px',
+    rx: '3px',
+    ry: '3px',
+    fillOpacity: '0.9'
+  }
 })
 
 // 监听props变化，确保响应式更新
@@ -231,17 +250,44 @@ export default {
     :id="id"
     :path="path[0]"
     :marker-start="markerType === 'arrow' ? `url(#${markerId})` : undefined"
-    :label="data?.text || ''"
-    :label-x="path[1]"
-    :label-y="path[2]"
-    :label-style="computedLabelStyle"
-    :label-bg-style="labelBgStyle"
     :style="{
       stroke: edgeColor,
       strokeWidth: edgeWidth,
       strokeDasharray: edgeDashArray
     }"
   />
+
+  <!-- 自定义旋转文字 -->
+  <g v-if="data?.text">
+    <!-- 文字背景 -->
+    <rect
+      :x="path[1] - (data?.text?.length || 0) * 3"
+      :y="path[2] - 8"
+      :width="(data?.text?.length || 0) * 6"
+      height="16"
+      :fill="data?.bgColor || '#ffffff'"
+      :stroke="edgeColor"
+      stroke-width="1"
+      rx="3"
+      ry="3"
+      fill-opacity="0.9"
+      :transform="`rotate(${edgeAngle} ${path[1]} ${path[2]})`"
+    />
+    <!-- 旋转文字 -->
+    <text
+      :x="path[1]"
+      :y="path[2]"
+      :fill="data?.textColor || '#333'"
+      :font-size="computedLabelStyle.fontSize"
+      :font-family="computedLabelStyle.fontFamily"
+      :font-weight="computedLabelStyle.fontWeight"
+      text-anchor="middle"
+      dominant-baseline="middle"
+      :transform="`rotate(${edgeAngle > 90 || edgeAngle < -90 ? edgeAngle + 180 : edgeAngle} ${path[1]} ${path[2]})`"
+    >
+      {{ data?.text }}
+    </text>
+  </g>
 
   <!-- 只在source端渲染CustomMarker -->
   <CustomMarker 
