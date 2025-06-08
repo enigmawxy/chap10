@@ -237,7 +237,6 @@ export default {
     :id="id"
     :path="path[0]"
     :marker-start="markerType === 'arrow' ? `url(#${markerId})` : undefined"
-    :marker-end="markerType === 'arrow' ? `url(#${markerId})` : undefined"
     :label="label || data?.text || ''"
     :label-x="path[1]"
     :label-y="path[2]"
@@ -250,6 +249,7 @@ export default {
     }"
   />
 
+  <!-- 只在source端渲染CustomMarker -->
   <CustomMarker 
     :id="markerId" 
     :type="markerType" 
