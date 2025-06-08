@@ -261,16 +261,16 @@ export default {
   <g v-if="data?.text">
     <!-- 文字背景 -->
     <rect
-      :x="path[1] - (data?.text?.length || 0) * 3"
-      :y="path[2] - 8"
-      :width="(data?.text?.length || 0) * 6"
-      height="16"
+      :x="path[1] - (data?.text?.length || 0) * 6 - 12"
+      :y="path[2] - 12"
+      :width="(data?.text?.length || 0) * 12 + 24"
+      :height="24"
       :fill="data?.bgColor || '#ffffff'"
-      :stroke="edgeColor"
+      :stroke="data?.bgColor || '#ffffff'"
       stroke-width="1"
-      rx="3"
-      ry="3"
-      fill-opacity="0.9"
+      :rx="6"
+      :ry="6"
+      fill-opacity="1"
       :transform="`rotate(${edgeAngle} ${path[1]} ${path[2]})`"
     />
     <!-- 旋转文字 -->
