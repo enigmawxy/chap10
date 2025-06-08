@@ -211,16 +211,20 @@ watchEffect(() => {
         target: edge.target || '',
         sourcePosition: edge.source || '',
         targetPosition: edge.target || '',
-        text: edge.label || '',
-        textStyle: element.labelStyle?.fontStyle
-          ? `${element.labelStyle.fontStyle} ${element.labelStyle.fontSize || '14px'} ${element.labelStyle.fontFamily || 'Arial'}`
-          : 'normal 14px Arial',
         type: edge.data.edgeType === 'straight' ? '直线' : edge.data.edgeType === 'straight' ? '直线' : '曲线',
         width: edge.style?.strokeWidth || 2,
         showArrow: edge.data.markerStart || edge.data.markerEnd ? '是' : '否',
+        // 连线
+        color: edge.style.stroke,
+        width: edge.style?.strokeWidth || 2,
         dashedStyle: edge.style?.strokeDasharray || '[0]',
-        color: edge.data.markerStart.color || '#ff9999',
-        textColor: edge.labelStyle?.fill || '#333333'
+        // 连线文字
+        text: edge.data.text,
+        textColor: edge.data?.textColor,
+        bgColor: edge.data?.bgColor,
+        textStyle: element.data?.textStyle
+          ? `${element.labelStyle.fontStyle} ${element.labelStyle.fontSize || '14px'} ${element.labelStyle.fontFamily || 'Arial'}`
+          : 'normal 14px Arial',
       }
     } else {
       // 节点
@@ -286,7 +290,15 @@ const saveConnectionSettings = () => {
     emit('update-connection-settings', {
       id: selectedElement.edge?.id,
       settings: {
-        ...settings,
+        text: settings.text,
+        textColor: settings.textColor,
+        textStyle: settings.textStyle,
+        bgColor: settings.bgColor,
+        type: settings.type,
+        width: settings.width,
+        showArrow: settings.showArrow,
+        dashedStyle: settings.dashedStyle,
+        color: settings.color,
         vueFlowType: vueFlowType
       }
     })

@@ -57,6 +57,10 @@ onConnect((params) => {
     type: 'custom',
     data: {
       edgeType: 'straight', // 默认使用直线
+      text: '新的连线', // 连线文字
+      textColor: '#000000', // 文字颜色
+      textStyle: 'normal 12px Microsoft YaHei', // 文字样式
+      bgColor: '#ffffff', // 文字背景颜色
       markerEnd: {
         type: MarkerType.ArrowClosed,
         color: '#ffffff',
@@ -65,6 +69,12 @@ onConnect((params) => {
         type: MarkerType.ArrowClosed,
         color: '#ffffff',
       },
+    },
+    //线的样式
+    style: {
+      stroke: '#B1B1B7',
+      strokeWidth: 2,
+      strokeDasharray: '[0]',
     }
   }
   // 添加新的边到edges数组
@@ -260,7 +270,6 @@ const updateConnectionSettings = ({ id, settings }) => {
     // 创建新的连线对象
     const updatedEdge = {
       ...edges.value[edgeIndex],
-      label: settings.text,
       type: settings.vueFlowType, // 使用映射后的类型
       style: {
         ...edges.value[edgeIndex].style,
@@ -269,23 +278,17 @@ const updateConnectionSettings = ({ id, settings }) => {
         strokeDasharray: settings.dashedStyle !== 'none' ? settings.dashedStyle : undefined
       },
       markerEnd: settings.showArrow === '是' ? { type: 'arrow' } : undefined,
-      labelStyle: {
-        ...edges.value[edgeIndex].labelStyle,
-        fill: settings.textColor,
-        fontFamily: settings.textStyle.split(' ')[2] || 'Microsoft YaHei',
-        fontSize: settings.textStyle.split(' ')[1] || '12px'
-      },
-      // 更新自定义数据用于CustomEdge组件
+      // 更新自定义数据用于CustomEdge组件 - 统一使用data属性
       data: {
         ...edges.value[edgeIndex].data,
         edgeType: settings.type === '直线' ? 'straight' : 'bezier',
         text: settings.text,
+        textColor: settings.textColor,
+        textStyle: settings.textStyle,
+        bgColor: settings.bgColor,
         color: settings.color,
         width: settings.width,
         dashedStyle: settings.dashedStyle,
-        textColor: settings.textColor,
-        bgColor: settings.bgColor,
-        textStyle: settings.textStyle,
         showArrow: settings.showArrow
       }
     }

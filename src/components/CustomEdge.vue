@@ -48,14 +48,6 @@ const props = defineProps({
     type: Object,
     default: () => ({})
   },
-  label: {
-    type: String,
-    default: ''
-  },
-  labelStyle: {
-    type: Object,
-    default: () => ({})
-  },
   markerEnd: {
     type: Object,
     default: undefined
@@ -155,7 +147,7 @@ const markerColor = computed(() => {
   
   // 优先检查连线自身的选中状态
   if (props.selected) {
-    return '#ff0072' // 连线选中时的标记颜色
+    return '#409EFF' // 连线选中时的标记颜色
   }
   
   // 优先使用markerStart.color颜色
@@ -188,7 +180,7 @@ const markerType = computed(() => {
   return type
 })
 
-// 计算标签样式
+// 计算标签样式 - 统一使用data中的属性
 const computedLabelStyle = computed(() => {
   const defaultStyle = {
     fill: '#333',
@@ -196,17 +188,19 @@ const computedLabelStyle = computed(() => {
     fontFamily: 'Microsoft YaHei'
   }
   
-  // 合并props.labelStyle和data中的样式
+  // 解析textStyle字符串（格式："normal 14px Arial"）
+  const textStyleParts = props.data?.textStyle?.split(' ') || []
+  
   return {
     ...defaultStyle,
-    ...props.labelStyle,
-    fill: props.labelStyle?.fill || props.data?.textColor || defaultStyle.fill,
-    fontSize: props.labelStyle?.fontSize || props.data?.textStyle?.split(' ')[1] || defaultStyle.fontSize,
-    fontFamily: props.labelStyle?.fontFamily || props.data?.textStyle?.split(' ')[2] || defaultStyle.fontFamily
+    fill: props.data?.textColor || defaultStyle.fill,
+    fontSize: textStyleParts[1] || defaultStyle.fontSize,
+    fontFamily: textStyleParts[2] || defaultStyle.fontFamily,
+    fontWeight: textStyleParts[0] || 'normal'
   }
 })
 
-// 计算标签背景样式
+// 计算标签背景样式 - 使用data中的bgColor
 const labelBgStyle = computed(() => {
   const bgColor = props.data?.bgColor || 'whitesmoke'
   return `fill: ${bgColor}; stroke: ${edgeColor.value}; stroke-width: 1px; rx: 3px;`
@@ -237,7 +231,7 @@ export default {
     :id="id"
     :path="path[0]"
     :marker-start="markerType === 'arrow' ? `url(#${markerId})` : undefined"
-    :label="label || data?.text || ''"
+    :label="data?.text || ''"
     :label-x="path[1]"
     :label-y="path[2]"
     :label-style="computedLabelStyle"

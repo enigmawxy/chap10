@@ -9,7 +9,7 @@ const routes = [
   {
     path: '/graph-build',
     name: 'GraphBuild',
-    component: () => import('../views/GraphBuild.vue')
+    component: () => import('../views/Home.vue')
   },
   {
     path: '/graph-query',
