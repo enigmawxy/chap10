@@ -510,7 +510,7 @@ const updateGlobalSettings = (settings) => {
       <VueFlow :nodes="nodes" :edges="edges" @dragover="onDragOver" @dragleave="onDragLeave" class="vue-flow-instance"
         :default-viewport="{ zoom: 1 }" :connect-on-drop="true" :snap-to-grid="true" :snap-grid="[15, 15]"
         @selectionchange="selectedElements = $event" @edge-click="handleEdgeClick" @node-click="handleNodeClick"
-        @nodeDragStop="saveGraph" fit-view-on-init>
+        @nodeDragStop="saveGraph" fit-view-on-init connection-line-type="straight">
         <!-- 使用具名插槽注册自定义节点 -->
         <template #node-custom="nodeProps">
           <CustomNode v-bind="nodeProps" />
