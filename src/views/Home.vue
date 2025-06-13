@@ -46,6 +46,7 @@ const isClearing = ref(false)
 const autoSaveInterval = ref(null)
 const showMessage = ref(false)
 const message = ref('')
+const showGrid = ref(true) // 控制网格显示状态
 
 // 连接节点时的处理函数
 onConnect((params) => {
@@ -490,6 +491,11 @@ const updateGlobalSettings = (settings) => {
   // 保存图谱数据
   saveGraph()
 }
+
+// 切换网格显示
+const toggleGrid = () => {
+  showGrid.value = !showGrid.value
+}
 </script>
 
 <template>
@@ -504,11 +510,14 @@ const updateGlobalSettings = (settings) => {
         <button class="toolbar-button clear-button" @click="clearGraph" :disabled="isClearing">
           {{ isClearing ? '清除中...' : '清除图谱' }}
         </button>
+        <button class="toolbar-button grid-button" @click="toggleGrid">
+          {{ showGrid ? '隐藏网格' : '显示网格' }}
+        </button>
         <span v-if="isLoading" class="loading-indicator">加载中...</span>
       </div>
 
       <VueFlow :nodes="nodes" :edges="edges" @dragover="onDragOver" @dragleave="onDragLeave" class="vue-flow-instance"
-        :default-viewport="{ zoom: 1 }" :connect-on-drop="true" :snap-to-grid="true" :snap-grid="[15, 15]"
+        :default-viewport="{ zoom: 1 }" :connect-on-drop="true" :snap-to-grid="showGrid" :snap-grid="[15, 15]"
         @selectionchange="selectedElements = $event" @edge-click="handleEdgeClick" @node-click="handleNodeClick"
         @nodeDragStop="saveGraph" fit-view-on-init connection-line-type="straight">
         <!-- 使用具名插槽注册自定义节点 -->
@@ -519,7 +528,7 @@ const updateGlobalSettings = (settings) => {
         <template #edge-custom="edgeProps">
           <CustomEdge v-bind="edgeProps" />
         </template>
-        <DropzoneBackground :style="{
+        <DropzoneBackground v-if="showGrid" :style="{
           backgroundColor: isDragOver ? '#e7f3ff' : 'transparent',
           transition: 'background-color 0.2s ease',
         }">
@@ -605,6 +614,15 @@ const updateGlobalSettings = (settings) => {
 
 .clear-button:hover:not(:disabled) {
   background-color: #f78989;
+}
+
+.grid-button {
+  background-color: #67c23a;
+  color: white;
+}
+
+.grid-button:hover:not(:disabled) {
+  background-color: #85ce61;
 }
 
 .loading-indicator {
