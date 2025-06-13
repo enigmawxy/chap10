@@ -4,7 +4,7 @@
       <!-- Logo and Title -->
       <div class="flex items-center space-x-2 mr-8">
         <GraphLogo />
-        <span class="font-bold text-lg">GRAPHVIS开发演示</span>
+        <span class="font-bold text-lg">高校课程知识图谱构建</span>
       </div>
 
       <!-- Navigation Menu -->

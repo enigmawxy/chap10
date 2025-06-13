@@ -8,22 +8,10 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    CustomConnectionLine: typeof import('./components/CustomConnectionLine.vue')['default']
     CustomEdge: typeof import('./components/CustomEdge.vue')['default']
-    CustomMaker: typeof import('./components/CustomMaker.vue')['default']
     CustomMarker: typeof import('./components/CustomMarker.vue')['default']
     CustomNode: typeof import('./components/CustomNode.vue')['default']
     DropzoneBackground: typeof import('./components/DropzoneBackground.vue')['default']
-    ElButton: typeof import('element-plus/es')['ElButton']
-    ElColorPicker: typeof import('element-plus/es')['ElColorPicker']
-    ElForm: typeof import('element-plus/es')['ElForm']
-    ElFormItem: typeof import('element-plus/es')['ElFormItem']
-    ElInput: typeof import('element-plus/es')['ElInput']
-    ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
-    ElOption: typeof import('element-plus/es')['ElOption']
-    ElSelect: typeof import('element-plus/es')['ElSelect']
-    ElTabPane: typeof import('element-plus/es')['ElTabPane']
-    ElTabs: typeof import('element-plus/es')['ElTabs']
     GraphLogo: typeof import('./components/GraphLogo.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
     Icon: typeof import('./components/Icon.vue')['default']
