@@ -496,6 +496,58 @@ const updateGlobalSettings = (settings) => {
 const toggleGrid = () => {
   showGrid.value = !showGrid.value
 }
+
+// 导出图谱为JSON文件
+const exportGraph = async () => {
+  try {
+    // 获取当前图谱数据
+    const flow = toObject()
+    const graphData = {
+      nodes: flow.nodes || nodes.value,
+      edges: flow.edges || edges.value,
+      exportTime: new Date().toISOString(),
+      version: '1.0'
+    }
+    
+    // 创建JSON字符串
+    const jsonString = JSON.stringify(graphData, null, 2)
+    
+    // 创建Blob对象
+    const blob = new Blob([jsonString], { type: 'application/json' })
+    
+    // 创建下载链接
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'graph.json'
+    
+    // 触发下载
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    
+    // 清理URL对象
+    URL.revokeObjectURL(url)
+    
+    // 显示成功消息
+    message.value = '图谱已导出为JSON文件'
+    showMessage.value = true
+    setTimeout(() => {
+      showMessage.value = false
+    }, 2000)
+    
+    console.log('图谱导出成功')
+  } catch (error) {
+    console.error('导出图谱失败:', error)
+    
+    // 显示错误消息
+    message.value = '导出失败: ' + error.message
+    showMessage.value = true
+    setTimeout(() => {
+      showMessage.value = false
+    }, 3000)
+  }
+}
 </script>
 
 <template>
@@ -512,6 +564,9 @@ const toggleGrid = () => {
         </button>
         <button class="toolbar-button grid-button" @click="toggleGrid">
           {{ showGrid ? '隐藏网格' : '显示网格' }}
+        </button>
+        <button class="toolbar-button export-button" @click="exportGraph">
+          导出JSON
         </button>
         <span v-if="isLoading" class="loading-indicator">加载中...</span>
       </div>
@@ -623,6 +678,15 @@ const toggleGrid = () => {
 
 .grid-button:hover:not(:disabled) {
   background-color: #85ce61;
+}
+
+.export-button {
+  background-color: #e6a23c;
+  color: white;
+}
+
+.export-button:hover:not(:disabled) {
+  background-color: #ebb563;
 }
 
 .loading-indicator {

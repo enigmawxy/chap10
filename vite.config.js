@@ -56,4 +56,8 @@ export default defineConfig({
       autoInstall: true,
     }),
   ],
+  server: {
+    open: true,
+    port: 8081,
+  }
 })
